@@ -7,6 +7,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+Route::post('movies/{movie}/reviews/store', [ReviewController::class, 'store'])->name('movies.reviews.store');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -27,9 +28,9 @@ Route::prefix('lists')->group(function () {
         Route::get('/', [ListMovieController::class, 'show'])->name('lists.show');
 
         Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-            Route::get('/edit', [ListMovieController::class, 'edit'])->name('lists.edit');
-            Route::get('/update', [ListMovieController::class, 'update'])->name('lists.update');
-            Route::get('/destroy', [ListMovieController::class, 'destroy'])->name('lists.destroy');
+            Route::post('/edit', [ListMovieController::class, 'edit'])->name('lists.edit');
+            Route::post('/update', [ListMovieController::class, 'update'])->name('lists.update');
+            Route::post('/destroy', [ListMovieController::class, 'destroy'])->name('lists.destroy');
         });
     });
 });
@@ -41,17 +42,20 @@ Route::prefix('movies')->group(function () {
         Route::get('/', [MovieController::class, 'show'])->name('movies.show');
 
         Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-            Route::get('/like', [MovieController::class, 'like'])->name('movies.like');
-            Route::get('/watch', [MovieController::class, 'watch'])->name('movies.watch');
+            Route::post('/like', [MovieController::class, 'like'])->name('movies.like');
+            Route::post('/watch', [MovieController::class, 'watch'])->name('movies.watch');
         });
 
         Route::prefix('reviews')->group(function () {
             Route::get('/', [ReviewController::class, 'index'])->name('movies.reviews.index');
+            Route::post('/store', [ReviewController::class, 'store'])->name('movies.reviews.store')->middleware(['auth:sanctum', 'verified']);;
 
             Route::middleware(['auth:sanctum', 'verified'])->group(function () {
                 Route::prefix('{review}')->group(function () {
                     Route::get('/', [ReviewController::class, 'show'])->name('movies.reviews.show');
-                    Route::get('/like', [ReviewController::class, 'like'])->name('movies.reviews.like');
+                    Route::post('/update', [ReviewController::class, 'update'])->name('movies.reviews.update');
+                    Route::post('/destroy', [ReviewController::class, 'destroy'])->name('movies.reviews.destroy');
+                    Route::post('/like', [ReviewController::class, 'like'])->name('movies.reviews.like');
                 });
             });
         });
@@ -60,7 +64,7 @@ Route::prefix('movies')->group(function () {
 
 Route::prefix('user')->group(function () {
 
-    Route::prefix('{user:username}')->group(function () {
+    Route::prefix('{user:name}')->group(function () {
         Route::get('/', [UserController::class, 'show'])->name('user');
         Route::post('/follow', [UserController::class, 'follow'])->name('user.follow')->middleware(['auth:sanctum', 'verified']);
         Route::get('/following', [UserController::class, 'following'])->name('user.following');
