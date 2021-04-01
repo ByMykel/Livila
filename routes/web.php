@@ -5,19 +5,8 @@ use App\Http\Controllers\ListMovieController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ReviewController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
 
 Route::get('/', [MovieController::class, 'home'])->name('home');
 
@@ -73,7 +62,7 @@ Route::prefix('user')->group(function () {
         Route::get('/watched', [MovieController::class, 'watched'])->name('user.watched');
         Route::get('/reviews', [ReviewController::class, 'reviews'])->name('user.reviews');
         Route::get('/lists', [ListMovieController::class, 'lists'])->name('user.lists');
-
+        
         Route::prefix('likes')->group(function () {
             Route::get('/', [LikeController::class, 'index'])->name('user.likes');
             Route::get('/movies', [LikeController::class, 'movies'])->name('user.likes.movies');
