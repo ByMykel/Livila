@@ -74,13 +74,8 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'followed_id');
     }
 
-    public function likes()
-    {
-        return $this->hasMany(LikeMovie::class);
-    }
-
     public function reviews()
     {
-        return $this->hasMany(Review::class);
+        return $this->hasMany(Review::class)->latest();
     }
 }

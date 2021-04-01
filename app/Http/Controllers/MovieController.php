@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LikeMovie;
-use App\Models\ListMovie;
-use Illuminate\Http\Request;
+use App\Models\Review;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -13,11 +12,6 @@ use Inertia\Inertia;
 
 class MovieController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $popular = Http::get('https://api.themoviedb.org/3/movie/popular', [
@@ -36,33 +30,6 @@ class MovieController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
@@ -73,40 +40,6 @@ class MovieController extends Controller
         return Inertia::render('Movies/Show', [
             'movie' => $movie->json()
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 
     public function like($id)
@@ -143,5 +76,43 @@ class MovieController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function home()
+    {
+        $friendsId = Auth::user()->following()->get()->pluck('id');
+        $moviesId = DB::table('movies_watched')->whereIn('user_id', $friendsId)->get()->pluck('movie_id');
+
+        $friendsReviews = Review::whereIn('user_id', $friendsId)->latest()->get();
+        $friendsWatched = [];
+
+        foreach ($moviesId as $id) {
+            $friendsWatched[] = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]))->json();
+        }
+
+        return Inertia::render('Home', [
+            'friendsReviews' => $friendsReviews,
+            'friendsWatched' => $friendsWatched
+        ]);
+    }
+
+    public function watched(User $user)
+    {
+        $watchedIds = DB::table('movies_watched')->where('user_id', $user->id)->latest()->get()->pluck('movie_id');
+        $watched = [];
+
+        foreach ($watchedIds as $id) {
+            $watched[] = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]))->json();
+        }
+
+        return Inertia::render('Users/Watched', [
+            'watched' => $watched
+        ]);
     }
 }
