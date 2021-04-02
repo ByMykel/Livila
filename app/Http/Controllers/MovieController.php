@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Review;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -12,21 +13,36 @@ use Inertia\Inertia;
 
 class MovieController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $popular = Http::get('https://api.themoviedb.org/3/movie/popular', [
+        $response = Http::get('https://api.themoviedb.org/3/movie/popular', [
             'api_key' => Config::get('services.tmdb.key'),
-            'language' => 'es-ES'
+            'language' => 'es-ES',
+            'page' => intval($request->page ?? 1) * 2 - 1
         ]);
 
-        $trendingWeek = Http::get('https://api.themoviedb.org/3/trending/movie/week', [
+        if ($response->ok()) {
+            $popular = $response->json();
+        } else {
+            dd(404);
+        }
+
+        $response = Http::get('https://api.themoviedb.org/3/movie/popular', [
             'api_key' => Config::get('services.tmdb.key'),
-            'language' => 'es-ES'
+            'language' => 'es-ES',
+            'page' => intval($request->page ?? 1) * 2
         ]);
+
+        if ($response->ok()) {
+            $popular['results'] = array_merge($popular['results'], $response->json()['results']);
+        } else {
+            dd(404);
+        }
+
 
         return Inertia::render('Movies/Index', [
-            'popular' => $popular->json(),
-            'trendingWeek' => $trendingWeek->json()
+            'popular' => $popular,
+            'page' => ['actual' => intval($request->page ?? 1), 'last' => intval($popular['total_pages']) / 2]
         ]);
     }
 
@@ -34,7 +50,8 @@ class MovieController extends Controller
     {
         $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
             'api_key' => Config::get('services.tmdb.key'),
-            'language' => 'es-ES'
+            'language' => 'es-ES',
+            'append_to_response' => 'videos'
         ]);
 
         return Inertia::render('Movies/Show', [
@@ -81,19 +98,52 @@ class MovieController extends Controller
     public function home()
     {
         $friendsId = Auth::user()->following()->get()->pluck('id');
-        $moviesId = DB::table('movies_watched')->whereIn('user_id', $friendsId)->get()->pluck('movie_id');
+        $moviesId = DB::table('movies_watched')->whereIn('user_id', $friendsId)->latest()->get()->pluck('movie_id');
 
-        $friendsReviews = Review::whereIn('user_id', $friendsId)->latest()->get();
+        $justReviewed = Review::orderBy('updated_at', 'desc')->take(8)->get();
+        $friendsReviews = Review::whereIn('user_id', $friendsId)->with('user')->withCount('likes')->latest()->take(4)->get();
         $friendsWatched = [];
 
-        foreach ($moviesId as $id) {
-            $friendsWatched[] = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+        foreach ($justReviewed as $index => $movie) {
+            $response = Http::get('https://api.themoviedb.org/3/movie/' . $movie->movie_id, [
                 'api_key' => Config::get('services.tmdb.key'),
                 'language' => 'es-ES'
-            ]))->json();
+            ]);
+
+            if ($response->ok()) {
+                $justReviewed[$index]['movie'] = $response->json();
+            } else {
+                unset($justReviewed[$index]);
+            }
+        }
+
+        foreach ($friendsReviews as $index => $movie) {
+            $response = Http::get('https://api.themoviedb.org/3/movie/' . $movie->movie_id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]);
+
+            if ($response->ok()) {
+                $friendsReviews[$index]['movie'] = $response->json();
+            } else {
+                unset($friendsReviews[$index]);
+            }
+        }
+
+        foreach ($moviesId as $id) {
+            $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]);
+
+            if ($response->ok()) {
+                $friendsWatched[] = $response->json();
+            }
         }
 
         return Inertia::render('Home', [
+            'followActiveMembers' => ((count($friendsWatched) >= 8) && (count($friendsReviews) >= 4)),
+            'justReviewed' => $justReviewed,
             'friendsReviews' => $friendsReviews,
             'friendsWatched' => $friendsWatched
         ]);
