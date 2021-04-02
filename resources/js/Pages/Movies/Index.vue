@@ -1,15 +1,15 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Movies index
-            </h2>
-        </template>
-
-        <div class="py-12">
+        <div class="py-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <welcome />
+                <div class="my-2">
+                    <movies-showcase :movies="popular.results" />
+
+                    <div class="flex justify-between my-4">
+                        <a :href="previousPage" class="bg-indigo-500">Previous</a>
+                        <span>{{ page }}</span>
+                        <a :href="nextPage" class="bg-indigo-500">Next</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -17,17 +17,31 @@
 </template>
 
 <script>
-    import AppLayout from '@/Layouts/AppLayout'
-    import Welcome from '@/Jetstream/Welcome'
+import AppLayout from "@/Layouts/AppLayout";
+import MoviesShowcase from "@/Components/MoviesShowcase";
 
-    export default {
-        components: {
-            AppLayout,
-            Welcome,
+export default {
+    components: {
+        AppLayout,
+        MoviesShowcase
+    },
+
+    props: {
+        popular: Object,
+        page: Object
+    },
+
+    computed: {
+        previousPage() {
+            return '?page=' + ((this.page.actual > 1) ? this.page.actual - 1 : this.page.actual);
         },
-        props: {
-            popular: Object,
-            trendingWeek: Object
+
+        nextPage() {
+            return '?page=' + ((this.page.actual < this.page.last)  ? (this.page.actual + 1) : this.page.actual);
         }
-    }
+    },
+
+    methods: {
+    },
+};
 </script>

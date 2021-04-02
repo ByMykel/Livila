@@ -1,16 +1,34 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Movies show
-            </h2>
-        </template>
+        <div class="py-6 px-1">
+            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+                <div class="md:flex">
+                    <div class="mr-2">
+                        <img
+                            class="shadow rounded-md mx-auto"
+                            :src="poster"
+                            alt=""
+                        />
+                    </div>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <img :src="poster" alt="" />
-                    {{ movie.title }}
+                    <div class="w-full p-1">
+                        <p
+                            class="text-center md:text-left mt-1 text-3xl leading-8 font-extrabold tracking-tight text-indigo-500 sm:text-3xl"
+                        >
+                            {{ movie.title }}
+                        </p>
+
+                        <p class="text-indigo-200">
+                            {{ new Date(movie.release_date).getFullYear() }} ·
+                            {{ movie.runtime }}m ·
+                            <a :href="imdbLink">IMDB</a>
+                            · {{ movie.vote_average }} / 10
+                        </p>
+
+                        <p class="mt-3 text-md text-white">
+                            {{ movie.overview }}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -19,16 +37,16 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import Welcome from "@/Jetstream/Welcome";
 
 export default {
     components: {
         AppLayout,
-        Welcome,
     },
+
     props: {
         movie: Object,
     },
+
     computed: {
         poster() {
             if (this.movie.poster_path) {
@@ -37,7 +55,11 @@ export default {
                 );
             }
 
-            return "";
+            return "/images/default_poster_path.png";
+        },
+
+        imdbLink() {
+            return "https://www.imdb.com/title/" + this.movie.imdb_id;
         },
     },
 };
