@@ -5,10 +5,28 @@
                 <div class="my-2">
                     <movies-showcase :movies="popular.results" />
 
-                    <div class="flex justify-between my-4">
-                        <a :href="previousPage" class="bg-indigo-500">Previous</a>
-                        <span>{{ page }}</span>
-                        <a :href="nextPage" class="bg-indigo-500">Next</a>
+                    <div class="flex-1 flex justify-between mt-5 items-center">
+                        <div class="hidden sm:block w-full text-sm text-white">
+                            Showing page
+                            <span class="font-medium">{{ page.actual }}</span>
+                            of
+                            <span class="font-medium">{{ page.last }}</span>
+                        </div>
+
+                        <div class="flex justify-between w-full sm:justify-end">
+                            <a
+                                :href="previousPage"
+                                class="relative inline-flex items-center px-4 py-2 border border-gray-900 text-sm font-medium rounded-md text-white bg-gray-800 hover:text-indigo-500"
+                            >
+                                Previous
+                            </a>
+                            <a
+                                :href="nextPage"
+                                class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-900 text-sm font-medium rounded-md text-white bg-gray-800 hover:text-indigo-500"
+                            >
+                                Next
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -23,25 +41,32 @@ import MoviesShowcase from "@/Components/MoviesShowcase";
 export default {
     components: {
         AppLayout,
-        MoviesShowcase
+        MoviesShowcase,
     },
 
     props: {
         popular: Object,
-        page: Object
+        page: Object,
     },
 
     computed: {
         previousPage() {
-            return '?page=' + ((this.page.actual > 1) ? this.page.actual - 1 : this.page.actual);
+            return (
+                "?page=" +
+                (this.page.actual > 1 ? this.page.actual - 1 : this.page.actual)
+            );
         },
 
         nextPage() {
-            return '?page=' + ((this.page.actual < this.page.last)  ? (this.page.actual + 1) : this.page.actual);
-        }
+            return (
+                "?page=" +
+                (this.page.actual < this.page.last
+                    ? this.page.actual + 1
+                    : this.page.actual)
+            );
+        },
     },
 
-    methods: {
-    },
+    methods: {},
 };
 </script>

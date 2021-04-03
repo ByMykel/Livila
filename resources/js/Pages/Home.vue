@@ -3,38 +3,46 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="mx-auto text-center text-white my-4">
-                    <h1 v-if="followActiveMembers">Welcome back, {{ $page.props.user.name }}. Here’s what your friends have been watching…</h1>
+                    <h1 v-if="followActiveMembers">
+                        Welcome back, {{ $page.props.user.name }}. Here’s what
+                        your friends have been watching…
+                    </h1>
                     <div v-else>
-                        <h1>Welcome back, {{ $page.props.user.name }}. Here’s what we’ve been watching…</h1>
-                        <h3 class="text-gray-300">This homepage will become customized as you follow active members.</h3>
+                        <h1>
+                            Welcome back, {{ $page.props.user.name }}. Here’s
+                            what we’ve been watching…
+                        </h1>
+                        <h3 class="text-gray-300">
+                            This homepage will become customized as you follow
+                            active members.
+                        </h3>
                     </div>
                 </div>
 
-                <div class="my-2">
-                    <div class="text-white mb-1 flex justify-between">
-                        <p>Just reviewed movies</p>
-                        <p>View more</p>
-                    </div>
+                <description-card
+                    title="Just reviewed movies"
+                    description="These are the latest reviewed movies in Livila"
+                >
                     <reviews-showcase :reviews="justReviewed" />
-                </div>
+                </description-card>
 
-                <div class="my-2">
-                    <div class="text-white mb-1 flex justify-between">
-                        <p>Friends watched movies</p>
-                        <p>View more</p>
-                    </div>
-                    <movies-showcase :movies="friendsWatched" />
-                </div>
+                <description-card
+                    title="Friends watched movies"
+                    description="These are the latest movies watched by your friends"
+                >
+                    <movies-showcase :movies="friendsWatched" :all="false" />
+                </description-card>
 
-                <div class="my-2">
-                    <div class="text-white mb-1 flex justify-between">
-                        <p>Friends reviews</p>
-                        <p>View more</p>
-                    </div>
-                    <div>
-                        <review-card v-for="review in friendsReviews" :key="review.id" :review="review" />
-                    </div>
-                </div>
+                <description-card
+                    title="Friends reviews"
+                    description="These are the latest reviewed movies by your friends"
+                >
+                    <review-card
+                        v-for="review in friendsReviews"
+                        :key="review.id"
+                        :review="review"
+                    />
+                </description-card>
             </div>
         </div>
     </app-layout>
@@ -45,23 +53,24 @@ import AppLayout from "@/Layouts/AppLayout";
 import ReviewCard from "@/Components/ReviewCard";
 import MoviesShowcase from "@/Components/MoviesShowcase";
 import ReviewsShowcase from "@/Components/ReviewsShowcase";
+import DescriptionCard from "@/Components/DescriptionCard";
 
 export default {
     components: {
         AppLayout,
         ReviewCard,
         MoviesShowcase,
-        ReviewsShowcase
+        ReviewsShowcase,
+        DescriptionCard,
     },
 
     props: {
         followActiveMembers: Boolean,
         justReviewed: Object,
         friendsReviews: Object,
-        friendsWatched: Object
+        friendsWatched: Object,
     },
 
-    methods: {
-    },
+    methods: {},
 };
 </script>
