@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="my-2">
         <div class="md:hidden grid grid-cols-5 gap-2">
             <div v-for="review in reviews.slice(0, 5)" :key="review.id">
                 <a :href="route('movies.reviews.show', [review.movie.id, review.id])">
