@@ -24,13 +24,15 @@ class ReviewController extends Controller
     {
         $request->validate([
             'review' => ['required', 'string'],
-            'recommended' => ['required', 'boolean']
+            'recommended' => ['required', 'boolean'],
+            'spoiler' => ['required', 'boolean']
         ]);
 
         $review = Auth::user()->reviews()->create([
             'movie_id' => $id,
             'review' => $request->review,
-            'recommended' => $request->recommended
+            'recommended' => $request->recommended,
+            'spoiler' => $request->spoiler
         ]);
 
         return redirect()->back();
@@ -43,22 +45,24 @@ class ReviewController extends Controller
         ]);
     }
 
-    public function update(Request $request, Review $review)
+    public function update($id, Review $review, Request $request)
     {
         $request->validate([
             'review' => ['required', 'string'],
-            'recommended' => ['required', 'boolean']
+            'recommended' => ['required', 'boolean'],
+            'spoiler' => ['required', 'boolean']
         ]);
 
         $review->update([
             'review' => $request->review,
-            'recommended' => $request->recommended
+            'recommended' => $request->recommended,
+            'spoiler' => $request->spoiler
         ]);
 
         return redirect()->back();
     }
 
-    public function destroy(Review $review)
+    public function destroy($id, Review $review)
     {
         $review->delete();
 
@@ -82,7 +86,7 @@ class ReviewController extends Controller
 
         return redirect()->back();
     }
-    
+
     public function reviews(User $user)
     {
         $reviews = $user->reviews()->get();

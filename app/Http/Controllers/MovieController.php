@@ -51,11 +51,14 @@ class MovieController extends Controller
         $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
             'api_key' => Config::get('services.tmdb.key'),
             'language' => 'es-ES',
-            'append_to_response' => 'videos'
-        ]);
+            'append_to_response' => 'videos,credits'
+        ])->json();
+
+        $myReview = Review::where('user_id', Auth::user()->id)->where('movie_id', $id)->get();
 
         return Inertia::render('Movies/Show', [
-            'movie' => $movie->json()
+            'movie' => $movie,
+            'myReview' => $myReview
         ]);
     }
 

@@ -21,7 +21,7 @@ Route::prefix('lists')->group(function () {
         Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::get('/edit', [ListMovieController::class, 'edit'])->name('lists.edit');
             Route::post('/update', [ListMovieController::class, 'update'])->name('lists.update');
-            Route::post('/destroy', [ListMovieController::class, 'destroy'])->name('lists.destroy');
+            Route::delete('/destroy', [ListMovieController::class, 'destroy'])->name('lists.destroy');
         });
     });
 });
@@ -45,7 +45,7 @@ Route::prefix('movies')->group(function () {
                 Route::prefix('{review}')->group(function () {
                     Route::get('/', [ReviewController::class, 'show'])->name('movies.reviews.show');
                     Route::post('/update', [ReviewController::class, 'update'])->name('movies.reviews.update');
-                    Route::post('/destroy', [ReviewController::class, 'destroy'])->name('movies.reviews.destroy');
+                    Route::delete('/destroy', [ReviewController::class, 'destroy'])->name('movies.reviews.destroy');
                     Route::post('/like', [ReviewController::class, 'like'])->name('movies.reviews.like');
                 });
             });
