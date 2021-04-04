@@ -48,17 +48,34 @@ class MovieController extends Controller
 
     public function show($id)
     {
+        $friendsId = Auth::user()->following()->get()->pluck('id');
+
+        $myReview = Review::where('user_id', Auth::user()->id)->where('movie_id', $id)->get();
+        $friendsReviews = Review::whereIn('user_id', $friendsId)->where('movie_id', $id)->with('user')->withCount('likes')->latest()->take(4)->get();
+
         $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
             'api_key' => Config::get('services.tmdb.key'),
             'language' => 'es-ES',
             'append_to_response' => 'videos,credits'
         ])->json();
 
-        $myReview = Review::where('user_id', Auth::user()->id)->where('movie_id', $id)->get();
+        foreach ($friendsReviews as $index => $movieReview) {
+            $response = Http::get('https://api.themoviedb.org/3/movie/' . $movieReview->movie_id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]);
+
+            if ($response->ok()) {
+                $friendsReviews[$index]['movie'] = $response->json();
+            } else {
+                unset($friendsReviews[$index]);
+            }
+        }
 
         return Inertia::render('Movies/Show', [
             'movie' => $movie,
-            'myReview' => $myReview
+            'myReview' => $myReview,
+            'friendsReviews' => $friendsReviews
         ]);
     }
 
