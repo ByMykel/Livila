@@ -1,5 +1,5 @@
 <template>
-    <div class="my-5 bg-gray-900 rounded-md shadow relative z-50">
+    <div class="my-5 bg-gray-900 rounded-md shadow relative z-10">
         <div class="text-white text-base font-semibold px-3 py-2">
             <p class="uppercase">
                 {{ title }}

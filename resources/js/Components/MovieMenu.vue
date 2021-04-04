@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-gray-900 rounded-md shadow relative text-white p-2 mt-4 z-50"
+        class="bg-gray-900 rounded-md shadow relative text-white p-2 mt-4 z-10"
     >
         <div class="bg-gray-800 rounded-md flex justify-around p-2">
             <button>

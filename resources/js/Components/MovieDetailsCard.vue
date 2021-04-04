@@ -7,11 +7,11 @@
 
         <div class="lg:flex">
             <div class="md:flex flex-1">
-                <div class="md:mr-2 flex-initial z-50">
+                <div class="md:mr-2 flex-initial z-10">
                     <img class="shadow rounded-md mx-auto" :src="poster" />
                 </div>
 
-                <div class="flex flex-col lg:flex-row flex-1 z-50">
+                <div class="flex flex-col lg:flex-row flex-1 z-10">
                     <div class="w-full p-1">
                         <p
                             class="text-center md:text-left mt-1 text-3xl leading-8 font-extrabold tracking-tight text-indigo-500"
