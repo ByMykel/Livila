@@ -41,6 +41,7 @@
                         v-for="review in friendsReviews"
                         :key="review.id"
                         :review="review"
+                        :showTitle="true"
                     />
                 </description-card>
             </div>
