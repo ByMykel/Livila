@@ -52,6 +52,8 @@ class MovieController extends Controller
 
         $myReview = Review::where('user_id', Auth::user()->id)->where('movie_id', $id)->get();
         $friendsReviews = Review::whereIn('user_id', $friendsId)->where('movie_id', $id)->with('user')->withCount('likes')->latest()->take(4)->get();
+        $popularReviews = Review::where('movie_id', $id)->with('user')->withCount('likes')->orderBy('likes_count', 'desc')->take(4)->get();
+        $recentReviews = Review::where('movie_id', $id)->with('user')->withCount('likes')->orderBy('updated_at', 'desc')->take(4)->get();
 
         $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
             'api_key' => Config::get('services.tmdb.key'),
@@ -72,10 +74,38 @@ class MovieController extends Controller
             }
         }
 
+        foreach ($popularReviews as $index => $movieReview) {
+            $response = Http::get('https://api.themoviedb.org/3/movie/' . $movieReview->movie_id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]);
+
+            if ($response->ok()) {
+                $popularReviews[$index]['movie'] = $response->json();
+            } else {
+                unset($popularReviews[$index]);
+            }
+        }
+
+        foreach ($recentReviews as $index => $movieReview) {
+            $response = Http::get('https://api.themoviedb.org/3/movie/' . $movieReview->movie_id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]);
+
+            if ($response->ok()) {
+                $recentReviews[$index]['movie'] = $response->json();
+            } else {
+                unset($recentReviews[$index]);
+            }
+        }
+
         return Inertia::render('Movies/Show', [
             'movie' => $movie,
             'myReview' => $myReview,
-            'friendsReviews' => $friendsReviews
+            'friendsReviews' => $friendsReviews,
+            'popularReviews' => $popularReviews,
+            'recentReviews' => $recentReviews
         ]);
     }
 

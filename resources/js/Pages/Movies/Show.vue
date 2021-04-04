@@ -6,6 +6,8 @@
 
                 <movie-menu :movie="movie" />
 
+                <movie-video :videos="movie.videos.results" />
+
                 <description-card
                     title="Cast"
                     description="These are some of the cast members (in credits order)"
@@ -25,6 +27,28 @@
                         :review="review"
                     />
                 </description-card>
+
+                <description-card
+                    title="Popular reviews"
+                    description="These are some of the most liked reviews"
+                >
+                    <review-card
+                        v-for="review in popularReviews"
+                        :key="'popular' + review.id"
+                        :review="review"
+                    />
+                </description-card>
+
+                <description-card
+                    title="Recent reviews"
+                    description="These are some of the latest reviews"
+                >
+                    <review-card
+                        v-for="review in recentReviews"
+                        :key="'recent' + review.id"
+                        :review="review"
+                    />
+                </description-card>
             </div>
         </div>
     </app-layout>
@@ -38,6 +62,7 @@ import ReviewForm from "@/Components/ReviewForm";
 import ReviewCard from "@/Components/ReviewCard";
 import MovieMenu from "@/Components/MovieMenu";
 import MovieDetailsCard from "@/Components/MovieDetailsCard";
+import MovieVideo from "@/Components/MovieVideo";
 
 export default {
     components: {
@@ -48,12 +73,15 @@ export default {
         ReviewCard,
         MovieMenu,
         MovieDetailsCard,
+        MovieVideo,
     },
 
     props: {
         movie: Object,
         myReview: Object,
-        friendsReviews: Object
+        friendsReviews: Object,
+        popularReviews: Object,
+        recentReviews: Object,
     },
 };
 </script>
