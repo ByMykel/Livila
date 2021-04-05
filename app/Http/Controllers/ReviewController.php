@@ -6,7 +6,9 @@ use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
 class ReviewController extends Controller
@@ -40,6 +42,18 @@ class ReviewController extends Controller
 
     public function show($id, Review $review)
     {
+        $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+            'api_key' => Config::get('services.tmdb.key'),
+            'language' => 'es-ES'
+        ]);
+
+        if ($response->ok()) {
+            $review = Review::where('id', $review->id)->with('user')->get();
+            $review[0]['movie'] = $response->json();
+        } else {
+            dd(404);
+        }
+
         return Inertia::render('Reviews/Show', [
             'review' => $review
         ]);

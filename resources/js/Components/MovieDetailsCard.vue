@@ -8,7 +8,11 @@
         <div class="lg:flex">
             <div class="md:flex flex-1">
                 <div class="md:mr-2 flex-initial z-10">
-                    <img class="shadow rounded-md mx-auto" :src="poster" />
+                    <img
+                        class="shadow rounded-md mx-auto"
+                        :class="{ 'w-28': reviewPage }"
+                        :src="poster"
+                    />
                 </div>
 
                 <div class="flex flex-col lg:flex-row flex-1 z-10">
@@ -16,7 +20,13 @@
                         <p
                             class="text-center md:text-left mt-1 text-3xl leading-8 font-extrabold tracking-tight text-indigo-500"
                         >
-                            {{ movie.title }}
+                            <a
+                                v-if="reviewPage"
+                                class="hover:underline"
+                                :href="route('movies.show', movie.id)"
+                                >{{ movie.title }}</a
+                            >
+                            <span v-else>{{ movie.title }}</span>
                         </p>
 
                         <div>
@@ -40,6 +50,10 @@ export default {
 
     props: {
         movie: Object,
+        reviewPage: {
+            default: false,
+            type: Boolean,
+        },
     },
 
     computed: {

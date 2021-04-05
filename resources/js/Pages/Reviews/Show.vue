@@ -1,32 +1,31 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Reviews show
-            </h2>
-        </template>
-
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    {{ review }}
-                </div>
+        <div class="py-6 px-1">
+            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+                <movie-details-card
+                    :movie="review[0].movie"
+                    :review-page="true"
+                ></movie-details-card>
+                <review-card class="mt-8" :review="review[0]"></review-card>
             </div>
         </div>
     </app-layout>
 </template>
 
 <script>
-    import AppLayout from '@/Layouts/AppLayout'
-    import Welcome from '@/Jetstream/Welcome'
+import AppLayout from "@/Layouts/AppLayout";
+import ReviewCard from "@/Components/ReviewCard";
+import MovieDetailsCard from "@/Components/MovieDetailsCard";
 
-    export default {
-        components: {
-            AppLayout,
-            Welcome,
-        },
-        props: {
-            review: Object,
-        }
-    }
+export default {
+    components: {
+        AppLayout,
+        ReviewCard,
+        MovieDetailsCard,
+    },
+
+    props: {
+        review: Object,
+    },
+};
 </script>

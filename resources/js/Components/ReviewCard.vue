@@ -46,7 +46,16 @@
 
             <div class="ml-2 text-sm">
                 <p>
-                    Reviewed by
+                    <a
+                        class="hover:text-indigo-400"
+                        :href="
+                            route('movies.reviews.show', [
+                                review.movie.id,
+                                review.id,
+                            ])
+                        "
+                        >Reviewed by
+                    </a>
                     <span class="font-medium">{{ review.user.name }}</span>
                 </p>
                 <p class="text-xs text-gray-500">{{ review.updated_at }}</p>
@@ -54,7 +63,10 @@
         </div>
 
         <div class="my-2 text-sm">
-            <h3 v-show="showTitle" class="break-words hover:text-indigo-500 hover:underline">
+            <h3
+                v-show="showTitle"
+                class="break-words hover:text-indigo-500 hover:underline"
+            >
                 <a
                     :href="
                         route('movies.reviews.show', [
@@ -82,8 +94,8 @@ export default {
         review: Object,
         showTitle: {
             default: false,
-            type: Boolean
-        }
+            type: Boolean,
+        },
     },
 
     computed: {
