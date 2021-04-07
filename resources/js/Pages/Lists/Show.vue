@@ -1,33 +1,39 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Lists Show
-            </h2>
-        </template>
-
-        <div class="py-12">
+        <div class="py-6 px-1">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    {{ list }}
+                <div class="bg-gray-900 p-2 rounded-md shadow text-white mb-5">
+                    <h2>{{ list.name }}</h2>
+                    <p>{{ list.description }}</p>
+                    <p>{{ watched }}</p>
                 </div>
+
+                <movies-showcase :movies="movies"> </movies-showcase>
             </div>
         </div>
     </app-layout>
 </template>
 
 <script>
-    import AppLayout from '@/Layouts/AppLayout'
-    import Welcome from '@/Jetstream/Welcome'
+import AppLayout from "@/Layouts/AppLayout";
+import MoviesShowcase from "@/Components/MoviesShowcase";
 
-    export default {
-        components: {
-            AppLayout,
-            Welcome,
+export default {
+    components: {
+        AppLayout,
+        MoviesShowcase,
+    },
+
+    props: {
+        list: Object,
+        movies: Object,
+        watchedMoviesCount: Number,
+    },
+
+    computed: {
+        watched() {
+            return `You’ve watched ${this.watchedMoviesCount} of ${this.movies.length}`;
         },
-        props: {
-            list: Object,
-            movies: Object
-        }
-    }
+    },
+};
 </script>

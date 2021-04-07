@@ -15,7 +15,28 @@ class ListMovieController extends Controller
 {
     public function index()
     {
-        $popularLists = ListMovie::withCount('likes')->orderByDesc('likes_count')->get()->take(10);
+        $popularLists = ListMovie::with('user')->withCount('likes')->orderByDesc('likes_count')->get()->take(10);
+
+        foreach ($popularLists as $index => $list) {
+            $moviesId = DB::table('lists_movies')->where('list_id', $list->id)->get()->take(5)->pluck('movie_id');
+            $movies = [];
+
+            foreach ($moviesId as $id) {
+                $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+                    'api_key' => Config::get('services.tmdb.key'),
+                    'language' => 'es-ES'
+                ]);
+
+                if ($response->ok()) {
+                    $movies[] = $response->json();
+                } else {
+                    unset($popularLists[$index]);
+                }
+            }
+
+            $popularLists[$index]['movies'] = $movies;
+            $popularLists[$index]['movies_count'] = count($movies);
+        }
 
         return Inertia::render('Lists/Index', [
             'popularLists' => $popularLists
@@ -47,6 +68,7 @@ class ListMovieController extends Controller
     public function show(ListMovie $listMovie)
     {
         $moviesId = DB::table('lists_movies')->where('list_id', $listMovie->id)->get()->pluck('movie_id');
+        $watchedMoviesCount = DB::table('movies_watched')->where('user_id', Auth::user()->id)->whereIn('movie_id', $moviesId)->get()->count();
         $movies = [];
 
         foreach ($moviesId as $id) {
@@ -56,9 +78,12 @@ class ListMovieController extends Controller
             ]))->json();
         }
 
+        $list = ListMovie::where('id', $listMovie->id)->with('user')->withCount('likes')->get();
+
         return Inertia::render('Lists/Show', [
-            'list' => ListMovie::where('id', $listMovie->id)->with('user')->get(),
-            'movies' => $movies
+            'list' => $list[0],
+            'movies' => $movies,
+            'watchedMoviesCount' => $watchedMoviesCount
         ]);
     }
 
