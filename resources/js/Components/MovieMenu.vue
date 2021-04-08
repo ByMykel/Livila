@@ -3,9 +3,10 @@
         class="bg-gray-900 rounded-md shadow relative text-white p-2 mt-4 z-10"
     >
         <div class="bg-gray-800 rounded-md flex justify-around p-2">
-            <button>
+            <button @click="like()">
                 <svg
                     class="w-6 h-6"
+                    :class="{ 'text-red-500': liked }"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -18,9 +19,10 @@
                 </svg>
             </button>
 
-            <button>
+            <button @click="watch()">
                 <svg
                     class="w-6 h-6"
+                    :class="{ 'text-green-500': watched }"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -56,10 +58,36 @@ export default {
 
     props: {
         movie: Object,
+        liked: Boolean,
+        watched: Boolean,
     },
 
     computed: {},
 
-    methods: {},
+    methods: {
+        like() {
+            this.$inertia.post(
+                route("movies.like", this.movie.id),
+                {},
+                {
+                    preserveState: false,
+                    preserveScroll: true,
+                    resetOnSuccess: false,
+                }
+            );
+        },
+
+        watch() {
+            this.$inertia.post(
+                route("movies.watch", this.movie.id),
+                {},
+                {
+                    preserveState: false,
+                    preserveScroll: true,
+                    resetOnSuccess: false,
+                }
+            );
+        },
+    },
 };
 </script>

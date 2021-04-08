@@ -100,12 +100,17 @@ class MovieController extends Controller
             }
         }
 
+        $liked = DB::table('likes_movies')->where('user_id', Auth::user()->id)->where('movie_id', $id)->count() === 1;
+        $watched = DB::table('movies_watched')->where('user_id', Auth::user()->id)->where('movie_id', $id)->count() === 1;
+
         return Inertia::render('Movies/Show', [
             'movie' => $movie,
             'myReview' => $myReview,
             'friendsReviews' => $friendsReviews,
             'popularReviews' => $popularReviews,
-            'recentReviews' => $recentReviews
+            'recentReviews' => $recentReviews,
+            'liked' => $liked,
+            'watched' => $watched
         ]);
     }
 

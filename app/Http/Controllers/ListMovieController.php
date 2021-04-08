@@ -18,6 +18,7 @@ class ListMovieController extends Controller
         $popularLists = ListMovie::with('user')->withCount('likes')->orderByDesc('likes_count')->get()->take(10);
 
         foreach ($popularLists as $index => $list) {
+            $popularLists[$index]['movies_count'] = DB::table('lists_movies')->where('list_id', $list->id)->get()->count();
             $moviesId = DB::table('lists_movies')->where('list_id', $list->id)->get()->take(5)->pluck('movie_id');
             $movies = [];
 
@@ -35,7 +36,6 @@ class ListMovieController extends Controller
             }
 
             $popularLists[$index]['movies'] = $movies;
-            $popularLists[$index]['movies_count'] = count($movies);
         }
 
         return Inertia::render('Lists/Index', [
@@ -110,7 +110,8 @@ class ListMovieController extends Controller
         $request->validate([
             'name' => ['required', 'string'],
             'description' => ['required', 'string'],
-            'visibility' => ['required', 'boolean']
+            'visibility' => ['required', 'boolean'],
+            'removedMovies.*' => ['integer']
         ]);
 
         $listMovie->update([
@@ -118,6 +119,8 @@ class ListMovieController extends Controller
             'description' => $request->description,
             'visibility' => $request->visibility
         ]);
+
+        DB::table('lists_movies')->where('list_id', $listMovie->id)->whereIn('movie_id', $request->removedMovies)->delete();
 
         return redirect()->back();
     }

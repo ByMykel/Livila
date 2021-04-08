@@ -1,33 +1,30 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Lists Edit
-            </h2>
-        </template>
-
-        <div class="py-12">
+        <div class="py-6 px-1">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    {{ list }}
-                </div>
+                <movies-list-form
+                    :editing="true"
+                    :list="list"
+                    :movies="movies"
+                ></movies-list-form>
             </div>
         </div>
     </app-layout>
 </template>
 
 <script>
-    import AppLayout from '@/Layouts/AppLayout'
-    import Welcome from '@/Jetstream/Welcome'
+import AppLayout from "@/Layouts/AppLayout";
+import MoviesListForm from "@/Components/MoviesListForm";
 
-    export default {
-        components: {
-            AppLayout,
-            Welcome,
-        },
-        props: {
-            list: Object,
-            movies: Object
-        }
-    }
+export default {
+    components: {
+        AppLayout,
+        MoviesListForm,
+    },
+
+    props: {
+        list: Object,
+        movies: Object,
+    },
+};
 </script>
