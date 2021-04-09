@@ -15,7 +15,7 @@ class ListMovieController extends Controller
 {
     public function index()
     {
-        $popularLists = ListMovie::with('user')->withCount('likes')->orderByDesc('likes_count')->get()->take(10);
+        $popularLists = ListMovie::with('user')->withCount('likes')->orderByDesc('likes_count')->get();
 
         foreach ($popularLists as $index => $list) {
             $popularLists[$index]['movies_count'] = DB::table('lists_movies')->where('list_id', $list->id)->get()->count();
@@ -139,5 +139,23 @@ class ListMovieController extends Controller
         return Inertia::render('Users/Lists', [
             'lists' => $lists
         ]);
+    }
+
+    public function list(ListMovie $listMovie, $id)
+    {
+        $movie = DB::table('lists_movies')->where('list_id', $listMovie->id)->where('movie_id', $id);
+
+        if ($movie->first()) {
+            $movie->delete();
+        } else {
+            DB::table('lists_movies')->insert([
+                'list_id' => $listMovie->id,
+                'movie_id' => $id,
+                'created_at' => NOW(),
+                'updated_at' => NOW(),
+            ]);
+        }
+
+        return redirect()->back();
     }
 }

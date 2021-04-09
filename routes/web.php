@@ -17,6 +17,7 @@ Route::prefix('lists')->group(function () {
 
     Route::prefix('{listMovie}')->group(function () {
         Route::get('/', [ListMovieController::class, 'show'])->name('lists.show');
+        Route::post('/store/{movie}', [ListMovieController::class, 'list'])->name('lists.store.movie');
 
         Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::get('/edit', [ListMovieController::class, 'edit'])->name('lists.edit');
@@ -62,7 +63,7 @@ Route::prefix('user')->group(function () {
         Route::get('/watched', [MovieController::class, 'watched'])->name('user.watched');
         Route::get('/reviews', [ReviewController::class, 'reviews'])->name('user.reviews');
         Route::get('/lists', [ListMovieController::class, 'lists'])->name('user.lists');
-        
+
         Route::prefix('likes')->group(function () {
             Route::get('/', [LikeController::class, 'index'])->name('user.likes');
             Route::get('/movies', [LikeController::class, 'movies'])->name('user.likes.movies');

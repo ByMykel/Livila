@@ -4,7 +4,12 @@
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 relative">
                 <movie-details-card :movie="movie" />
 
-                <movie-menu :movie="movie" :liked="liked" :watched="watched" />
+                <movie-menu
+                    :movie="movie"
+                    :liked="liked"
+                    :watched="watched"
+                    :lists="lists"
+                />
 
                 <movie-video :videos="movie.videos.results" />
 
@@ -83,7 +88,8 @@ export default {
         popularReviews: Object,
         recentReviews: Object,
         liked: Boolean,
-        watched: Boolean
+        watched: Boolean,
+        lists: Object,
     },
 };
 </script>

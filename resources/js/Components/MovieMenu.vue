@@ -5,8 +5,8 @@
         <div class="bg-gray-800 rounded-md flex justify-around p-2">
             <button @click="like()">
                 <svg
-                    class="w-6 h-6"
-                    :class="{ 'text-red-500': liked }"
+                    class="w-6 h-6 hover:text-blue-500"
+                    :class="{ 'text-red-500 hover:text-blue-500': liked }"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -21,7 +21,7 @@
 
             <button @click="watch()">
                 <svg
-                    class="w-6 h-6"
+                    class="w-6 h-6 hover:text-blue-500"
                     :class="{ 'text-green-500': watched }"
                     fill="currentColor"
                     viewBox="0 0 20 20"
@@ -36,9 +36,10 @@
                 </svg>
             </button>
 
-            <button>
+            <button @click="addMovieToList = !addMovieToList">
                 <svg
-                    class="w-6 h-6"
+                    class="w-6 h-6 hover:text-blue-500"
+                    :class="{ 'text-yellow-500': addMovieToList }"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -49,17 +50,36 @@
                 </svg>
             </button>
         </div>
+
+        <div v-show="addMovieToList">
+            <movies-list-form-menu
+                :lists="lists"
+                :movie="movie"
+                @close="addMovieToList = false"
+            ></movies-list-form-menu>
+        </div>
     </div>
 </template>
 
 <script>
+import MoviesListFormMenu from "@/Components/MoviesListFormMenu";
+
 export default {
-    components: {},
+    components: {
+        MoviesListFormMenu,
+    },
 
     props: {
         movie: Object,
         liked: Boolean,
         watched: Boolean,
+        lists: Object,
+    },
+
+    data() {
+        return {
+            addMovieToList: false,
+        };
     },
 
     computed: {},
@@ -70,7 +90,7 @@ export default {
                 route("movies.like", this.movie.id),
                 {},
                 {
-                    preserveState: false,
+                    preserveState: true,
                     preserveScroll: true,
                     resetOnSuccess: false,
                 }
@@ -82,7 +102,7 @@ export default {
                 route("movies.watch", this.movie.id),
                 {},
                 {
-                    preserveState: false,
+                    preserveState: true,
                     preserveScroll: true,
                     resetOnSuccess: false,
                 }

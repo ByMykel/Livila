@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ListMovie;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -103,6 +104,12 @@ class MovieController extends Controller
         $liked = DB::table('likes_movies')->where('user_id', Auth::user()->id)->where('movie_id', $id)->count() === 1;
         $watched = DB::table('movies_watched')->where('user_id', Auth::user()->id)->where('movie_id', $id)->count() === 1;
 
+        $lists = ListMovie::where('user_id', Auth::user()->id)->get();
+
+        foreach ($lists as $index => $list) {
+            $lists[$index]['contains_movie'] = DB::table('lists_movies')->where('list_id', $list->id)->where('movie_id', $id)->count() === 1;
+        }
+
         return Inertia::render('Movies/Show', [
             'movie' => $movie,
             'myReview' => $myReview,
@@ -110,7 +117,8 @@ class MovieController extends Controller
             'popularReviews' => $popularReviews,
             'recentReviews' => $recentReviews,
             'liked' => $liked,
-            'watched' => $watched
+            'watched' => $watched,
+            'lists' => $lists
         ]);
     }
 
