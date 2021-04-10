@@ -1,7 +1,5 @@
 <template>
     <div>
-        <title-image :title="review.movie.title" :show="show" />
-
         <a
             @mouseenter="show = true"
             @mouseleave="show = false"
@@ -10,18 +8,15 @@
             <img
                 class="duration-100 rounded-sm border-2 hover:border-indigo-500"
                 :src="poster"
+                :title="review.movie.title"
             />
         </a>
     </div>
 </template>
 
 <script>
-import TitleImage from "@/Components/TitleImage";
-
 export default {
-    components: {
-        TitleImage,
-    },
+    components: {},
 
     props: {
         review: Object,

@@ -39,6 +39,14 @@
 
         <div class="flex items-center">
             <img
+                v-if="showTitle"
+                class="w-8 sm:w-10 rounded-md"
+                :src="poster"
+                alt=""
+            />
+
+            <img
+                v-else
                 class="w-8 sm:w-10 rounded-full"
                 :src="review.user.profile_photo_url"
                 alt=""
@@ -56,7 +64,7 @@
                         "
                         >Reviewed by
                     </a>
-                    <span class="font-medium">{{ review.user.name }}</span>
+                    <span class="font-medium">{{ review.user.username }}</span>
                 </p>
                 <p class="text-xs text-gray-500">{{ review.updated_at }}</p>
             </div>
@@ -101,6 +109,17 @@ export default {
     computed: {
         isRecommended() {
             return this.review.recommended ? "Recommended" : "Not Recommended";
+        },
+
+        poster() {
+            if (this.review.movie.poster_path) {
+                return (
+                    "https://image.tmdb.org/t/p/w780" +
+                    this.review.movie.poster_path
+                );
+            }
+
+            return "/images/default_poster_path.png";
         },
     },
 

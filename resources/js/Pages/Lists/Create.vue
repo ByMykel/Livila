@@ -1,7 +1,7 @@
 <template>
     <app-layout>
         <div class="py-6 px-1">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <movies-list-form></movies-list-form>
             </div>
         </div>
@@ -15,7 +15,7 @@ import MoviesListForm from "@/Components/MoviesListForm";
 export default {
     components: {
         AppLayout,
-        MoviesListForm
+        MoviesListForm,
     },
 };
 </script>

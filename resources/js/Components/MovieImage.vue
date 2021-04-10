@@ -1,6 +1,6 @@
 <template>
     <div class="mb-2" @mouseenter="show = true" @mouseleave="show = false">
-        <p v-if="!border" class="truncate text-white text-sm">
+        <p v-if="!border" :title="movie.title" class="truncate text-white text-sm">
             {{ movie.title }}
         </p>
 
@@ -64,12 +64,8 @@
 </template>
 
 <script>
-import TitleImage from "@/Components/TitleImage";
-
 export default {
-    components: {
-        TitleImage,
-    },
+    components: {},
 
     props: {
         movie: Object,

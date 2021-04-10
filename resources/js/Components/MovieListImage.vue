@@ -1,7 +1,5 @@
 <template>
     <div>
-        <title-image :title="movie.title" :show="show" />
-
         <div
             v-if="border"
             @mouseenter="(show = true), (remove = true)"
@@ -46,12 +44,8 @@
 </template>
 
 <script>
-import TitleImage from "@/Components/TitleImage";
-
 export default {
-    components: {
-        TitleImage,
-    },
+    components: {},
 
     props: {
         movie: Object,

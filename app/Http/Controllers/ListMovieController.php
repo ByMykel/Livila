@@ -134,7 +134,28 @@ class ListMovieController extends Controller
 
     public function lists(User $user)
     {
-        $lists = ListMovie::whereIn('id', $user->listsMovies()->pluck('id'))->orderBy('updated_at', 'DESC')->get();
+        $lists = ListMovie::where('user_id', $user->id)->with('user')->withCount('likes')->orderBy('updated_at', 'DESC')->get();
+
+        foreach ($lists as $index => $list) {
+            $lists[$index]['movies_count'] = DB::table('lists_movies')->where('list_id', $list->id)->get()->count();
+            $moviesId = DB::table('lists_movies')->where('list_id', $list->id)->get()->take(5)->pluck('movie_id');
+            $movies = [];
+
+            foreach ($moviesId as $id) {
+                $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+                    'api_key' => Config::get('services.tmdb.key'),
+                    'language' => 'es-ES'
+                ]);
+
+                if ($response->ok()) {
+                    $movies[] = $response->json();
+                } else {
+                    unset($lists[$index]);
+                }
+            }
+
+            $lists[$index]['movies'] = $movies;
+        }
 
         return Inertia::render('Users/Lists', [
             'user' => $user,

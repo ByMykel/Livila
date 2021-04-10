@@ -6,6 +6,7 @@
                     :movie="review[0].movie"
                     :review-page="true"
                 ></movie-details-card>
+
                 <review-card class="mt-8" :review="review[0]"></review-card>
             </div>
         </div>

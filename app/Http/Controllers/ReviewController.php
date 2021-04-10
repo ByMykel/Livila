@@ -103,7 +103,20 @@ class ReviewController extends Controller
 
     public function reviews(User $user)
     {
-        $reviews = $user->reviews()->get();
+        $reviews = Review::where('user_id', $user->id)->with('user')->withCount('likes')->orderBy('updated_at', 'desc')->get();
+
+        foreach ($reviews as $index => $review) {
+            $response = Http::get('https://api.themoviedb.org/3/movie/' . $review->movie_id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]);
+
+            if ($response->ok()) {
+                $reviews[$index]['movie'] = $response->json();
+            } else {
+                unset($reviews[$index]);
+            }
+        }
 
         return Inertia::render('Users/Reviews', [
             'user' => $user,
