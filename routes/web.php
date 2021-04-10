@@ -55,7 +55,7 @@ Route::prefix('movies')->group(function () {
 });
 
 Route::prefix('user')->group(function () {
-    Route::prefix('{user:name}')->group(function () {
+    Route::prefix('{user:username}')->group(function () {
         Route::get('/', [UserController::class, 'show'])->name('user');
         Route::post('/follow', [UserController::class, 'follow'])->name('user.follow')->middleware(['auth:sanctum', 'verified']);
         Route::get('/following', [UserController::class, 'following'])->name('user.following');
