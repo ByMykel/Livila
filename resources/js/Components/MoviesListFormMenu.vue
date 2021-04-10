@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-5 md:mt-0 md:col-span-2 relative z-10">
+    <div class="mt-5 md:mt-0 md:col-span-2 relative">
         <form v-if="creating" @submit.prevent="createList">
             <div class="shadow rounded-md overflow-hidden">
                 <div class="px-4 py-5 bg-gray-900 space-y-6 sm:p-6">
@@ -132,29 +132,46 @@
                     />
                 </div>
 
-                <div>
+                <div class="overflow-y-auto h-56 pr-1">
                     <div
                         v-for="list in filteredLists"
                         :key="list.id"
-                        class="hover:bg-gray-800 rounded mb-1 px-2 py-0.5 flex justify-between"
+                        class="hover:bg-gray-800 rounded mb-1 px-2 py-0.5 flex justify-between cursor-pointer"
                         @click="
                             (list.contains_movie = !list.contains_movie),
                                 movieList(list)
                         "
                     >
-                        <div class="flex items-center">
+                        <div class="flex items-center w-11/12">
                             <input
                                 type="checkbox"
                                 class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded ml-1"
                                 :checked="list.contains_movie"
                                 @change="movieList(list)"
                             />
-                            <p class="ml-2">{{ list.name }}</p>
+                            <p class="ml-2 truncate">{{ list.name }}</p>
                         </div>
 
                         <div class="flex items-center justify-center">
                             <svg
                                 v-if="list.visibility"
+                                key="public"
+                                class="w-5 h-5 text-green-500 block"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
+                                ></path>
+                            </svg>
+
+                            <svg
+                                v-else
                                 key="private"
                                 class="w-5 h-5 text-red-500"
                                 fill="none"
@@ -169,23 +186,6 @@
                                     d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                                 ></path>
                             </svg>
-
-                            <svg
-                                v-else
-                                key="public"
-                                class="w-5 h-5 text-green-500"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
-                                ></path>
-                            </svg>
                         </div>
                     </div>
                 </div>
@@ -195,26 +195,6 @@
                 class="px-4 py-3 bg-gray-800 rounded-md text-right sm:px-6 flex justify-end"
             >
                 <div>
-                    <button
-                        @click="$emit('close')"
-                        type="button"
-                        class="mr-2 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        <svg
-                            class="sm:-ml-1 sm:mr-2 h-5 w-5"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd"
-                            ></path>
-                        </svg>
-                        <span class="hidden sm:block">Close</span>
-                    </button>
-
                     <button
                         @click="creating = true"
                         type="submit"
@@ -284,6 +264,11 @@ export default {
             });
 
             this.creating = false;
+            this.form = {
+                name: "",
+                description: "",
+                visibility: false,
+            };
         },
 
         cancel() {

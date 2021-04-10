@@ -26,6 +26,7 @@ class LikeController extends Controller
         }
 
         return Inertia::render('Likes/Index', [
+            'user' => $user,
             'lists' => $lists,
             'reviews' => $reviews,
             'movies' => $movies

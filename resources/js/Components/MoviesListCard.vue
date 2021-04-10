@@ -18,7 +18,7 @@
                 class="hover:text-indigo-400"
                 :href="route('lists.show', list.id)"
             >
-                <h2>{{ moviesList.name }}</h2>
+                <h2 class="break-all">{{ moviesList.name }}</h2>
             </a>
             <div class="my-0.5 flex items-center">
                 <div>
@@ -37,7 +37,7 @@
             </div>
             <div>
                 <p
-                    class="block text-sm text-gray-400 h-16 w-auto overflow-hidden trauncate"
+                    class="block text-sm text-gray-400 h-16 w-auto overflow-hidden trauncate break-all"
                 >
                     {{ moviesList.description }}
                 </p>

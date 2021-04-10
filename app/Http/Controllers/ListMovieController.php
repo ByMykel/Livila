@@ -137,6 +137,7 @@ class ListMovieController extends Controller
         $lists = ListMovie::whereIn('id', $user->listsMovies()->pluck('id'))->orderBy('updated_at', 'DESC')->get();
 
         return Inertia::render('Users/Lists', [
+            'user' => $user,
             'lists' => $lists
         ]);
     }

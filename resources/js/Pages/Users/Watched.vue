@@ -1,32 +1,30 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Users Watched
-            </h2>
-        </template>
+        <div class="py-6 px-1">
+            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+                <user-details-card :user="user"></user-details-card>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    {{ watched }}
-                </div>
+                <movies-showcase :movies="watched"></movies-showcase>
             </div>
         </div>
     </app-layout>
 </template>
 
 <script>
-    import AppLayout from '@/Layouts/AppLayout'
-    import Welcome from '@/Jetstream/Welcome'
+import AppLayout from "@/Layouts/AppLayout";
+import UserDetailsCard from "@/Components/UserDetailsCard";
+import MoviesShowcase from "@/Components/MoviesShowcase";
 
-    export default {
-        components: {
-            AppLayout,
-            Welcome,
-        },
-        props: {
-            watched: Object
-        }
-    }
+export default {
+    components: {
+        AppLayout,
+        UserDetailsCard,
+        MoviesShowcase,
+    },
+
+    props: {
+        user: Object,
+        watched: Object,
+    },
+};
 </script>

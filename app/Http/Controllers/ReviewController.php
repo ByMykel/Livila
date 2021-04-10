@@ -106,6 +106,7 @@ class ReviewController extends Controller
         $reviews = $user->reviews()->get();
 
         return Inertia::render('Users/Reviews', [
+            'user' => $user,
             'reviews' => $reviews
         ]);
     }

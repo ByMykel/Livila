@@ -40,6 +40,22 @@ class MovieController extends Controller
             dd(404);
         }
 
+        foreach ($popular['results'] as $index => $movie) {
+            $likedMovie = DB::table('likes_movies')->where('user_id', Auth::user()->id)->where('movie_id', $movie['id'])->count() === 1;
+            $watchedMovie = DB::table('movies_watched')->where('user_id', Auth::user()->id)->where('movie_id', $movie['id'])->count() === 1;
+
+            if ($likedMovie) {
+                $popular['results'][$index]['liked'] = true;
+            } else {
+                $popular['results'][$index]['liked'] = false;
+            }
+
+            if ($watchedMovie) {
+                $popular['results'][$index]['watched'] = true;
+            } else {
+                $popular['results'][$index]['watched'] = false;
+            }
+        }
 
         return Inertia::render('Movies/Index', [
             'popular' => $popular,
@@ -225,6 +241,7 @@ class MovieController extends Controller
         }
 
         return Inertia::render('Users/Watched', [
+            'user' => $user,
             'watched' => $watched
         ]);
     }

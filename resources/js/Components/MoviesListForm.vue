@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-5 md:mt-0 md:col-span-2 relative z-10">
+    <div class="mt-5 md:mt-0 md:col-span-2 relative">
         <form @submit.prevent="submitHandler">
             <div class="shadow rounded-md overflow-hidden">
                 <div class="px-4 py-5 bg-gray-900 space-y-6 sm:p-6">
@@ -15,6 +15,7 @@
                             id="list_name"
                             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                             v-model="form.name"
+                            autocomplete="off"
                         />
                     </div>
                     <div>
@@ -230,7 +231,7 @@ export default {
 
         cancel() {
             this.$inertia.visit(
-                route("user.likes.lists", this.$page.props.user.name)
+                route("user.likes.lists", this.$page.props.user.username)
             );
         },
 

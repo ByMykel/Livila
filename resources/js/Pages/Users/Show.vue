@@ -1,35 +1,28 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Users Show
-            </h2>
-        </template>
-
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    {{ lists }}
-                </div>
+        <div class="py-6 px-1">
+            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+                <user-details-card :user="user"></user-details-card>
             </div>
         </div>
     </app-layout>
 </template>
 
 <script>
-    import AppLayout from '@/Layouts/AppLayout'
-    import Welcome from '@/Jetstream/Welcome'
+import AppLayout from "@/Layouts/AppLayout";
+import UserDetailsCard from "@/Components/UserDetailsCard";
 
-    export default {
-        components: {
-            AppLayout,
-            Welcome,
-        },
-        props: {
-            user: Object,
-            reviews: Object,
-            lists: Object,
-            watched: Object
-        }
-    }
+export default {
+    components: {
+        AppLayout,
+        UserDetailsCard,
+    },
+
+    props: {
+        user: Object,
+        reviews: Object,
+        lists: Object,
+        watched: Object,
+    },
+};
 </script>
