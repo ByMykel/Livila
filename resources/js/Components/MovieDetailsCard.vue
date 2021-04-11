@@ -1,6 +1,7 @@
 <template>
     <div>
         <img
+            v-show="showBackdrop"
             class="absolute left-0 -top-3 opacity-5 rounded-lg z-0"
             :src="backdrop"
         />
@@ -52,6 +53,10 @@ export default {
         movie: Object,
         reviewPage: {
             default: false,
+            type: Boolean,
+        },
+        showBackdrop: {
+            default: true,
             type: Boolean,
         },
     },

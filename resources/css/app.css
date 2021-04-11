@@ -19,3 +19,12 @@
         @apply text-lg;
     }
 }
+
+@layer utilities {
+    .inset-center {
+        position: absolute;
+        top: 0%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+    }
+}

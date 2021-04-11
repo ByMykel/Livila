@@ -40,6 +40,8 @@ Route::prefix('movies')->group(function () {
 
         Route::prefix('reviews')->group(function () {
             Route::get('/', [ReviewController::class, 'index'])->name('movies.reviews.index');
+            Route::get('/popular', [ReviewController::class, 'popular'])->name('movies.reviews.popular');
+            Route::get('/friends', [ReviewController::class, 'friends'])->name('movies.reviews.friends');
             Route::post('/store', [ReviewController::class, 'store'])->name('movies.reviews.store')->middleware(['auth:sanctum', 'verified']);
 
             Route::middleware(['auth:sanctum', 'verified'])->group(function () {

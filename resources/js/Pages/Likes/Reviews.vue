@@ -68,13 +68,13 @@ export default {
         AppLayout,
         UserDetailsCard,
         ReviewCard,
-        BasePagination
+        BasePagination,
     },
 
     props: {
         user: Object,
         reviews: Object,
-        page: Object
+        page: Object,
     },
 };
 </script>

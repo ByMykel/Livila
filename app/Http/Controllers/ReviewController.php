@@ -15,10 +15,94 @@ class ReviewController extends Controller
 {
     public function index($id)
     {
-        $reviews = Review::where('movie_id', $id)->get();
+        $reviewsId = Review::where('movie_id', $id)->with('user')->withCount('likes')->orderBy('updated_at', 'desc')->paginate(8);
+        $reviews = $reviewsId->items();
+
+        $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+            'api_key' => Config::get('services.tmdb.key'),
+            'language' => 'es-ES',
+            'append_to_response' => 'videos,credits'
+        ])->json();
+
+        foreach ($reviews as $index => $review) {
+            $response = Http::get('https://api.themoviedb.org/3/movie/' . $review->movie_id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]);
+
+            if ($response->ok()) {
+                $reviews[$index]['movie'] = $response->json();
+            } else {
+                unset($reviews[$index]);
+            }
+        }
 
         return Inertia::render('Reviews/Index', [
-            'reviews' => $reviews
+            'movie' => $movie,
+            'reviews' => $reviews,
+            'page' => ['actual' => $reviewsId->currentPage(), 'last' => $reviewsId->lastPage()]
+        ]);
+    }
+
+    public function popular($id)
+    {
+        $reviewsId = Review::where('movie_id', $id)->with('user')->withCount('likes')->orderBy('likes_count', 'desc')->paginate(8);
+        $reviews = $reviewsId->items();
+
+        $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+            'api_key' => Config::get('services.tmdb.key'),
+            'language' => 'es-ES',
+            'append_to_response' => 'videos,credits'
+        ])->json();
+
+        foreach ($reviews as $index => $review) {
+            $response = Http::get('https://api.themoviedb.org/3/movie/' . $review->movie_id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]);
+
+            if ($response->ok()) {
+                $reviews[$index]['movie'] = $response->json();
+            } else {
+                unset($reviews[$index]);
+            }
+        }
+
+        return Inertia::render('Reviews/Popular', [
+            'movie' => $movie,
+            'reviews' => $reviews,
+            'page' => ['actual' => $reviewsId->currentPage(), 'last' => $reviewsId->lastPage()]
+        ]);
+    }
+
+    public function friends($id)
+    {
+        $reviewsId = Review::whereIn('user_id', Auth::user()->following()->get()->pluck('id'))->where('movie_id', $id)->with('user')->withCount('likes')->orderBy('updated_at', 'desc')->paginate(8);
+        $reviews = $reviewsId->items();
+
+        $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+            'api_key' => Config::get('services.tmdb.key'),
+            'language' => 'es-ES',
+            'append_to_response' => 'videos,credits'
+        ])->json();
+
+        foreach ($reviews as $index => $review) {
+            $response = Http::get('https://api.themoviedb.org/3/movie/' . $review->movie_id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]);
+
+            if ($response->ok()) {
+                $reviews[$index]['movie'] = $response->json();
+            } else {
+                unset($reviews[$index]);
+            }
+        }
+
+        return Inertia::render('Reviews/Friends', [
+            'movie' => $movie,
+            'reviews' => $reviews,
+            'page' => ['actual' => $reviewsId->currentPage(), 'last' => $reviewsId->lastPage()]
         ]);
     }
 
