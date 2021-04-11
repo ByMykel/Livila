@@ -230,11 +230,11 @@ class MovieController extends Controller
 
     public function watched(User $user)
     {
-        $watchedIds = DB::table('movies_watched')->where('user_id', $user->id)->latest()->get()->pluck('movie_id');
+        $watchedIds = DB::table('movies_watched')->where('user_id', $user->id)->latest()->select('movie_id')->paginate(40);
         $watched = [];
 
-        foreach ($watchedIds as $id) {
-            $watched[] = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+        foreach ($watchedIds->items() as $index => $movie) {
+            $watched[] = (Http::get('https://api.themoviedb.org/3/movie/' . $movie->movie_id, [
                 'api_key' => Config::get('services.tmdb.key'),
                 'language' => 'es-ES'
             ]))->json();
@@ -242,7 +242,8 @@ class MovieController extends Controller
 
         return Inertia::render('Users/Watched', [
             'user' => $user,
-            'watched' => $watched
+            'watched' => $watched,
+            'page' => ['actual' => $watchedIds->currentPage(), 'last' => $watchedIds->lastPage()]
         ]);
     }
 }

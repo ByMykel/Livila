@@ -10,6 +10,8 @@
                     :review="review"
                     :showTitle="true"
                 />
+
+                <base-pagination :page="page"></base-pagination>
             </div>
         </div>
     </app-layout>
@@ -19,17 +21,20 @@
 import AppLayout from "@/Layouts/AppLayout";
 import UserDetailsCard from "@/Components/UserDetailsCard";
 import ReviewCard from "@/Components/ReviewCard";
+import BasePagination from "@/Components/BasePagination";
 
 export default {
     components: {
         AppLayout,
         UserDetailsCard,
         ReviewCard,
+        BasePagination
     },
 
     props: {
         user: Object,
         reviews: Object,
+        page: Object,
     },
 };
 </script>

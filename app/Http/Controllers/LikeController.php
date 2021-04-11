@@ -14,7 +14,7 @@ class LikeController extends Controller
 {
     public function Index(User $user)
     {
-        $moviesId = DB::table('likes_movies')->where('user_id', $user->id)->latest()->get()->pluck('movie_id')->take(8);
+        $moviesId = DB::table('likes_movies')->where('user_id', $user->id)->latest()->get()->pluck('movie_id');
         $reviewsId = DB::table('likes_reviews')->where('user_id', $user->id)->latest()->get()->pluck('review_id')->take(4);
         $listsId = DB::table('likes_lists')->where('user_id', $user->id)->latest()->get()->pluck('list_id')->take(4);
 
@@ -73,37 +73,84 @@ class LikeController extends Controller
 
     public function movies(User $user)
     {
-        $moviesId = DB::table('likes_movies')->where('user_id', $user->id)->latest()->get()->pluck('movie_id');
-
+        $moviesId = DB::table('likes_movies')->where('user_id', $user->id)->latest()->select('movie_id')->paginate(40);
         $movies = [];
 
-        foreach ($moviesId as $id) {
-            $movies[] = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+        foreach ($moviesId->items() as $index => $movie) {
+            $movies[] = (Http::get('https://api.themoviedb.org/3/movie/' . $movie->movie_id, [
                 'api_key' => Config::get('services.tmdb.key'),
                 'language' => 'es-ES'
             ]))->json();
         }
 
         return Inertia::render('Likes/Movies', [
-            'movies' => $movies
+            'user' => $user,
+            'movies' => $movies,
+            'page' => ['actual' => $moviesId->currentPage(), 'last' => $moviesId->lastPage()]
         ]);
     }
 
     public function lists(User $user)
     {
-        $lists = $user->listsMovies()->get();
+        $listsId = DB::table('likes_lists')->where('user_id', $user->id)->latest()->select('list_id')->paginate(8);
+        $ids = array_map(function ($lists) {
+            return $lists->list_id;
+        }, $listsId->items());
+        $lists = ListMovie::whereIn('id', $ids)->with('user')->withCount('likes')->latest()->get();
+
+        foreach ($lists as $index => $list) {
+            $lists[$index]['movies_count'] = DB::table('lists_movies')->where('list_id', $list->id)->get()->count();
+            $listMoviesId = DB::table('lists_movies')->where('list_id', $list->id)->get()->take(5)->pluck('movie_id');
+            $listsMovies = [];
+
+            foreach ($listMoviesId as $id) {
+                $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+                    'api_key' => Config::get('services.tmdb.key'),
+                    'language' => 'es-ES'
+                ]);
+
+                if ($response->ok()) {
+                    $listsMovies[] = $response->json();
+                } else {
+                    unset($lists[$index]);
+                }
+            }
+
+            $lists[$index]['movies'] = $listsMovies;
+        }
 
         return Inertia::render('Likes/Lists', [
-            'lists' => $lists
+            'user' => $user,
+            'lists' => $lists,
+            'page' => ['actual' => $listsId->currentPage(), 'last' => $listsId->lastPage()]
         ]);
     }
 
     public function reviews(User $user)
     {
-        $reviews = $user->reviews()->get();
+        $reviewsId = DB::table('likes_reviews')->where('user_id', $user->id)->latest()->select('review_id')->paginate(8);
+        $ids = array_map(function ($reviews) {
+            return $reviews->review_id;
+        }, $reviewsId->items());
+        $reviews = Review::whereIn('id', $ids)->with('user')->withCount('likes')->latest()->get();
 
-        return Inertia::render('Likes/Index', [
-            'reviews' => $reviews
+        foreach ($reviews as $index => $review) {
+            $response = Http::get('https://api.themoviedb.org/3/movie/' . $review->movie_id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]);
+
+            if ($response->ok()) {
+                $reviews[$index]['movie'] = $response->json();
+            } else {
+                unset($reviews[$index]);
+            }
+        }
+
+        return Inertia::render('Likes/Reviews', [
+            'user' => $user,
+            'reviews' => $reviews,
+            'page' => ['actual' => $reviewsId->currentPage(), 'last' => $reviewsId->lastPage()]
         ]);
     }
 }

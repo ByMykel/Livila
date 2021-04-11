@@ -9,6 +9,8 @@
                     :key="list.id"
                     :movies-list="list"
                 ></movies-list-card>
+
+                <base-pagination :page="page"></base-pagination>
             </div>
         </div>
     </app-layout>
@@ -18,17 +20,20 @@
 import AppLayout from "@/Layouts/AppLayout";
 import UserDetailsCard from "@/Components/UserDetailsCard";
 import MoviesListCard from "@/Components/MoviesListCard";
+import BasePagination from "@/Components/BasePagination";
 
 export default {
     components: {
         AppLayout,
         UserDetailsCard,
-        MoviesListCard
+        MoviesListCard,
+        BasePagination,
     },
-    
+
     props: {
         user: Object,
         lists: Object,
+        page: Object,
     },
 };
 </script>

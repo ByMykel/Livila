@@ -134,9 +134,10 @@ class ListMovieController extends Controller
 
     public function lists(User $user)
     {
-        $lists = ListMovie::where('user_id', $user->id)->with('user')->withCount('likes')->orderBy('updated_at', 'DESC')->get();
+        $listsId = ListMovie::where('user_id', $user->id)->with('user')->withCount('likes')->orderBy('updated_at', 'desc')->paginate(8);
+        $lists = $listsId->items();
 
-        foreach ($lists as $index => $list) {
+        foreach ($listsId->items() as $index => $list) {
             $lists[$index]['movies_count'] = DB::table('lists_movies')->where('list_id', $list->id)->get()->count();
             $moviesId = DB::table('lists_movies')->where('list_id', $list->id)->get()->take(5)->pluck('movie_id');
             $movies = [];
@@ -159,7 +160,8 @@ class ListMovieController extends Controller
 
         return Inertia::render('Users/Lists', [
             'user' => $user,
-            'lists' => $lists
+            'lists' => $lists,
+            'page' => ['actual' => $listsId->currentPage(), 'last' => $listsId->lastPage()]
         ]);
     }
 

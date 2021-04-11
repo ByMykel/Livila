@@ -5,6 +5,8 @@
                 <user-details-card :user="user"></user-details-card>
 
                 <movies-showcase :movies="watched"></movies-showcase>
+
+                <base-pagination :page="page"></base-pagination>
             </div>
         </div>
     </app-layout>
@@ -14,17 +16,20 @@
 import AppLayout from "@/Layouts/AppLayout";
 import UserDetailsCard from "@/Components/UserDetailsCard";
 import MoviesShowcase from "@/Components/MoviesShowcase";
+import BasePagination from "@/Components/BasePagination";
 
 export default {
     components: {
         AppLayout,
         UserDetailsCard,
         MoviesShowcase,
+        BasePagination
     },
 
     props: {
         user: Object,
         watched: Object,
+        page: Object,
     },
 };
 </script>

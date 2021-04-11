@@ -1,5 +1,8 @@
 <template>
-    <div class="flex-1 flex justify-between mt-5 items-center">
+    <div
+        v-show="page.last > 1"
+        class="flex-1 flex justify-between mt-5 items-center"
+    >
         <div class="hidden sm:block w-full text-sm text-white">
             Showing page
             <span class="font-medium">{{ page.actual }}</span>
@@ -7,14 +10,16 @@
             <span class="font-medium">{{ page.last }}</span>
         </div>
 
-        <div class="flex justify-between w-full sm:justify-end">
+        <div class="flex w-full sm:justify-end" :class="linksPosition">
             <a
+                v-show="page.actual != 1"
                 :href="previousPage"
                 class="relative inline-flex items-center px-4 py-2 border border-gray-900 text-sm font-medium rounded-md text-white bg-gray-800 hover:text-indigo-500"
             >
                 Previous
             </a>
             <a
+                v-show="page.actual != page.last"
                 :href="nextPage"
                 class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-900 text-sm font-medium rounded-md text-white bg-gray-800 hover:text-indigo-500"
             >
@@ -45,6 +50,18 @@ export default {
                     ? this.page.actual + 1
                     : this.page.actual)
             );
+        },
+
+        linksPosition() {
+            if (this.page.actual != 1 && this.page.actual === this.page.last) {
+                return "justify-start";
+            }
+
+            if (this.page.actual === 1 && this.page.actual != this.page.last) {
+                return "justify-end";
+            }
+
+            return "justify-between";
         },
     },
 };

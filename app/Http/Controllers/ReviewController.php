@@ -103,7 +103,8 @@ class ReviewController extends Controller
 
     public function reviews(User $user)
     {
-        $reviews = Review::where('user_id', $user->id)->with('user')->withCount('likes')->orderBy('updated_at', 'desc')->get();
+        $reviewsId = Review::where('user_id', $user->id)->with('user')->withCount('likes')->orderBy('updated_at', 'desc')->paginate(8);
+        $reviews = $reviewsId->items();
 
         foreach ($reviews as $index => $review) {
             $response = Http::get('https://api.themoviedb.org/3/movie/' . $review->movie_id, [
@@ -120,7 +121,8 @@ class ReviewController extends Controller
 
         return Inertia::render('Users/Reviews', [
             'user' => $user,
-            'reviews' => $reviews
+            'reviews' => $reviews,
+            'page' => ['actual' => $reviewsId->currentPage(), 'last' => $reviewsId->lastPage()]
         ]);
     }
 }
