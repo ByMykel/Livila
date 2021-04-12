@@ -10,6 +10,7 @@
                     :description="
                         'These are the latest movies liked by ' + user.username
                     "
+                    :url="route('user.likes.movies', user.username)"
                 >
                     <movies-showcase :movies="movies" :all="false" />
                 </description-card>
@@ -20,6 +21,7 @@
                     :description="
                         'These are the latest reviews liked by ' + user.username
                     "
+                    :url="route('user.likes.reviews', user.username)"
                 >
                     <review-card
                         v-for="review in reviews"
@@ -35,6 +37,7 @@
                     :description="
                         'These are the latest lists liked by ' + user.username
                     "
+                    :url="route('user.likes.lists', user.username)"
                 >
                     <movies-list-card
                         v-for="list in lists"

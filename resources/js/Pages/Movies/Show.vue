@@ -25,6 +25,7 @@
                 <description-card
                     title="Friends reviews"
                     description="These are some of your friends reviewes"
+                    :url="route('movies.reviews.friends', movie.id)"
                 >
                     <review-card
                         v-for="review in friendsReviews"
@@ -36,6 +37,7 @@
                 <description-card
                     title="Popular reviews"
                     description="These are some of the most liked reviews"
+                    :url="route('movies.reviews.popular', movie.id)"
                 >
                     <review-card
                         v-for="review in popularReviews"
@@ -47,6 +49,7 @@
                 <description-card
                     title="Recent reviews"
                     description="These are some of the latest reviews"
+                    :url="route('movies.reviews.index', movie.id)"
                 >
                     <review-card
                         v-for="review in recentReviews"

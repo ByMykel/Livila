@@ -12,8 +12,8 @@
                 </div>
 
                 <div class="bg-gray-900 p-2 rounded-md shadow text-white mb-5">
-                    <h2>{{ list.name }}</h2>
-                    <p>{{ list.description }}</p>
+                    <h2 class="text-indigo-400">{{ list.name }}</h2>
+                    <p class="break-words mt-2">{{ list.description }}</p>
                     <p>{{ watched }}</p>
                 </div>
 
