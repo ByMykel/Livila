@@ -78,4 +78,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Review::class)->latest();
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latest();
+    }
 }

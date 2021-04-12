@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -126,6 +127,8 @@ class ReviewController extends Controller
 
     public function show($id, Review $review)
     {
+        $comments = Comment::where('review_id', $review->id)->with('user')->latest()->get();
+
         $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
             'api_key' => Config::get('services.tmdb.key'),
             'language' => 'es-ES'
@@ -139,7 +142,8 @@ class ReviewController extends Controller
         }
 
         return Inertia::render('Reviews/Show', [
-            'review' => $review
+            'review' => $review,
+            'comments' => $comments
         ]);
     }
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ListMovieController;
 use App\Http\Controllers\UserController;
@@ -44,9 +45,16 @@ Route::prefix('movies')->group(function () {
             Route::get('/friends', [ReviewController::class, 'friends'])->name('movies.reviews.friends');
             Route::post('/store', [ReviewController::class, 'store'])->name('movies.reviews.store')->middleware(['auth:sanctum', 'verified']);
 
-            Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-                Route::prefix('{review}')->group(function () {
-                    Route::get('/', [ReviewController::class, 'show'])->name('movies.reviews.show');
+
+            Route::prefix('{review}')->group(function () {
+                Route::get('/', [ReviewController::class, 'show'])->name('movies.reviews.show');
+
+                Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+                    Route::prefix('comments')->group(function () {
+                        Route::post('/store', [CommentController::class, 'store'])->name('reviews.comments.store');
+                        Route::delete('{comment}/destroy', [CommentController::class, 'destroy'])->name('reviews.comments.destroy');
+                    });
+
                     Route::post('/update', [ReviewController::class, 'update'])->name('movies.reviews.update');
                     Route::delete('/destroy', [ReviewController::class, 'destroy'])->name('movies.reviews.destroy');
                     Route::post('/like', [ReviewController::class, 'like'])->name('movies.reviews.like');
