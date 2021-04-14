@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ListMovie;
 use App\Models\Review;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -63,6 +64,10 @@ class LikeController extends Controller
             $lists[$index]['movies'] = $listsMovies;
         }
 
+        $user = User::where('id', $user->id)->withcount(['followers as follow' => function ($q) {
+            return $q->where('follower_id', Auth::id());
+        }])->get()[0];
+
         return Inertia::render('Likes/Index', [
             'user' => $user,
             'lists' => $lists,
@@ -82,6 +87,10 @@ class LikeController extends Controller
                 'language' => 'es-ES'
             ]))->json();
         }
+
+        $user = User::where('id', $user->id)->withcount(['followers as follow' => function ($q) {
+            return $q->where('follower_id', Auth::id());
+        }])->get()[0];
 
         return Inertia::render('Likes/Movies', [
             'user' => $user,
@@ -119,6 +128,10 @@ class LikeController extends Controller
             $lists[$index]['movies'] = $listsMovies;
         }
 
+        $user = User::where('id', $user->id)->withcount(['followers as follow' => function ($q) {
+            return $q->where('follower_id', Auth::id());
+        }])->get()[0];
+
         return Inertia::render('Likes/Lists', [
             'user' => $user,
             'lists' => $lists,
@@ -146,6 +159,10 @@ class LikeController extends Controller
                 unset($reviews[$index]);
             }
         }
+
+        $user = User::where('id', $user->id)->withcount(['followers as follow' => function ($q) {
+            return $q->where('follower_id', Auth::id());
+        }])->get()[0];
 
         return Inertia::render('Likes/Reviews', [
             'user' => $user,

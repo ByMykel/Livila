@@ -158,6 +158,10 @@ class ListMovieController extends Controller
             $lists[$index]['movies'] = $movies;
         }
 
+        $user = User::where('id', $user->id)->withcount(['followers as follow' => function ($q) {
+            return $q->where('follower_id', Auth::id());
+        }])->get()[0];
+
         return Inertia::render('Users/Lists', [
             'user' => $user,
             'lists' => $lists,

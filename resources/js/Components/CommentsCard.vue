@@ -56,7 +56,7 @@ export default {
 
     computed: {
         canDelete() {
-            return this.$page.props.user.id === this.comment.user_id;
+            return this.$page.props.auth.id === this.comment.user_id;
         },
     },
 

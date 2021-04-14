@@ -1,5 +1,5 @@
 <template>
-    <div ref="dropdown" v-if="$page.props.user">
+    <div ref="dropdown" v-if="$page.props.auth">
         <div>
             <button
                 @click="show = !show"
@@ -12,7 +12,7 @@
                 <span class="sr-only">Open user menu</span>
                 <img
                     class="h-8 w-8 rounded-full"
-                    :src="$page.props.user.profile_photo_url"
+                    :src="$page.props.auth.profile_photo_url"
                     alt=""
                 />
             </button>
@@ -34,7 +34,7 @@
                 aria-labelledby="user-menu"
             >
                 <a
-                    :href="route('user', $page.props.user.username)"
+                    :href="route('user', $page.props.auth.username)"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
                     >Your Profile</a

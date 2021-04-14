@@ -4,12 +4,12 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="mx-auto text-center text-white my-4">
                     <h1 v-if="followActiveMembers">
-                        Welcome back, {{ $page.props.user.username }}. Here’s
+                        Welcome back, {{ $page.props.auth.username }}. Here’s
                         what your friends have been watching…
                     </h1>
                     <div v-else>
                         <h1>
-                            Welcome back, {{ $page.props.user.username }}.
+                            Welcome back, {{ $page.props.auth.username }}.
                             Here’s what we’ve been watching…
                         </h1>
                         <h3 class="text-gray-300">
