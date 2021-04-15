@@ -4,47 +4,50 @@
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <user-details-card :user="user"></user-details-card>
 
-                <description-card
-                    v-show="movies.length >= 5"
-                    :title="user.username + '\'s liked movies'"
-                    :description="
-                        'These are the latest movies liked by ' + user.username
-                    "
-                    :url="route('user.likes.movies', user.username)"
+                <div
+                    class="border-b border-gray-600 mt-5 mb-2 text-white flex px-1"
                 >
-                    <movies-showcase :movies="movies" :all="false" />
-                </description-card>
+                    <a
+                        :href="route('user.likes.movies', user.username)"
+                        class="hover:text-indigo-400"
+                        >{{ user.username }}'s liked movies</a
+                    >
+                </div>
 
-                <description-card
-                    v-show="movies.length >= 5"
-                    :title="user.username + '\'s liked reviews'"
-                    :description="
-                        'These are the latest reviews liked by ' + user.username
-                    "
-                    :url="route('user.likes.reviews', user.username)"
-                >
-                    <review-card
-                        v-for="review in reviews"
-                        :key="review.id"
-                        :review="review"
-                        :showTitle="true"
-                    />
-                </description-card>
+                <movies-showcase :movies="movies" :all="false" />
 
-                <description-card
-                    v-show="movies.length >= 5"
-                    :title="user.username + '\'s liked lists'"
-                    :description="
-                        'These are the latest lists liked by ' + user.username
-                    "
-                    :url="route('user.likes.lists', user.username)"
+                <div
+                    class="border-b border-gray-600 mt-5 mb-2 text-white flex px-1"
                 >
-                    <movies-list-card
-                        v-for="list in lists"
-                        :key="list.id"
-                        :movies-list="list"
-                    ></movies-list-card>
-                </description-card>
+                    <a
+                        :href="route('user.likes.reviews', user.username)"
+                        class="hover:text-indigo-400"
+                        >{{ user.username }}'s liked reviews</a
+                    >
+                </div>
+
+                <review-card
+                    v-for="review in reviews"
+                    :key="review.id"
+                    :review="review"
+                    :showTitle="true"
+                />
+
+                <div
+                    class="border-b border-gray-600 mt-5 mb-2 text-white flex px-1"
+                >
+                    <a
+                        :href="route('user.likes.lists', user.username)"
+                        class="hover:text-indigo-400"
+                        >{{ user.username }}'s liked lists</a
+                    >
+                </div>
+
+                <movies-list-card
+                    v-for="list in lists"
+                    :key="list.id"
+                    :movies-list="list"
+                ></movies-list-card>
             </div>
         </div>
     </app-layout>

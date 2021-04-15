@@ -10,9 +10,9 @@
                 <review-card class="mt-8" :review="review[0]"></review-card>
 
                 <div
-                    class="border-b border-gray-800 mt-10 p-1 flex justify-between mb-5 text-white"
+                    class="border-b border-gray-600 mt-5 mb-2 text-white flex px-1"
                 >
-                    <p>Comments</p>
+                    Comments
                 </div>
 
                 <comments-card-form

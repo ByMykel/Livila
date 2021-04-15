@@ -22,41 +22,53 @@
 
                 <review-form :movie="movie" :review="myReview" />
 
-                <description-card
-                    title="Friends reviews"
-                    description="These are some of your friends reviewes"
-                    :url="route('movies.reviews.friends', movie.id)"
+                <div
+                    class="border-b border-gray-600 mt-5 mb-2 text-white flex px-1"
                 >
-                    <review-card
-                        v-for="review in friendsReviews"
-                        :key="'friend' + review.id"
-                        :review="review"
-                    />
-                </description-card>
+                    <a
+                        :href="route('movies.reviews.friends', movie.id)"
+                        class="hover:text-indigo-400"
+                        >Friends reviews</a
+                    >
+                </div>
 
-                <description-card
-                    title="Popular reviews"
-                    description="These are some of the most liked reviews"
-                    :url="route('movies.reviews.popular', movie.id)"
-                >
-                    <review-card
-                        v-for="review in popularReviews"
-                        :key="'popular' + review.id"
-                        :review="review"
-                    />
-                </description-card>
+                <review-card
+                    v-for="review in friendsReviews"
+                    :key="'friend' + review.id"
+                    :review="review"
+                />
 
-                <description-card
-                    title="Recent reviews"
-                    description="These are some of the latest reviews"
-                    :url="route('movies.reviews.index', movie.id)"
+                <div
+                    class="border-b border-gray-600 mt-5 mb-2 text-white flex px-1"
                 >
-                    <review-card
-                        v-for="review in recentReviews"
-                        :key="'recent' + review.id"
-                        :review="review"
-                    />
-                </description-card>
+                    <a
+                        :href="route('movies.reviews.popular', movie.id)"
+                        class="hover:text-indigo-400"
+                        >Popular reviews</a
+                    >
+                </div>
+
+                <review-card
+                    v-for="review in popularReviews"
+                    :key="'popular' + review.id"
+                    :review="review"
+                />
+
+                <div
+                    class="border-b border-gray-600 mt-5 mb-2 text-white flex px-1"
+                >
+                    <a
+                        :href="route('movies.reviews.index', movie.id)"
+                        class="hover:text-indigo-400"
+                        >Recent reviews</a
+                    >
+                </div>
+
+                <review-card
+                    v-for="review in recentReviews"
+                    :key="'recent' + review.id"
+                    :review="review"
+                />
             </div>
         </div>
     </app-layout>

@@ -8,45 +8,7 @@
                     :show-backdrop="false"
                 ></movie-details-card>
 
-                <div
-                    class="border-b border-gray-800 mt-5 p-1 flex justify-between mb-5 relative"
-                >
-                    <div class="text-gray-400">
-                        <a
-                            :href="route('movies.reviews.index', movie.id)"
-                            class="hover:text-white mr-3"
-                            :class="{
-                                'text-indigo-400': route().current(
-                                    'movies.reviews.index',
-                                    movie.id
-                                ),
-                            }"
-                            >Recent</a
-                        >
-                        <a
-                            :href="route('movies.reviews.popular', movie.id)"
-                            class="hover:text-white mr-3"
-                            :class="{
-                                'text-indigo-400': route().current(
-                                    'movies.reviews.popular',
-                                    movie.id
-                                ),
-                            }"
-                            >Popular</a
-                        >
-                        <a
-                            :href="route('movies.reviews.friends', movie.id)"
-                            class="hover:text-white mr-3"
-                            :class="{
-                                'text-indigo-400': route().current(
-                                    'movies.reviews.friends',
-                                    movie.id
-                                ),
-                            }"
-                            >Friends</a
-                        >
-                    </div>
-                </div>
+                <reviews-navbar :movie="movie"></reviews-navbar>
 
                 <review-card
                     v-for="review in reviews"
@@ -65,6 +27,7 @@ import AppLayout from "@/Layouts/AppLayout";
 import ReviewCard from "@/Components/ReviewCard";
 import BasePagination from "@/Components/BasePagination";
 import MovieDetailsCard from "@/Components/MovieDetailsCard";
+import ReviewsNavbar from "@/Components/ReviewsNavbar";
 
 export default {
     components: {
@@ -72,6 +35,7 @@ export default {
         ReviewCard,
         BasePagination,
         MovieDetailsCard,
+        ReviewsNavbar
     },
 
     props: {
