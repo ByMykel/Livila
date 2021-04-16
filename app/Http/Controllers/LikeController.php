@@ -19,7 +19,9 @@ class LikeController extends Controller
         $reviewsId = DB::table('likes_reviews')->where('user_id', $user->id)->latest()->get()->pluck('review_id')->take(4);
         $listsId = DB::table('likes_lists')->where('user_id', $user->id)->latest()->get()->pluck('list_id')->take(4);
 
-        $reviews = Review::whereIn('id', $reviewsId)->with('user')->withCount('likes')->latest()->get();
+        $reviews = Review::whereIn('id', $reviewsId)->with('user')->withCount('likes')->withCount('comments')->withcount(['likes as like' => function ($q) {
+            return $q->where('user_id', Auth::id());
+        }])->latest()->get();
         $lists = ListMovie::whereIn('id', $listsId)->with('user')->withCount('likes')->latest()->get();
         $movies = [];
 
@@ -145,7 +147,9 @@ class LikeController extends Controller
         $ids = array_map(function ($reviews) {
             return $reviews->review_id;
         }, $reviewsId->items());
-        $reviews = Review::whereIn('id', $ids)->with('user')->withCount('likes')->latest()->get();
+        $reviews = Review::whereIn('id', $ids)->with('user')->withCount('likes')->withCount('comments')->withcount(['likes as like' => function ($q) {
+            return $q->where('user_id', Auth::id());
+        }])->latest()->get();
 
         foreach ($reviews as $index => $review) {
             $response = Http::get('https://api.themoviedb.org/3/movie/' . $review->movie_id, [

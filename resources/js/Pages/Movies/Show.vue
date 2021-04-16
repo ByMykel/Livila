@@ -23,6 +23,7 @@
                 <review-form :movie="movie" :review="myReview" />
 
                 <div
+                    v-if="friendsReviews.length > 0"
                     class="border-b border-gray-600 mt-5 mb-2 text-white flex px-1"
                 >
                     <a
@@ -39,6 +40,7 @@
                 />
 
                 <div
+                    v-if="popularReviews.length > 0"
                     class="border-b border-gray-600 mt-5 mb-2 text-white flex px-1"
                 >
                     <a
@@ -55,6 +57,7 @@
                 />
 
                 <div
+                    v-if="recentReviews.length > 0"
                     class="border-b border-gray-600 mt-5 mb-2 text-white flex px-1"
                 >
                     <a

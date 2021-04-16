@@ -66,6 +66,7 @@
                     </a>
                     <span class="font-medium">{{ review.user.username }}</span>
                 </p>
+
                 <p class="text-xs text-gray-500">{{ review.updated_at }}</p>
             </div>
         </div>
@@ -90,7 +91,42 @@
             <p class="text-gray-300 break-words">{{ review.review }}</p>
         </div>
 
-        <div>{{ review.likes_count }} likes</div>
+        <div class="flex text-sm">
+            <div class="flex mr-5 cursor-pointer" @click="like()">
+                <svg
+                    class="w-5 h-5 text-gray-400 hover:text-red-400"
+                    :class="{ 'text-red-500 hover:text-red-400': review.like }"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                        clip-rule="evenodd"
+                    ></path>
+                </svg>
+
+                <span class="ml-1">{{ review.likes_count }}</span>
+            </div>
+
+            <div class="flex">
+                <svg
+                    class="w-5 h-5 text-gray-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z"
+                        clip-rule="evenodd"
+                    ></path>
+                </svg>
+
+                <span class="ml-1">{{ review.comments_count }}</span>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -123,6 +159,21 @@ export default {
         },
     },
 
-    methods: {},
+    methods: {
+        like() {
+            this.$inertia.post(
+                route("movies.reviews.like", [
+                    this.review.movie,
+                    this.review.id,
+                ]),
+                {},
+                {
+                    preserveState: false,
+                    preserveScroll: true,
+                    resetOnSuccess: false,
+                }
+            );
+        },
+    },
 };
 </script>

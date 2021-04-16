@@ -16,7 +16,9 @@ class ReviewController extends Controller
 {
     public function index($id)
     {
-        $reviewsId = Review::where('movie_id', $id)->with('user')->withCount('likes')->orderBy('updated_at', 'desc')->paginate(8);
+        $reviewsId = Review::where('movie_id', $id)->with('user')->withCount('likes')->withCount('comments')->withcount(['likes as like' => function ($q) {
+            return $q->where('user_id', Auth::id());
+        }])->orderBy('updated_at', 'desc')->paginate(8);
         $reviews = $reviewsId->items();
 
         $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
@@ -47,7 +49,9 @@ class ReviewController extends Controller
 
     public function popular($id)
     {
-        $reviewsId = Review::where('movie_id', $id)->with('user')->withCount('likes')->orderBy('likes_count', 'desc')->paginate(8);
+        $reviewsId = Review::where('movie_id', $id)->with('user')->withCount('likes')->withCount('comments')->withcount(['likes as like' => function ($q) {
+            return $q->where('user_id', Auth::id());
+        }])->orderBy('likes_count', 'desc')->paginate(8);
         $reviews = $reviewsId->items();
 
         $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
@@ -78,7 +82,9 @@ class ReviewController extends Controller
 
     public function friends($id)
     {
-        $reviewsId = Review::whereIn('user_id', Auth::user()->following()->get()->pluck('id'))->where('movie_id', $id)->with('user')->withCount('likes')->orderBy('updated_at', 'desc')->paginate(8);
+        $reviewsId = Review::whereIn('user_id', Auth::user()->following()->get()->pluck('id'))->where('movie_id', $id)->with('user')->withCount('likes')->withCount('comments')->withcount(['likes as like' => function ($q) {
+            return $q->where('user_id', Auth::id());
+        }])->orderBy('updated_at', 'desc')->paginate(8);
         $reviews = $reviewsId->items();
 
         $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
@@ -135,7 +141,9 @@ class ReviewController extends Controller
         ]);
 
         if ($response->ok()) {
-            $review = Review::where('id', $review->id)->with('user')->get();
+            $review = Review::where('id', $review->id)->with('user')->withCount('likes')->withCount('comments')->withcount(['likes as like' => function ($q) {
+                return $q->where('user_id', Auth::id());
+            }])->get();
             $review[0]['movie'] = $response->json();
         } else {
             dd(404);
@@ -171,16 +179,16 @@ class ReviewController extends Controller
         return redirect()->back();
     }
 
-    public function like($id)
+    public function like($id, Review $review)
     {
-        $review = DB::table('likes_reviews')->where('user_id', Auth::user()->id)->where('review_id', $id);
+        $q = DB::table('likes_reviews')->where('user_id', Auth::user()->id)->where('review_id', $review->id);
 
-        if ($review->first()) {
-            $review->delete();
+        if ($q->first()) {
+            $q->delete();
         } else {
             DB::table('likes_reviews')->insert([
                 'user_id' => Auth::user()->id,
-                'review_id' => $id,
+                'review_id' => $review->id,
                 'created_at' => NOW(),
                 'updated_at' => NOW(),
             ]);
@@ -191,7 +199,9 @@ class ReviewController extends Controller
 
     public function reviews(User $user)
     {
-        $reviewsId = Review::where('user_id', $user->id)->with('user')->withCount('likes')->orderBy('updated_at', 'desc')->paginate(8);
+        $reviewsId = Review::where('user_id', $user->id)->with('user')->withCount('likes')->withCount('comments')->withcount(['likes as like' => function ($q) {
+            return $q->where('user_id', Auth::id());
+        }])->orderBy('updated_at', 'desc')->paginate(8);
         $reviews = $reviewsId->items();
 
         foreach ($reviews as $index => $review) {

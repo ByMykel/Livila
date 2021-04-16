@@ -68,9 +68,15 @@ class MovieController extends Controller
         $friendsId = Auth::user()->following()->get()->pluck('id');
 
         $myReview = Review::where('user_id', Auth::user()->id)->where('movie_id', $id)->get();
-        $friendsReviews = Review::whereIn('user_id', $friendsId)->where('movie_id', $id)->with('user')->withCount('likes')->latest()->take(4)->get();
-        $popularReviews = Review::where('movie_id', $id)->with('user')->withCount('likes')->orderBy('likes_count', 'desc')->take(4)->get();
-        $recentReviews = Review::where('movie_id', $id)->with('user')->withCount('likes')->orderBy('updated_at', 'desc')->take(4)->get();
+        $friendsReviews = Review::whereIn('user_id', $friendsId)->where('movie_id', $id)->with('user')->withCount('likes')->withCount('comments')->withcount(['likes as like' => function ($q) {
+            return $q->where('user_id', Auth::id());
+        }])->latest()->take(4)->get();
+        $popularReviews = Review::where('movie_id', $id)->with('user')->withCount('likes')->withCount('comments')->withcount(['likes as like' => function ($q) {
+            return $q->where('user_id', Auth::id());
+        }])->orderBy('likes_count', 'desc')->take(4)->get();
+        $recentReviews = Review::where('movie_id', $id)->with('user')->withCount('likes')->withCount('comments')->withcount(['likes as like' => function ($q) {
+            return $q->where('user_id', Auth::id());
+        }])->orderBy('updated_at', 'desc')->take(4)->get();
 
         $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
             'api_key' => Config::get('services.tmdb.key'),
