@@ -1,21 +1,21 @@
 <template>
     <div>
-        <div
+        <!-- <div
             v-if="border"
             @mouseenter="(show = true), (remove = true)"
             @mouseleave="(show = false), (remove = false)"
         >
             <img
-                class="duration-100 rounded-sm border-2 hover:border-indigo-500"
+                class="rounded-sm"
                 :src="poster"
             />
-        </div>
+        </div> -->
 
         <div
-            v-else
             @mouseenter="(show = true), (remove = true)"
             @mouseleave="(show = false), (remove = false)"
             class="relative"
+            :title="movie.title"
         >
             <div
                 v-show="remove"
@@ -35,8 +35,9 @@
                     ></path>
                 </svg>
             </div>
+            
             <img
-                class="duration-100 max-h-48 object-cover shadow rounded-md hover:border-2 hover:border-indigo-500"
+                class="duration-100 max-h-48 object-cover shadow rounded-md"
                 :src="poster"
             />
         </div>
@@ -66,7 +67,7 @@ export default {
         poster() {
             if (this.movie.poster_path) {
                 return (
-                    "https://image.tmdb.org/t/p/w300" + this.movie.poster_path
+                    "https://image.tmdb.org/t/p/w780" + this.movie.poster_path
                 );
             }
 

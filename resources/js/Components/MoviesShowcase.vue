@@ -1,7 +1,7 @@
 <template>
     <div
         v-if="all"
-        class="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2"
+        class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2"
     >
         <div v-for="movie in movies" :key="movie.id">
             <movie-image :movie="movie" :border="false" />
@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <div class="hidden md:grid grid-flow-col gap-2">
+        <div class="hidden md:grid grid-cols-8 gap-2">
             <div v-for="movie in movies.slice(0, 8)" :key="movie.id">
                 <movie-image :movie="movie" />
             </div>

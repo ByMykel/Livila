@@ -1,23 +1,32 @@
 <template>
-    <div class="mb-2" @mouseenter="show = true" @mouseleave="show = false">
-        <p v-if="!border" :title="movie.title" class="truncate text-white text-sm">
-            {{ movie.title }}
-        </p>
+    <div class="mb-1 pb-4 flex flex-col justify-between h-full">
+        <div
+            class="relative"
+            @mouseenter="show = true"
+            @mouseleave="show = false"
+        >
+            <transition
+                enter-active-class="transition ease-out duration-150"
+                enter-from-class="transform opacity-0 scale-105"
+                enter-to-class="transform opacity-100 scale-100"
+                leave-active-class="transition ease-in duration-100"
+                leave-from-class="transform opacity-100"
+                leave-to-class="transform opacity-0"
+            >
+                <a
+                    v-show="show || movie.watched"
+                    :href="route('movies.show', movie.id)"
+                    class="absolute w-full h-full cursor-pointer bg-black bg-opacity-70"
+                    :class="[
+                        border ? 'rounded-sm' : 'rounded',
+                        show ? 'border-2 border-indigo-500' : '',
+                    ]"
+                ></a>
+            </transition>
 
-        <div class="relative">
-            <div
-                v-show="show || movie.watched"
-                class="absolute w-full h-full cursor-pointer bg-black bg-opacity-50"
-                :class="[
-                    border ? 'rounded-sm' : 'rounded-md',
-                    show ? 'border border-indigo-500' : '',
-                ]"
-                @click="visit()"
-            ></div>
-
-            <button v-show="show" class="absolute left-0.5" @click="like()">
+            <button v-show="show" class="absolute left-1 top-1" @click="like()">
                 <svg
-                    class="w-5 h-5 hover:text-blue-500 text-gray-200"
+                    class="hidden sm:block w-5 h-5 hover:text-blue-500 text-gray-100"
                     :class="[
                         movie.liked
                             ? 'text-red-500'
@@ -35,9 +44,13 @@
                 </svg>
             </button>
 
-            <button v-show="show" class="absolute right-0.5" @click="watch()">
+            <button
+                v-show="show"
+                class="absolute right-1 top-1"
+                @click="watch()"
+            >
                 <svg
-                    class="w-5 h-5 hover:text-blue-500 text-gray-200"
+                    class="hidden sm:block w-5 h-5 hover:text-blue-500 text-gray-100"
                     :class="[
                         movie.watched
                             ? 'text-green-500'
@@ -58,7 +71,20 @@
 
             <img v-if="border" class="rounded-sm shadow" :src="poster" />
 
-            <img v-else class="max-h-48 shadow rounded-md" :src="poster" />
+            <img v-else class="max-h-48 w-full shadow rounded" :src="poster" />
+        </div>
+
+        <div>
+            <p
+                :title="movie.title"
+                class="truncate text-white text-sm font-semibold"
+            >
+                {{ movie.title }}
+            </p>
+
+            <p :title="movie.title" class="truncate text-gray-400 text-xs">
+                {{ year }}
+            </p>
         </div>
     </div>
 </template>
@@ -85,19 +111,19 @@ export default {
         poster() {
             if (this.movie.poster_path) {
                 return (
-                    "https://image.tmdb.org/t/p/w780" + this.movie.poster_path
+                    "https://image.tmdb.org/t/p/w500" + this.movie.poster_path
                 );
             }
 
             return "/images/default_poster_path.png";
         },
+
+        year() {
+            return new Date(this.movie.release_date).getFullYear();
+        },
     },
 
     methods: {
-        visit() {
-            this.$inertia.visit(route("movies.show", this.movie.id));
-        },
-
         like() {
             this.$inertia.post(
                 route("movies.like", this.movie.id),
