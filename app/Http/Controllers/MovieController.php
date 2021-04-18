@@ -185,7 +185,7 @@ class MovieController extends Controller
         $friendsId = Auth::user()->following()->get()->pluck('id');
         $moviesId = DB::table('movies_watched')->whereIn('user_id', $friendsId)->latest()->get()->pluck('movie_id');
 
-        $justReviewed = Review::orderBy('updated_at', 'desc')->take(8)->get();
+        $justReviewed = Review::orderBy('updated_at', 'desc')->take(10)->get();
         $friendsReviews = Review::whereIn('user_id', $friendsId)->with('user')->withCount('likes')->latest()->take(4)->get();
         $friendsWatched = [];
 
@@ -227,7 +227,7 @@ class MovieController extends Controller
         }
 
         return Inertia::render('Home', [
-            'followActiveMembers' => ((count($friendsWatched) >= 8) && (count($friendsReviews) >= 4)),
+            'followActiveMembers' => ((count($friendsWatched) >= 10) && (count($friendsReviews) >= 4)),
             'justReviewed' => $justReviewed,
             'friendsReviews' => $friendsReviews,
             'friendsWatched' => $friendsWatched

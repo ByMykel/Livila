@@ -78,6 +78,23 @@ class ListMovieController extends Controller
             ]))->json();
         }
 
+        foreach ($movies as $index => $movie) {
+            $likedMovie = DB::table('likes_movies')->where('user_id', Auth::user()->id)->where('movie_id', $movie['id'])->count() === 1;
+            $watchedMovie = DB::table('movies_watched')->where('user_id', Auth::user()->id)->where('movie_id', $movie['id'])->count() === 1;
+
+            if ($likedMovie) {
+                $movies[$index]['liked'] = true;
+            } else {
+                $movies[$index]['liked'] = false;
+            }
+
+            if ($watchedMovie) {
+                $movies[$index]['watched'] = true;
+            } else {
+                $movies[$index]['watched'] = false;
+            }
+        }
+
         $list = ListMovie::where('id', $listMovie->id)->with('user')->withCount('likes')->get();
 
         return Inertia::render('Lists/Show', [

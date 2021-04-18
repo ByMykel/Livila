@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="h-full flex flex-col justify-between mb-1 pb-2">
         <a
             @mouseenter="show = true"
             @mouseleave="show = false"
@@ -11,6 +11,19 @@
                 :title="review.movie.title"
             />
         </a>
+
+        <div>
+            <p
+                :title="review.movie.title"
+                class="truncate text-white text-sm font-semibold"
+            >
+                {{ review.movie.title }}
+            </p>
+
+            <p :title="review.movie.title" class="truncate text-gray-400 text-xs">
+                {{ year }}
+            </p>
+        </div>
     </div>
 </template>
 
@@ -39,6 +52,10 @@ export default {
 
             return "/images/default_poster_path.png";
         },
+
+        year() {
+            return new Date(this.review.movie.release_date).getFullYear();
+        }
     },
 };
 </script>

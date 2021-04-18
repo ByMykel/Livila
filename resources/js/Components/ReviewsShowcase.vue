@@ -1,13 +1,13 @@
 <template>
     <div class="my-2">
-        <div class="md:hidden grid grid-cols-5 gap-2">
-            <div v-for="review in reviews.slice(0, 5)" :key="review.id">
+        <div class="md:hidden grid grid-cols-6 gap-2">
+            <div v-for="review in reviews.slice(0, 6)" :key="review.id">
                 <review-image :review="review" />
             </div>
         </div>
 
-        <div class="hidden md:grid grid-flow-col gap-2">
-            <div v-for="review in reviews.slice(0, 8)" :key="review.id">
+        <div class="hidden md:grid grid-cols-10 gap-2">
+            <div v-for="review in reviews.slice(0, 10)" :key="review.id">
                 <review-image :review="review" />
             </div>
         </div>

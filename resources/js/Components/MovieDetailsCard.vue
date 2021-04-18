@@ -16,7 +16,7 @@
                     />
                 </div>
 
-                <div class="flex flex-col lg:flex-row flex-1 z-10">
+                <div class="flex flex-col lg:flex-row flex-1 relative z-0">
                     <div class="w-full p-1">
                         <p
                             class="text-center md:text-left mt-1 text-3xl leading-8 font-extrabold tracking-tight text-indigo-500"
