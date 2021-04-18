@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\ListMovie;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -56,11 +57,13 @@ class ListMovieController extends Controller
             'visibility' => ['required', 'boolean']
         ]);
 
-        Auth::user()->listsMovies()->create([
+        $list = Auth::user()->listsMovies()->create([
             'name' => $request->name,
             'description' => $request->description,
             'visibility' => $request->visibility
         ]);
+
+        Activity::create(['type' => 'createList', 'user_id' => Auth::user()->id, 'data' => $list]);
 
         return redirect()->back();
     }
@@ -144,6 +147,8 @@ class ListMovieController extends Controller
 
     public function destroy(ListMovie $listMovie)
     {
+        DB::table('activities')->where('type', 'createList')->where('user_id', Auth::user()->id)->where('data->id',  $listMovie->id)->delete();
+
         $listMovie->delete();
 
         return redirect()->back();
@@ -192,6 +197,8 @@ class ListMovieController extends Controller
 
         if ($movie->first()) {
             $movie->delete();
+
+            DB::table('activities')->where('type', 'addList')->where('user_id', Auth::user()->id)->where('data->id',  $listMovie->id)->delete();
         } else {
             DB::table('lists_movies')->insert([
                 'list_id' => $listMovie->id,
@@ -199,6 +206,14 @@ class ListMovieController extends Controller
                 'created_at' => NOW(),
                 'updated_at' => NOW(),
             ]);
+
+            $data = $listMovie;
+            $data['movie'] = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]))->json();;
+
+            Activity::create(['type' => 'addList', 'user_id' => Auth::user()->id, 'data' => $data]);
         }
 
         return redirect()->back();

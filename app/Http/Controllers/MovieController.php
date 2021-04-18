@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\ListMovie;
 use App\Models\Review;
 use App\Models\User;
@@ -150,6 +151,8 @@ class MovieController extends Controller
 
         if ($movie->first()) {
             $movie->delete();
+
+            DB::table('activities')->where('type', 'likeMovie')->where('user_id', '=', Auth::user()->id)->where('data->id', '=', $id)->delete();
         } else {
             DB::table('likes_movies')->insert([
                 'user_id' => Auth::user()->id,
@@ -157,6 +160,13 @@ class MovieController extends Controller
                 'created_at' => NOW(),
                 'updated_at' => NOW(),
             ]);
+
+            $data = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]))->json();
+
+            Activity::create(['type' => 'likeMovie', 'user_id' => Auth::user()->id, 'data' => $data]);
         }
 
         return redirect()->back();
@@ -168,6 +178,8 @@ class MovieController extends Controller
 
         if ($movie->first()) {
             $movie->delete();
+
+            DB::table('activities')->where('type', 'watchMovie')->where('user_id', Auth::user()->id)->where('data->id', $id)->delete();
         } else {
             DB::table('movies_watched')->insert([
                 'user_id' => Auth::user()->id,
@@ -175,63 +187,16 @@ class MovieController extends Controller
                 'created_at' => NOW(),
                 'updated_at' => NOW(),
             ]);
+
+            $data = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]))->json();
+
+            Activity::create(['type' => 'watchMovie', 'user_id' => Auth::user()->id, 'data' => $data]);
         }
 
         return redirect()->back();
-    }
-
-    public function home()
-    {
-        $friendsId = Auth::user()->following()->get()->pluck('id');
-        $moviesId = DB::table('movies_watched')->whereIn('user_id', $friendsId)->latest()->get()->pluck('movie_id');
-
-        $justReviewed = Review::orderBy('updated_at', 'desc')->take(10)->get();
-        $friendsReviews = Review::whereIn('user_id', $friendsId)->with('user')->withCount('likes')->latest()->take(4)->get();
-        $friendsWatched = [];
-
-        foreach ($justReviewed as $index => $movie) {
-            $response = Http::get('https://api.themoviedb.org/3/movie/' . $movie->movie_id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
-            ]);
-
-            if ($response->ok()) {
-                $justReviewed[$index]['movie'] = $response->json();
-            } else {
-                unset($justReviewed[$index]);
-            }
-        }
-
-        foreach ($friendsReviews as $index => $movie) {
-            $response = Http::get('https://api.themoviedb.org/3/movie/' . $movie->movie_id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
-            ]);
-
-            if ($response->ok()) {
-                $friendsReviews[$index]['movie'] = $response->json();
-            } else {
-                unset($friendsReviews[$index]);
-            }
-        }
-
-        foreach ($moviesId as $id) {
-            $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
-            ]);
-
-            if ($response->ok()) {
-                $friendsWatched[] = $response->json();
-            }
-        }
-
-        return Inertia::render('Home', [
-            'followActiveMembers' => ((count($friendsWatched) >= 10) && (count($friendsReviews) >= 4)),
-            'justReviewed' => $justReviewed,
-            'friendsReviews' => $friendsReviews,
-            'friendsWatched' => $friendsWatched
-        ]);
     }
 
     public function watched(User $user)

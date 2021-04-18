@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\Comment;
 use App\Models\Review;
 use App\Models\User;
@@ -128,6 +129,15 @@ class ReviewController extends Controller
             'spoiler' => $request->spoiler
         ]);
 
+        $data = $review;
+        $data['movie'] = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+            'api_key' => Config::get('services.tmdb.key'),
+            'language' => 'es-ES'
+        ]))->json();
+        
+
+        Activity::create(['type' => 'createReview', 'user_id' => Auth::user()->id, 'data' => $data]);
+
         return redirect()->back();
     }
 
@@ -174,6 +184,8 @@ class ReviewController extends Controller
 
     public function destroy($id, Review $review)
     {
+        DB::table('activities')->where('type', 'createReview')->where('user_id', Auth::user()->id)->where('data->movie_id',  $id)->delete();
+        
         $review->delete();
 
         return redirect()->back();
@@ -185,6 +197,8 @@ class ReviewController extends Controller
 
         if ($q->first()) {
             $q->delete();
+
+            DB::table('activities')->where('type', 'likeReview')->where('user_id', Auth::user()->id)->where('data->user_id',  $review->user_id)->where('data->movie_id',  $review->movie_id)->delete();
         } else {
             DB::table('likes_reviews')->insert([
                 'user_id' => Auth::user()->id,
@@ -192,6 +206,15 @@ class ReviewController extends Controller
                 'created_at' => NOW(),
                 'updated_at' => NOW(),
             ]);
+
+            $data = $review;
+            $data['user'] = User::find($review->user_id);
+            $data['movie'] = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+                'api_key' => Config::get('services.tmdb.key'),
+                'language' => 'es-ES'
+            ]))->json();
+
+            Activity::create(['type' => 'likeReview', 'user_id' => Auth::user()->id, 'data' => $data]);
         }
 
         return redirect()->back();

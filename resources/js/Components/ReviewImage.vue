@@ -6,7 +6,7 @@
             :href="route('movies.reviews.show', [review.movie.id, review.id])"
         >
             <img
-                class="duration-100 rounded-sm border-2 hover:border-indigo-500"
+                class="shadow rounded hover:border hover:border-indigo-400"
                 :src="poster"
                 :title="review.movie.title"
             />

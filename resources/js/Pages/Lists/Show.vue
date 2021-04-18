@@ -71,11 +71,13 @@ export default {
         },
 
         progressWatched() {
-            return parseInt(
-                (parseInt(this.watchedMoviesCount) /
-                    parseInt(this.movies.length)) *
-                    100
-            );
+            return this.movies.length
+                ? parseInt(
+                      (parseInt(this.watchedMoviesCount) /
+                          parseInt(this.movies.length)) *
+                          100
+                  )
+                : 0;
         },
     },
 };

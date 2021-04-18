@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\ListMovie;
 use App\Models\Review;
 use App\Models\User;
@@ -44,8 +45,12 @@ class UserController extends Controller
     {
         if (Auth::user()->following()->find($user)) {
             Auth::user()->following()->detach($user);
+
+            DB::table('activities')->where('type', 'followUser')->where('user_id', Auth::user()->id)->where('data->id',  $user->id)->delete();
         } else {
             Auth::user()->following()->attach($user);
+
+            Activity::create(['type' => 'followUser', 'user_id' => Auth::user()->id, 'data' => $user]);
         }
 
         return redirect()->back();

@@ -8,11 +8,16 @@
                     The social network for film lovers
                 </p>
                 <p class="mt-4 max-w-3xl text-xl text-gray-400 lg:mx-auto">
-                    Sign in or register to get started. We’re your home for
-                    logging, rating and reviewing films, your watchlist of
-                    titles to see, your source for lists and inspiration, a cast
-                    and crew database and an activity stream of passionate film
-                    criticism, discussion and discovery.
+                    <a class="text-gray-200 hover:text-indigo-400" :href="route('login')">Sign in</a>
+                    or
+                    <a class="text-gray-200 hover:text-indigo-400" :href="route('register')"
+                        >register</a
+                    >
+                    to get started. We’re your home for logging, rating and
+                    reviewing films, your watchlist of titles to see, your
+                    source for lists and inspiration, a cast and crew database
+                    and an activity stream of passionate film criticism,
+                    discussion and discovery.
                 </p>
             </div>
 

@@ -6,8 +6,8 @@
             </div>
         </div>
 
-        <div class="hidden md:grid grid-cols-10 gap-2">
-            <div v-for="review in reviews.slice(0, 10)" :key="review.id">
+        <div class="hidden md:grid grid-cols-8 gap-2">
+            <div v-for="review in reviews.slice(0, 8)" :key="review.id">
                 <review-image :review="review" />
             </div>
         </div>
