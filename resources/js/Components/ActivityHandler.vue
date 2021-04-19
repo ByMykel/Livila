@@ -1,26 +1,18 @@
 <template>
-    <div
+    <activity-watch-movie-card
         v-if="activity.type == 'watchMovie'"
-        class="bg-gray-800 rounded-md shadow p-2 text-white mb-2"
-    >
-        {{ activity.user.username }} watched {{ activity.data.title }}
-    </div>
+        :activity="activity"
+    ></activity-watch-movie-card>
 
-    <div
+    <activity-like-movie-card
         v-else-if="activity.type == 'likeMovie'"
-        class="bg-gray-800 rounded-md shadow p-2 text-white mb-2"
-    >
-        {{ activity.user.username }} liked {{ activity.data.title }}
-    </div>
+        :activity="activity"
+    ></activity-like-movie-card>
 
-    <div
+    <activity-like-review-card
         v-else-if="activity.type == 'likeReview'"
-        class="bg-gray-800 rounded-md shadow p-2 text-white mb-2"
-    >
-        {{ activity.user.username }} liked
-        {{ activity.data.user.username }} review of
-        {{ activity.data.movie.title }}
-    </div>
+        :activity="activity"
+    ></activity-like-review-card>
 
     <div
         v-else-if="activity.type == 'likeList'"
@@ -30,12 +22,10 @@
         {{ activity.data.user.username }} list of {{ activity.name }}
     </div>
 
-    <div
+    <activity-create-review-card
         v-else-if="activity.type == 'createReview'"
-        class="bg-gray-800 rounded-md shadow p-2 text-white mb-2"
-    >
-        {{ activity.user.username }} reviewed {{ activity.data.movie.title }}
-    </div>
+        :activity="activity"
+    ></activity-create-review-card>
 
     <div
         v-else-if="activity.type == 'commentReview'"
@@ -69,7 +59,21 @@
 </template>
 
 <script>
+import ActivityWatchMovieCard from "@/Components/ActivityWatchMovieCard";
+import ActivityLikeMovieCard from "@/Components/ActivityLikeMovieCard";
+import ActivityLikeReviewCard from "@/Components/ActivityLikeReviewCard";
+
+import ActivityCreateReviewCard from "@/Components/ActivityCreateReviewCard";
+
 export default {
+    components: {
+        ActivityWatchMovieCard,
+        ActivityLikeMovieCard,
+        ActivityLikeReviewCard,
+
+        ActivityCreateReviewCard,
+    },
+
     props: {
         activity: Object,
     },

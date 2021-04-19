@@ -11,7 +11,7 @@
                 <div class="md:mr-2 flex-initial z-10">
                     <img
                         class="shadow rounded-md mx-auto"
-                        :class="{ 'w-28': reviewPage }"
+                        :class="[reviewPage ? 'w-28' : 'w-72']"
                         :src="poster"
                     />
                 </div>
@@ -65,7 +65,7 @@ export default {
         poster() {
             if (this.movie.poster_path) {
                 return (
-                    "https://image.tmdb.org/t/p/w300" + this.movie.poster_path
+                    "https://image.tmdb.org/t/p/w780" + this.movie.poster_path
                 );
             }
 

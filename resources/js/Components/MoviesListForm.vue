@@ -231,7 +231,6 @@ export default {
 
         cancel() {
             this.$inertia.visit(
-                // route("user.likes.lists", this.$page.props.auth.username)
                 route("lists.show", this.list.id)
             );
         },
