@@ -223,11 +223,13 @@ export default {
                 ]),
                 this.form,
                 {
-                    preserveState: false,
+                    preserveState: true,
                     preserveScroll: true,
                     resetOnSuccess: false,
                 }
             );
+
+            this.editingReview = false;
         },
 
         createReview() {
@@ -235,11 +237,13 @@ export default {
                 route("movies.reviews.store", this.movie.id),
                 this.form,
                 {
-                    preserveState: false,
+                    preserveState: true,
                     preserveScroll: true,
                     resetOnSuccess: false,
                 }
             );
+
+            this.editingReview = false;
         },
 
         destroyReview() {

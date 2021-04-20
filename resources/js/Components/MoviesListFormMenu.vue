@@ -136,7 +136,7 @@
                     <div
                         v-for="list in filteredLists"
                         :key="list.id"
-                        class="hover:bg-gray-800 rounded mb-1 px-2 py-0.5 flex justify-between cursor-pointer"
+                        class="hover:bg-gray-800 text-white rounded mb-1 px-2 py-0.5 flex justify-between cursor-pointer"
                         @click="
                             (list.contains_movie = !list.contains_movie),
                                 movieList(list)

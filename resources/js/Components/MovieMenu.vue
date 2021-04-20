@@ -1,10 +1,10 @@
 <template>
-    <div class="bg-gray-900 rounded-md shadow relative text-white p-2 mt-4">
-        <div class="bg-gray-800 rounded-md flex justify-around p-2">
+    <div class="bg-gray-900 rounded-md shadow relative p-2 mt-4">
+        <div class="bg-gray-800 rounded-md flex justify-around p-2 text-white">
             <button @click="like()">
                 <svg
-                    class="w-6 h-6 hover:text-blue-500"
-                    :class="{ 'text-red-500 hover:text-blue-500': liked }"
+                    class="w-6 h-6 hover:text-red-400"
+                    :class="{ 'text-red-500': liked }"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -19,7 +19,7 @@
 
             <button @click="watch()">
                 <svg
-                    class="w-6 h-6 hover:text-blue-500"
+                    class="w-6 h-6 hover:text-green-400"
                     :class="{ 'text-green-500': watched }"
                     fill="currentColor"
                     viewBox="0 0 20 20"
@@ -34,10 +34,10 @@
                 </svg>
             </button>
 
-            <button @click="addMovieToList = !addMovieToList">
+            <button @click="(showReview = false), (showList = !showList)">
                 <svg
-                    class="w-6 h-6 hover:text-blue-500"
-                    :class="{ 'text-yellow-500': addMovieToList }"
+                    class="w-6 h-6 hover:text-yellow-400"
+                    :class="{ 'text-yellow-500': showList }"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -47,23 +47,45 @@
                     ></path>
                 </svg>
             </button>
+
+            <button @click="(showList = false), (showReview = !showReview)">
+                <svg
+                    class="w-6 h-6 hover:text-blue-400"
+                    :class="{ 'text-blue-500': showReview }"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z"
+                        clip-rule="evenodd"
+                    ></path>
+                </svg>
+            </button>
         </div>
 
-        <div v-show="addMovieToList">
+        <div v-show="showList">
             <movies-list-form-menu
                 :lists="lists"
                 :movie="movie"
             ></movies-list-form-menu>
+        </div>
+
+        <div v-show="showReview">
+            <review-form :movie="movie" :review="review" />
         </div>
     </div>
 </template>
 
 <script>
 import MoviesListFormMenu from "@/Components/MoviesListFormMenu";
+import ReviewForm from "@/Components/ReviewForm";
 
 export default {
     components: {
         MoviesListFormMenu,
+        ReviewForm,
     },
 
     props: {
@@ -71,11 +93,13 @@ export default {
         liked: Boolean,
         watched: Boolean,
         lists: Object,
+        review: Object,
     },
 
     data() {
         return {
-            addMovieToList: false,
+            showList: false,
+            showReview: false,
         };
     },
 

@@ -9,6 +9,7 @@
                     :liked="liked"
                     :watched="watched"
                     :lists="lists"
+                    :review="myReview"
                 />
 
                 <movie-video :videos="movie.videos.results" />
@@ -19,8 +20,6 @@
                 >
                     <cast-showcase :cast="movie.credits.cast" :all="false" />
                 </description-card>
-
-                <review-form :movie="movie" :review="myReview" />
 
                 <div
                     v-if="friendsReviews.length > 0"
@@ -81,7 +80,6 @@
 import AppLayout from "@/Layouts/AppLayout";
 import DescriptionCard from "@/Components/DescriptionCard";
 import CastShowcase from "@/Components/CastShowcase";
-import ReviewForm from "@/Components/ReviewForm";
 import ReviewCard from "@/Components/ReviewCard";
 import MovieMenu from "@/Components/MovieMenu";
 import MovieDetailsCard from "@/Components/MovieDetailsCard";
@@ -92,7 +90,6 @@ export default {
         AppLayout,
         DescriptionCard,
         CastShowcase,
-        ReviewForm,
         ReviewCard,
         MovieMenu,
         MovieDetailsCard,

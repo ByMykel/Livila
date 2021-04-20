@@ -4,11 +4,11 @@
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <welcome-card v-if="!$page.props.auth"></welcome-card>
 
-                <activity-base
+                <activity-stream
                     v-else
                     :followActiveMembers="followActiveMembers"
                     :activities="activities"
-                ></activity-base>
+                ></activity-stream>
             </div>
         </div>
     </app-layout>
@@ -18,14 +18,14 @@
 import AppLayout from "@/Layouts/AppLayout";
 import ReviewCard from "@/Components/ReviewCard";
 import WelcomeCard from "@/Components/WelcomeCard";
-import ActivityBase from "@/Components/ActivityBase";
+import ActivityStream from "@/Components/ActivityStream";
 
 export default {
     components: {
         AppLayout,
         ReviewCard,
         WelcomeCard,
-        ActivityBase,
+        ActivityStream,
     },
 
     props: {
