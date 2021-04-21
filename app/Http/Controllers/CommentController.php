@@ -8,7 +8,9 @@ use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class CommentController extends Controller
 {
@@ -27,6 +29,10 @@ class CommentController extends Controller
         $data = $comment;
         $data['review'] = $review;
         $data['user'] = User::find($review->user_id);
+        $data['movie'] = (Http::get('https://api.themoviedb.org/3/movie/' . $review->movie_id, [
+            'api_key' => Config::get('services.tmdb.key'),
+            'language' => 'es-ES'
+        ]))->json();
 
         Activity::create(['type' => 'commentReview', 'user_id' => Auth::user()->id, 'data' => $data]);
 

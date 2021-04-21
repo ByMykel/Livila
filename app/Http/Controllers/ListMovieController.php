@@ -98,7 +98,11 @@ class ListMovieController extends Controller
             }
         }
 
-        $list = ListMovie::where('id', $listMovie->id)->with('user')->withCount('likes')->get();
+        $list = ListMovie::where('id', $listMovie->id)->with('user')->withCount('likes')
+            ->withcount(['likes as like' => function ($q) {
+                return $q->where('user_id', Auth::id());
+            }])
+            ->get();
 
         return Inertia::render('Lists/Show', [
             'list' => $list[0],
@@ -214,6 +218,31 @@ class ListMovieController extends Controller
             ]))->json();;
 
             Activity::create(['type' => 'addList', 'user_id' => Auth::user()->id, 'data' => $data]);
+        }
+
+        return redirect()->back();
+    }
+
+    public function like(ListMovie $listMovie)
+    {
+        $list = DB::table('likes_lists')->where('user_id', Auth::user()->id)->where('list_id', $listMovie->id);
+
+        if ($list->first()) {
+            $list->delete();
+
+            DB::table('activities')->where('type', 'likeList')->where('user_id', Auth::user()->id)->where('data->id', $listMovie->id)->delete();
+        } else {
+            DB::table('likes_lists')->insert([
+                'user_id' => Auth::user()->id,
+                'list_id' => $listMovie->id,
+                'created_at' => NOW(),
+                'updated_at' => NOW(),
+            ]);
+
+            $data = $listMovie;
+            $data['user'] = User::find($listMovie->user_id);
+
+            Activity::create(['type' => 'likeList', 'user_id' => Auth::user()->id, 'data' => $data]);
         }
 
         return redirect()->back();

@@ -1,7 +1,8 @@
 <template>
     <div class="bg-gray-900 rounded-md shadow p-2 text-white mb-2">
         <div
-            class="flex items-center justify-between bg-gray-800 rounded-md p-1 mb-2"
+            class="flex items-center justify-between bg-gray-800 rounded-md p-1"
+            :class="{ 'mb-2' : $slots['content'] }"
         >
             <div class="flex items-center text-sm sm:text-base">
                 <slot name="icon"></slot>

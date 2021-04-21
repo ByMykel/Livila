@@ -14,64 +14,61 @@
         :activity="activity"
     ></activity-like-review-card>
 
-    <div
+    <activity-like-list-card
         v-else-if="activity.type == 'likeList'"
-        class="bg-gray-800 rounded-md shadow p-2 text-white mb-2"
-    >
-        {{ activity.user.username }} liked
-        {{ activity.data.user.username }} list of {{ activity.name }}
-    </div>
+        :activity="activity"
+    ></activity-like-list-card>
 
     <activity-create-review-card
         v-else-if="activity.type == 'createReview'"
         :activity="activity"
     ></activity-create-review-card>
 
-    <div
+    <activity-comment-review-card
         v-else-if="activity.type == 'commentReview'"
-        class="bg-gray-800 rounded-md shadow p-2 text-white mb-2"
-    >
-        {{ activity.user.username }} commented on
-        {{ activity.data.user.username }}'s review
-    </div>
+        :activity="activity"
+    ></activity-comment-review-card>
 
-    <div
+    <activity-follow-card
         v-else-if="activity.type == 'followUser'"
-        class="bg-gray-800 rounded-md shadow p-2 text-white mb-2"
-    >
-        {{ activity.user.username }} followed {{ activity.data.username }}
-    </div>
+        :activity="activity"
+    ></activity-follow-card>
 
-    <div
+    <activity-create-list-card
         v-else-if="activity.type == 'createList'"
-        class="bg-gray-800 rounded-md shadow p-2 text-white mb-2"
-    >
-        {{ activity.user.username }} created a new list {{ activity.data.name }}
-    </div>
+        :activity="activity"
+    ></activity-create-list-card>
 
-    <div
+    <activity-add-list-card
         v-else-if="activity.type == 'addList'"
-        class="bg-gray-800 rounded-md shadow p-2 text-white mb-2"
-    >
-        {{ activity.user.username }} added {{ activity.data.movie.title }} to
-        {{ activity.data.name }}
-    </div>
+        :activity="activity"
+    ></activity-add-list-card>
 </template>
 
 <script>
 import ActivityWatchMovieCard from "@/Components/ActivityWatchMovieCard";
 import ActivityLikeMovieCard from "@/Components/ActivityLikeMovieCard";
 import ActivityLikeReviewCard from "@/Components/ActivityLikeReviewCard";
+import ActivityCommentReviewCard from "@/Components/ActivityCommentReviewCard";
 
+import ActivityFollowCard from "@/Components/ActivityFollowCard";
+import ActivityLikeListCard from "@/Components/ActivityLikeListCard";
 import ActivityCreateReviewCard from "@/Components/ActivityCreateReviewCard";
+import ActivityCreateListCard from "@/Components/ActivityCreateListCard";
+import ActivityAddListCard from "@/Components/ActivityAddListCard";
 
 export default {
     components: {
         ActivityWatchMovieCard,
         ActivityLikeMovieCard,
         ActivityLikeReviewCard,
+        ActivityCommentReviewCard,
 
+        ActivityLikeListCard,
+        ActivityFollowCard,
         ActivityCreateReviewCard,
+        ActivityCreateListCard,
+        ActivityAddListCard,
     },
 
     props: {
