@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -16,10 +17,21 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        $activities = Auth::user()->activities()->with('user')->get();
+        $user = Auth::user();
+
+        $activities = Activity::whereHas('user', function ($query) use ($user) {
+            return $query->whereHas('followers', function ($q) use ($user) {
+                $q->where('follower_id', $user->id);
+            });
+        })->with('user')->get();
+
+        if (count($activities) === 0) {
+            $followActiveMembers = true;
+            $activities = Auth::user()->activities()->with('user')->get();
+        }
 
         return Inertia::render('Home', [
-            'followActiveMembers' => false,
+            'followActiveMembers' => $followActiveMembers ?? false,
             'activities' => $activities,
         ]);
     }

@@ -33,11 +33,14 @@ class UserController extends Controller
             return $q->where('follower_id', Auth::id());
         }])->get()[0];
 
+        $activities = User::find($user->id)->activities()->with('user')->get();
+
         return Inertia::render('Users/Show', [
             'user' => $user,
             'reviews' =>  $reviews,
             'lists' =>  $lists,
-            'watched' =>  $watched
+            'watched' =>  $watched,
+            'activities' => $activities
         ]);
     }
 
