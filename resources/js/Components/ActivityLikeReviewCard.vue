@@ -31,12 +31,7 @@
                 review of
                 <a
                     class="text-indigo-400 hover:text-indigo-500"
-                    :href="
-                        route('movies.reviews.show', [
-                            activity.data.movie.id,
-                            activity.data.id,
-                        ])
-                    "
+                    :href="route('movies.show', activity.data.movie.id)"
                     >{{ activity.data.movie.title }}</a
                 >
             </span>
@@ -97,10 +92,7 @@
                             <a
                                 class="hover:text-indigo-400"
                                 :href="
-                                    route('movies.reviews.show', [
-                                        activity.data.movie.id,
-                                        activity.data.id,
-                                    ])
+                                    route('movies.show', activity.data.movie.id)
                                 "
                                 >Reviewed by
                             </a>

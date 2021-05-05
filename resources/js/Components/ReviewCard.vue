@@ -54,17 +54,13 @@
 
             <div class="ml-2 text-sm">
                 <p>
+                    Reviewed by
                     <a
-                        class="hover:text-indigo-400"
-                        :href="
-                            route('movies.reviews.show', [
-                                review.movie.id,
-                                review.id,
-                            ])
-                        "
-                        >Reviewed by
+                        class="hover:text-indigo-400 font-medium"
+                        :href="route('user', review.user.username)"
+                    >
+                        {{ review.user.username }}
                     </a>
-                    <span class="font-medium">{{ review.user.username }}</span>
                 </p>
 
                 <p class="text-xs text-gray-500">{{ review.updated_at }}</p>
@@ -76,14 +72,7 @@
                 v-show="showTitle"
                 class="break-words hover:text-indigo-500 hover:underline"
             >
-                <a
-                    :href="
-                        route('movies.reviews.show', [
-                            review.movie.id,
-                            review.id,
-                        ])
-                    "
-                >
+                <a :href="route('movies.show', review.movie.id)">
                     {{ review.movie.title }}
                 </a>
             </h3>

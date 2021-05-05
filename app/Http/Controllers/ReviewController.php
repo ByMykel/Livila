@@ -141,30 +141,6 @@ class ReviewController extends Controller
         return redirect()->back();
     }
 
-    public function show($id, Review $review)
-    {
-        $comments = Comment::where('review_id', $review->id)->with('user')->latest()->get();
-
-        $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-            'api_key' => Config::get('services.tmdb.key'),
-            'language' => 'es-ES'
-        ]);
-
-        if ($response->ok()) {
-            $review = Review::where('id', $review->id)->with('user')->withCount('likes')->withCount('comments')->withcount(['likes as like' => function ($q) {
-                return $q->where('user_id', Auth::id());
-            }])->get();
-            $review[0]['movie'] = $response->json();
-        } else {
-            dd(404);
-        }
-
-        return Inertia::render('Reviews/Show', [
-            'review' => $review,
-            'comments' => $comments
-        ]);
-    }
-
     public function update($id, Review $review, Request $request)
     {
         $request->validate([

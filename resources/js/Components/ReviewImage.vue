@@ -1,9 +1,9 @@
 <template>
     <div class="h-full flex flex-col justify-between mb-1 pb-2">
         <a
+            :href="route('movies.show', review.movie.id)"
             @mouseenter="show = true"
             @mouseleave="show = false"
-            :href="route('movies.reviews.show', [review.movie.id, review.id])"
         >
             <img
                 class="shadow rounded hover:border hover:border-indigo-400"
@@ -20,7 +20,10 @@
                 {{ review.movie.title }}
             </p>
 
-            <p :title="review.movie.title" class="truncate text-gray-400 text-xs">
+            <p
+                :title="review.movie.title"
+                class="truncate text-gray-400 text-xs"
+            >
                 {{ year }}
             </p>
         </div>
@@ -55,7 +58,7 @@ export default {
 
         year() {
             return new Date(this.review.movie.release_date).getFullYear();
-        }
+        },
     },
 };
 </script>
