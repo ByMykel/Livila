@@ -77,12 +77,17 @@
         <div>
             <p
                 :title="movie.title"
+                :class="{ 'opacity-40': movie.watched }"
                 class="truncate text-white text-sm font-semibold"
             >
                 {{ movie.title }}
             </p>
 
-            <p :title="movie.title" class="truncate text-gray-400 text-xs">
+            <p
+                :title="movie.title"
+                :class="{ 'opacity-40': movie.watched }"
+                class="truncate text-gray-400 text-xs"
+            >
                 {{ year }}
             </p>
         </div>
