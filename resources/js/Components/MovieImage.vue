@@ -16,7 +16,7 @@
                 <a
                     v-show="show || movie.watched"
                     :href="route('movies.show', movie.id)"
-                    class="absolute w-full h-full cursor-pointer bg-black bg-opacity-70"
+                    class="absolute w-full h-full cursor-pointer bg-black-400 bg-opacity-70"
                     :class="[
                         border ? 'rounded-sm' : 'rounded',
                         show ? 'border-2 border-indigo-500' : '',

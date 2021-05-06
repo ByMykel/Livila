@@ -47,61 +47,51 @@
             </div>
         </div>
 
-        <div class="bg-gray-800 mt-5 p-2 rounded">
-            <div class="flex justify-around text-gray-400">
+        <div class="bg-black-300 mt-5 p-2 rounded">
+            <div class="flex justify-around text-black-100">
                 <a
                     :href="route('user', user.username)"
-                    class="hover:text-white"
-                    :class="{
-                        'text-indigo-400': route().current(
-                            'user',
-                            user.username
-                        ),
-                    }"
+                    :class="[
+                        route().current('user', user.username)
+                            ? 'text-indigo-400'
+                            : 'hover:text-white',
+                    ]"
                     >Profile</a
                 >
                 <a
                     :href="route('user.watched', user.username)"
-                    class="hover:text-white"
-                    :class="{
-                        'text-indigo-400': route().current(
-                            'user.watched',
-                            user.username
-                        ),
-                    }"
+                    :class="[
+                        route().current('user.watched', user.username)
+                            ? 'text-indigo-400'
+                            : 'hover:text-white',
+                    ]"
                     >Watched</a
                 >
                 <a
                     :href="route('user.lists', user.username)"
-                    class="hover:text-white"
-                    :class="{
-                        'text-indigo-400': route().current(
-                            'user.lists',
-                            user.username
-                        ),
-                    }"
+                    :class="[
+                        route().current('user.lists', user.username)
+                            ? 'text-indigo-400'
+                            : 'hover:text-white',
+                    ]"
                     >Lists</a
                 >
                 <a
                     :href="route('user.likes', user.username)"
-                    class="hover:text-white"
-                    :class="{
-                        'text-indigo-400': route().current(
-                            'user.likes',
-                            user.username
-                        ),
-                    }"
+                    :class="[
+                        route().current('user.likes', user.username)
+                            ? 'text-indigo-400'
+                            : 'hover:text-white',
+                    ]"
                     >Likes</a
                 >
                 <a
                     :href="route('user.reviews', user.username)"
-                    class="hover:text-white"
-                    :class="{
-                        'text-indigo-400': route().current(
-                            'user.reviews',
-                            user.username
-                        ),
-                    }"
+                    :class="[
+                        route().current('user.reviews', user.username)
+                            ? 'text-indigo-400'
+                            : 'hover:text-white',
+                    ]"
                     >Reviews</a
                 >
             </div>

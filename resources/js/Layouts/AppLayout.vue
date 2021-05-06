@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="bg-gray-800 relative z-10">
+        <nav class="bg-black-500 relative z-10 shadow">
             <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
                 <div class="relative flex items-center justify-between h-16">
                     <div
@@ -82,8 +82,8 @@
                                     class="px-3 py-2 rounded-md text-sm font-medium"
                                     :class="
                                         route().current('home')
-                                            ? 'bg-gray-900 text-white'
-                                            : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                            ? 'bg-black-300 text-white'
+                                            : 'text-gray-300 hover:bg-black-200 hover:text-white'
                                     "
                                     aria-current="page"
                                     >Home</a
@@ -94,8 +94,8 @@
                                     class="px-3 py-2 rounded-md text-sm font-medium"
                                     :class="
                                         route().current('movies')
-                                            ? 'bg-gray-900 text-white'
-                                            : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                            ? 'bg-black-300 text-white'
+                                            : 'text-gray-300 hover:bg-black-200 hover:text-white'
                                     "
                                     >Movies</a
                                 >
@@ -105,8 +105,8 @@
                                     class="px-3 py-2 rounded-md text-sm font-medium"
                                     :class="
                                         route().current('lists')
-                                            ? 'bg-gray-900 text-white'
-                                            : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                            ? 'bg-black-300 text-white'
+                                            : 'text-gray-300 hover:bg-black-200 hover:text-white'
                                     "
                                     >Lists</a
                                 >
@@ -118,7 +118,7 @@
                     >
                         <button
                             v-if="$page.props.auth"
-                            class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                            class="bg-black-300 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                         >
                             <span class="sr-only">View notifications</span>
                             <svg
@@ -161,8 +161,8 @@
                         class="block px-3 py-2 rounded-md text-base font-medium"
                         :class="
                             route().current('home')
-                                ? 'bg-gray-900 text-white'
-                                : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                ? 'bg-black-300 text-white'
+                                : 'text-gray-300 hover:bg-black-200 hover:text-white'
                         "
                         aria-current="page"
                         >Home</a
@@ -173,8 +173,8 @@
                         class="block px-3 py-2 rounded-md text-base font-medium"
                         :class="
                             route().current('movies')
-                                ? 'bg-gray-900 text-white'
-                                : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                ? 'bg-black-300 text-white'
+                                : 'text-gray-300 hover:bg-black-200 hover:text-white'
                         "
                         >Movies</a
                     >
@@ -184,8 +184,8 @@
                         class="block px-3 py-2 rounded-md text-base font-medium"
                         :class="
                             route().current('lists')
-                                ? 'bg-gray-900 text-white'
-                                : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                ? 'bg-black-300 text-white'
+                                : 'text-gray-300 hover:bg-black-200 hover:text-white'
                         "
                         >Lists</a
                     >
