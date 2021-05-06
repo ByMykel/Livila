@@ -1,43 +1,31 @@
 <template>
     <div>
+        <!-- TODO: Add link to a full size backdrop image. -->
         <img
             v-show="showBackdrop"
-            class="absolute left-0 -top-3 opacity-5 rounded-lg z-0"
+            class="block md:mb-6 rounded-md h-72 sm:h-80 md:h-96 w-full object-cover shadow-inner"
             :src="backdrop"
         />
 
-        <div class="lg:flex">
-            <div class="md:flex flex-1">
-                <div class="md:mr-2 flex-initial z-10">
-                    <img
-                        class="shadow rounded-md mx-auto"
-                        :class="[reviewPage ? 'w-28' : 'w-72']"
-                        :src="poster"
-                    />
-                </div>
-
-                <div class="flex flex-col lg:flex-row flex-1 relative z-0">
-                    <div class="w-full p-1">
-                        <p
-                            class="text-center md:text-left mt-1 text-3xl leading-8 font-extrabold tracking-tight text-indigo-500"
-                        >
-                            <a
-                                v-if="reviewPage"
-                                class="hover:underline"
-                                :href="route('movies.show', movie.id)"
-                                >{{ movie.title }}</a
-                            >
-                            <span v-else>{{ movie.title }}</span>
+        <div class="md:flex flex-1">
+            <div class="hidden md:block md:mr-6 flex-initial z-10">
+                <img class="shadow rounded-md mx-auto w-72" :src="poster" />
+            </div>
+            <div class="flex flex-col lg:flex-row flex-1 relative z-0">
+                <div class="w-full p-1">
+                    <p
+                        class="text-center md:text-left mt-1 text-3xl font-extrabold text-white"
+                    >
+                        {{ movie.title }}
+                    </p>
+                    <p
+                        class="text-center md:text-left mt-2 mb-3 text-sm text-indigo-300"
+                        v-html="movieStats"
+                    ></p>
+                    <div>
+                        <p class="text-md text-black-100">
+                            {{ movie.overview }}
                         </p>
-
-                        <div>
-                            <p class="mt-3 text-sm text-indigo-300">
-                                {{ movieStats }}
-                            </p>
-                            <p class="text-md text-white">
-                                {{ movie.overview }}
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -84,7 +72,7 @@ export default {
         },
 
         movieStats() {
-            return `${this.movie.release_date} · ${this.movie.runtime}m · ${this.movie.vote_average}/10`;
+            return `<span class="movie-information-tag">${this.movie.release_date}</span><span class="movie-information-tag">${this.movie.runtime}m</span></span><span class="movie-information-tag">${this.movie.vote_average}/10</span>`;
         },
     },
 

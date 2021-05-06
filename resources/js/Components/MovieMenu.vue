@@ -1,6 +1,6 @@
 <template>
-    <div class="bg-gray-900 rounded-md shadow relative p-2 mt-4">
-        <div class="bg-gray-800 rounded-md flex justify-around p-2 text-white">
+    <div class="bg-black-300 rounded-md shadow relative p-2 mt-4">
+        <div class="bg-black-400 rounded-md flex justify-around p-2 text-white">
             <button @click="like()">
                 <svg
                     class="w-6 h-6 hover:text-red-400"

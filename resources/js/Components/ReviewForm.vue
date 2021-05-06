@@ -2,7 +2,7 @@
     <div class="mt-5 md:mt-0 md:col-span-2 relative z-10">
         <form @submit.prevent="submitHandler">
             <div class="shadow rounded-md overflow-hidden">
-                <div class="px-4 py-5 bg-gray-900 space-y-6 sm:p-6">
+                <div class="px-4 py-5 bg-black-300 space-y-6 sm:p-6">
                     <div>
                         <label
                             for="about"
@@ -21,14 +21,14 @@
                                 :disabled="!editingReview && !notReviewed"
                             ></textarea>
                         </div>
-                        <p class="mt-2 text-sm text-gray-500">
+                        <p class="mt-2 text-sm text-black-100">
                             Please describe what you liked or disliked about
                             this movie and whether you recommend it to others.
                         </p>
                     </div>
                 </div>
 
-                <div class="bg-gray-900 space-y-6 sm:px-6 px-4 pb-4">
+                <div class="bg-black-300 space-y-6 sm:px-6 px-4 pb-4">
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
                             <input
@@ -46,7 +46,7 @@
                                 class="font-medium text-white"
                                 >Recommend</label
                             >
-                            <p class="text-gray-500">
+                            <p class="text-black-100">
                                 Check this box if you recommend this game.
                             </p>
                         </div>
@@ -67,7 +67,7 @@
                             <label for="spoiler" class="font-medium text-white"
                                 >Spoiler</label
                             >
-                            <p class="text-gray-500">
+                            <p class="text-black-100">
                                 Check this box if your review contains spoilers.
                             </p>
                         </div>
@@ -75,7 +75,7 @@
                 </div>
 
                 <div
-                    class="px-4 py-3 bg-gray-800 text-right sm:px-6 flex rounded-md"
+                    class="px-4 py-3 bg-black-400 text-right sm:px-6 flex rounded-md"
                     :class="editingReview ? 'justify-between' : 'justify-end'"
                 >
                     <button

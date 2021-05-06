@@ -2,7 +2,7 @@
     <div class="mt-5 md:mt-0 md:col-span-2 relative">
         <form v-if="creating" @submit.prevent="createList">
             <div class="shadow rounded-md overflow-hidden">
-                <div class="px-4 py-5 bg-gray-900 space-y-6 sm:p-6">
+                <div class="px-4 py-5 bg-black-300 space-y-6 sm:p-6">
                     <div class="col-span-6">
                         <label
                             for="list_name"
@@ -42,7 +42,7 @@
                     </div>
                 </div>
 
-                <div class="bg-gray-900 space-y-6 sm:px-6 px-4 pb-4">
+                <div class="bg-black-300 space-y-6 sm:px-6 px-4 pb-4">
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
                             <input
@@ -67,7 +67,7 @@
                 </div>
 
                 <div
-                    class="px-4 py-3 bg-gray-800 text-right rounded-md sm:px-6 flex justify-end"
+                    class="px-4 py-3 bg-black-400 text-right rounded-md sm:px-6 flex justify-end"
                 >
                     <div>
                         <button
@@ -115,7 +115,7 @@
         </form>
 
         <div v-else class="shadow rounded-md overflow-hidden">
-            <div class="px-4 py-5 bg-gray-900 space-y-6 sm:p-6">
+            <div class="px-4 py-5 bg-black-300 space-y-6 sm:p-6">
                 <div class="col-span-6">
                     <label
                         for="list_name"
@@ -136,7 +136,7 @@
                     <div
                         v-for="list in filteredLists"
                         :key="list.id"
-                        class="hover:bg-gray-800 text-white rounded mb-1 px-2 py-0.5 flex justify-between cursor-pointer"
+                        class="hover:bg-black-400 text-black-100 rounded mb-1 px-2 py-0.5 flex justify-between cursor-pointer"
                         @click="
                             (list.contains_movie = !list.contains_movie),
                                 movieList(list)
@@ -192,7 +192,7 @@
             </div>
 
             <div
-                class="px-4 py-3 bg-gray-800 rounded-md text-right sm:px-6 flex justify-end"
+                class="px-4 py-3 bg-black-400 rounded-md text-right sm:px-6 flex justify-end"
             >
                 <div>
                     <button
@@ -250,7 +250,7 @@ export default {
     computed: {
         filteredLists() {
             return this.lists.filter((list) =>
-                list.name.includes(this.listName)
+                list.name.toLowerCase().includes(this.listName.toLowerCase())
             );
         },
     },
