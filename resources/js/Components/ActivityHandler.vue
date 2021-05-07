@@ -24,11 +24,6 @@
         :activity="activity"
     ></activity-create-review-card>
 
-    <activity-comment-review-card
-        v-else-if="activity.type == 'commentReview'"
-        :activity="activity"
-    ></activity-comment-review-card>
-
     <activity-follow-card
         v-else-if="activity.type == 'followUser'"
         :activity="activity"
@@ -49,8 +44,6 @@
 import ActivityWatchMovieCard from "@/Components/ActivityWatchMovieCard";
 import ActivityLikeMovieCard from "@/Components/ActivityLikeMovieCard";
 import ActivityLikeReviewCard from "@/Components/ActivityLikeReviewCard";
-import ActivityCommentReviewCard from "@/Components/ActivityCommentReviewCard";
-
 import ActivityFollowCard from "@/Components/ActivityFollowCard";
 import ActivityLikeListCard from "@/Components/ActivityLikeListCard";
 import ActivityCreateReviewCard from "@/Components/ActivityCreateReviewCard";
@@ -62,8 +55,6 @@ export default {
         ActivityWatchMovieCard,
         ActivityLikeMovieCard,
         ActivityLikeReviewCard,
-        ActivityCommentReviewCard,
-
         ActivityLikeListCard,
         ActivityFollowCard,
         ActivityCreateReviewCard,
