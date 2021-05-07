@@ -43,7 +43,7 @@
 
         <template #content>
             <div
-                class="bg-gray-800 rounded-md shadow p-2 text-white overflow-hidden flex"
+                class="bg-black-400 rounded-md shadow p-2 text-white overflow-hidden flex"
             >
                 <div class="block">
                     <h2 class="break-all">{{ activity.data.name }}</h2>

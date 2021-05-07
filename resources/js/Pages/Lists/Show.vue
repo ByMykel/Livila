@@ -3,7 +3,7 @@
         <div class="py-6 px-1">
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div
-                    class="bg-gray-900 p-2 rounded-md shadow mb-5 relative overflow-hidden"
+                    class="bg-black-300 p-2 rounded-md shadow mb-5 relative overflow-hidden"
                 >
                     <div
                         v-show="$page.props.auth.id === list.user_id"
@@ -28,14 +28,14 @@
                     <h2 class="text-white break-words text-lg">
                         {{ list.name }}
                     </h2>
-                    <p class="text-gray-400 break-words mt-1">
+                    <p class="text-black-100 break-words mt-1">
                         {{ list.description }}
                     </p>
 
                     <p class="text-white mt-3 flex items-center">
                         <span class="flex items-center mr-3">
                             <svg
-                                class="w-5 h-5 text-gray-600 mr-1"
+                                class="w-5 h-5 text-black-100 mr-1"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@
                             @click="like()"
                         >
                             <svg
-                                class="w-5 h-5 text-gray-600 mr-1"
+                                class="w-5 h-5 text-black-100 mr-1"
                                 :class="{ 'text-red-500': list.like }"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
@@ -76,7 +76,7 @@
                     </p>
 
                     <div
-                        class="text-center bg-gray-800 rounded-sm mt-1 relative h-4"
+                        class="text-center bg-black-400 rounded-sm mt-1 relative h-4"
                     >
                         <div
                             class="text-xs rounded-sm absolute top-0 h-4 flex items-center justify-center text-white"

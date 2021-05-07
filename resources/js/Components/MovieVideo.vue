@@ -1,7 +1,7 @@
 <template>
     <div
         v-show="video"
-        class="bg-gray-900 p-2 rounded-md shadow my-5 relative"
+        class="bg-black-300 p-2 rounded-md shadow my-5 relative"
     >
         <iframe
             height="480"

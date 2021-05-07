@@ -67,7 +67,7 @@
                 </div>
 
                 <div
-                    class="px-4 py-3 bg-black-400 text-right rounded-md sm:px-6 flex justify-end"
+                    class="px-4 py-3 bg-black-200 text-right rounded-md sm:px-6 flex justify-end"
                 >
                     <div>
                         <button
@@ -136,7 +136,7 @@
                     <div
                         v-for="list in filteredLists"
                         :key="list.id"
-                        class="hover:bg-black-400 text-black-100 rounded mb-1 px-2 py-0.5 flex justify-between cursor-pointer"
+                        class="hover:bg-black-200 text-black-100 rounded mb-1 px-2 py-0.5 flex justify-between cursor-pointer"
                         @click="
                             (list.contains_movie = !list.contains_movie),
                                 movieList(list)
@@ -192,7 +192,7 @@
             </div>
 
             <div
-                class="px-4 py-3 bg-black-400 rounded-md text-right sm:px-6 flex justify-end"
+                class="px-4 py-3 bg-black-200 rounded-md text-right sm:px-6 flex justify-end"
             >
                 <div>
                     <button

@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-gray-800 rounded-md shadow p-3 text-white my-2 overflow-hidden relative"
+        class="bg-black-300 rounded-md shadow p-3 text-white my-2 overflow-hidden relative"
     >
         <div
             class="py-1 px-2 rounded-bl-md absolute top-0 right-0 text-xs font-medium"
@@ -63,7 +63,7 @@
                     </a>
                 </p>
 
-                <p class="text-xs text-gray-500">{{ review.updated_at }}</p>
+                <p class="text-xs text-black-100">{{ review.updated_at }}</p>
             </div>
         </div>
 
@@ -77,13 +77,13 @@
                 </a>
             </h3>
 
-            <p class="text-gray-300 break-words">{{ review.review }}</p>
+            <p class="text-black-100 break-words">{{ review.review }}</p>
         </div>
 
         <div class="flex text-sm">
             <div class="flex mr-5 cursor-pointer" @click="like()">
                 <svg
-                    class="w-5 h-5 text-gray-400 hover:text-red-400"
+                    class="w-5 h-5 text-black-100 hover:text-red-400"
                     :class="{ 'text-red-500 hover:text-red-400': review.like }"
                     fill="currentColor"
                     viewBox="0 0 20 20"
@@ -101,7 +101,7 @@
 
             <div class="flex">
                 <svg
-                    class="w-5 h-5 text-gray-400"
+                    class="w-5 h-5 text-black-100"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"

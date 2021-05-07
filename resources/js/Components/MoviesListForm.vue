@@ -2,7 +2,7 @@
     <div class="mt-5 md:mt-0 md:col-span-2 relative">
         <form @submit.prevent="submitHandler">
             <div class="shadow rounded-md overflow-hidden">
-                <div class="px-4 py-5 bg-gray-900 space-y-6 sm:p-6">
+                <div class="px-4 py-5 bg-black-300 space-y-6 sm:p-6">
                     <div class="col-span-6">
                         <label
                             for="list_name"
@@ -35,14 +35,14 @@
                                 v-model="form.description"
                             ></textarea>
                         </div>
-                        <p class="mt-2 text-sm text-gray-500">
+                        <p class="mt-2 text-sm text-black-100">
                             Please describe what kind of movies this list
                             contains.
                         </p>
                     </div>
                 </div>
 
-                <div class="bg-gray-900 space-y-6 sm:px-6 px-4 pb-4">
+                <div class="bg-black-300 space-y-6 sm:px-6 px-4 pb-4">
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
                             <input
@@ -59,7 +59,7 @@
                                 class="font-medium text-white"
                                 >Public list</label
                             >
-                            <p class="text-gray-500">
+                            <p class="text-black-100">
                                 Make this list visible to others.
                             </p>
                         </div>
@@ -67,7 +67,7 @@
                 </div>
 
                 <div
-                    class="px-4 py-3 bg-gray-800 text-right sm:px-6 flex"
+                    class="px-4 py-3 bg-black-200 text-right sm:px-6 flex"
                     :class="editing ? 'justify-between' : 'justify-end'"
                 >
                     <button

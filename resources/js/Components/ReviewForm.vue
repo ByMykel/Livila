@@ -75,7 +75,7 @@
                 </div>
 
                 <div
-                    class="px-4 py-3 bg-black-400 text-right sm:px-6 flex rounded-md"
+                    class="px-4 py-3 bg-black-200 text-right sm:px-6 flex rounded-md"
                     :class="editingReview ? 'justify-between' : 'justify-end'"
                 >
                     <button

@@ -41,7 +41,7 @@
 
         <template #content>
             <div
-                class="bg-gray-800 rounded-md shadow p-2 text-white overflow-hidden flex"
+                class="bg-black-400 rounded-md shadow p-2 text-white overflow-hidden flex"
             >
                 <div class="hidden sm:flex flex-shrink-0 mr-2">
                     <a

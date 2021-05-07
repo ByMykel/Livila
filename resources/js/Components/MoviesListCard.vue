@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-gray-800 rounded-md shadow p-4 text-white my-2 overflow-hidden flex"
+        class="bg-black-300 rounded-md shadow p-4 text-white my-2 overflow-hidden flex"
     >
         <div class="hidden sm:flex flex-shrink-0 p-4 w-40">
             <a class="flex" :href="route('lists.show', list.id)">
@@ -29,7 +29,7 @@
                 </div>
                 <div class="flex items-center">
                     {{ list.user.name }}
-                    <span class="ml-2 text-xs text-gray-400">
+                    <span class="ml-2 text-xs text-black-100">
                         {{ list.movies_count }} movies ·
                         {{ list.likes_count }} likes · 0 coments
                     </span>
@@ -37,7 +37,7 @@
             </div>
             <div>
                 <p
-                    class="block text-sm text-gray-400 h-16 w-auto overflow-hidden trauncate break-all"
+                    class="block text-sm text-black-100 h-16 w-auto overflow-hidden trauncate break-all"
                 >
                     {{ moviesList.description }}
                 </p>
