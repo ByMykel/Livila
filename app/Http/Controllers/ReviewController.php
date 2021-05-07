@@ -17,7 +17,7 @@ class ReviewController extends Controller
 {
     public function index($id)
     {
-        $reviewsId = Review::where('movie_id', $id)->with('user')->withCount('likes')->withCount('comments')->withcount(['likes as like' => function ($q) {
+        $reviewsId = Review::where('movie_id', $id)->with('user')->withCount('likes')->withcount(['likes as like' => function ($q) {
             return $q->where('user_id', Auth::id());
         }])->orderBy('updated_at', 'desc')->paginate(8);
         $reviews = $reviewsId->items();
@@ -50,7 +50,7 @@ class ReviewController extends Controller
 
     public function popular($id)
     {
-        $reviewsId = Review::where('movie_id', $id)->with('user')->withCount('likes')->withCount('comments')->withcount(['likes as like' => function ($q) {
+        $reviewsId = Review::where('movie_id', $id)->with('user')->withCount('likes')->withcount(['likes as like' => function ($q) {
             return $q->where('user_id', Auth::id());
         }])->orderBy('likes_count', 'desc')->paginate(8);
         $reviews = $reviewsId->items();
@@ -83,7 +83,7 @@ class ReviewController extends Controller
 
     public function friends($id)
     {
-        $reviewsId = Review::whereIn('user_id', Auth::user()->following()->get()->pluck('id'))->where('movie_id', $id)->with('user')->withCount('likes')->withCount('comments')->withcount(['likes as like' => function ($q) {
+        $reviewsId = Review::whereIn('user_id', Auth::user()->following()->get()->pluck('id'))->where('movie_id', $id)->with('user')->withCount('likes')->withcount(['likes as like' => function ($q) {
             return $q->where('user_id', Auth::id());
         }])->orderBy('updated_at', 'desc')->paginate(8);
         $reviews = $reviewsId->items();
@@ -198,7 +198,7 @@ class ReviewController extends Controller
 
     public function reviews(User $user)
     {
-        $reviewsId = Review::where('user_id', $user->id)->with('user')->withCount('likes')->withCount('comments')->withcount(['likes as like' => function ($q) {
+        $reviewsId = Review::where('user_id', $user->id)->with('user')->withCount('likes')->withcount(['likes as like' => function ($q) {
             return $q->where('user_id', Auth::id());
         }])->orderBy('updated_at', 'desc')->paginate(8);
         $reviews = $reviewsId->items();
