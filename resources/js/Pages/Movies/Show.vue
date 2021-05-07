@@ -14,13 +14,6 @@
 
                 <movie-video :videos="movie.videos.results" />
 
-                <description-card
-                    title="Cast"
-                    description="These are some of the cast members (in credits order)"
-                >
-                    <cast-showcase :cast="movie.credits.cast" :all="false" />
-                </description-card>
-
                 <div
                     v-if="friendsReviews.length > 0"
                     class="border-b border-gray-600 mt-5 mb-2 text-white flex px-1"
@@ -78,8 +71,6 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import DescriptionCard from "@/Components/DescriptionCard";
-import CastShowcase from "@/Components/CastShowcase";
 import ReviewCard from "@/Components/ReviewCard";
 import MovieMenu from "@/Components/MovieMenu";
 import MovieDetailsCard from "@/Components/MovieDetailsCard";
@@ -88,8 +79,6 @@ import MovieVideo from "@/Components/MovieVideo";
 export default {
     components: {
         AppLayout,
-        DescriptionCard,
-        CastShowcase,
         ReviewCard,
         MovieMenu,
         MovieDetailsCard,

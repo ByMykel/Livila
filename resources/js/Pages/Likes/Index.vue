@@ -56,7 +56,6 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import UserDetailsCard from "@/Components/UserDetailsCard";
-import DescriptionCard from "@/Components/DescriptionCard";
 import MoviesShowcase from "@/Components/MoviesShowcase";
 import ReviewCard from "@/Components/ReviewCard";
 import MoviesListCard from "@/Components/MoviesListCard";
@@ -65,7 +64,6 @@ export default {
     components: {
         AppLayout,
         UserDetailsCard,
-        DescriptionCard,
         MoviesShowcase,
         ReviewCard,
         MoviesListCard,
