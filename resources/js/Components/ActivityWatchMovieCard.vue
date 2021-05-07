@@ -35,15 +35,6 @@
         <template #date>
             {{ activity.created_at }}
         </template>
-
-        <template #content>
-            <div class="flex">
-                <img class="h-36 shadow rounded" :src="poster" />
-                <p class="px-2">
-                    {{ activity.data.overview }}
-                </p>
-            </div>
-        </template>
     </activity-card>
 </template>
 
@@ -57,19 +48,6 @@ export default {
 
     props: {
         activity: Object,
-    },
-
-    computed: {
-        poster() {
-            if (this.activity.data.poster_path) {
-                return (
-                    "https://image.tmdb.org/t/p/w500" +
-                    this.activity.data.poster_path
-                );
-            }
-
-            return "/images/default_poster_path.png";
-        },
     },
 };
 </script>

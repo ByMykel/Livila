@@ -32,24 +32,6 @@
         <template #date>
             {{ activity.created_at }}
         </template>
-
-        <template #content>
-            <div
-                class="bg-black-400 rounded-md shadow p-2 text-white overflow-hidden flex"
-            >
-                <div class="block">
-                    <h2 class="break-all">{{ activity.data.name }}</h2>
-
-                    <div>
-                        <p
-                            class="block text-sm text-gray-400 h-16 w-auto overflow-hidden trauncate break-all"
-                        >
-                            {{ activity.data.description }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </template>
     </activity-card>
 </template>
 

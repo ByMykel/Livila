@@ -38,36 +38,6 @@
         <template #date>
             {{ activity.created_at }}
         </template>
-
-        <template #content>
-            <div
-                class="bg-black-400 rounded-md shadow p-2 text-white overflow-hidden flex"
-            >
-                <div class="hidden sm:flex flex-shrink-0 mr-2">
-                    <a
-                        class="flex"
-                        :href="route('lists.show', activity.data.movie.id)"
-                    >
-                        <img
-                            class="h-36 rounded-md shadow-md"
-                            :src="poster(activity.data.movie)"
-                        />
-                    </a>
-                </div>
-
-                <div class="block">
-                    <h2 class="break-all">{{ activity.data.name }}</h2>
-
-                    <div>
-                        <p
-                            class="block text-sm text-gray-400 h-16 w-auto overflow-hidden trauncate break-all"
-                        >
-                            {{ activity.data.description }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </template>
     </activity-card>
 </template>
 
@@ -81,20 +51,6 @@ export default {
 
     props: {
         activity: Object,
-    },
-
-    methods: {
-        poster(movie) {
-            if (movie.poster_path === "empty_poster_path.png") {
-                return "/images/empty_poster_path.png";
-            }
-
-            if (movie.poster_path) {
-                return "https://image.tmdb.org/t/p/w780" + movie.poster_path;
-            }
-
-            return "/images/default_poster_path.png";
-        },
     },
 };
 </script>
