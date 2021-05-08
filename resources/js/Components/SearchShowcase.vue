@@ -9,7 +9,7 @@
         >
             <div class="bg-black-400 rounded-md m-2 p-2 flex justify-between">
                 <span class="text-sm flex items-center">
-                    <span class="font-medium"> Show results for </span>
+                    <span class="font-medium">Show results for </span>
                     <span class="font-bold ml-0.5">{{ type }}</span>
                 </span>
                 <span @click="showOptions = !showOptions">
@@ -97,7 +97,7 @@
         <div
             class="hidden md:flex flex-col space-y-2 bg-black-300 rounded-md p-2 ml-2 h-64"
         >
-            <div class="text-white px-2 text-sm font-medium">
+            <div class="text-white px-2 text-sm font-medium my-2">
                 Show results for
             </div>
             <a

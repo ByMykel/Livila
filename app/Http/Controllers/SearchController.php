@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ListMovie;
 use App\Models\Review;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -113,6 +114,24 @@ class SearchController extends Controller
             'query' => $query,
             'lists' => $lists,
             'page' => ['actual' => $lists->currentPage(), 'last' => $lists->lastPage()]
+        ]);
+    }
+
+    public function members(Request $request, $query)
+    {
+        $members = User::query()
+            ->where('username', 'like', '%' . $query . '%')
+            ->withcount(['followers as follow' => function ($q) {
+                return $q->where('follower_id', Auth::id());
+            }])
+            ->withCount('followers')
+            ->distinct()
+            ->paginate();
+
+        return Inertia::render('Search/Members', [
+            'query' => $query,
+            'members' => $members,
+            'page' => ['actual' => $members->currentPage(), 'last' => $members->lastPage()]
         ]);
     }
 }
