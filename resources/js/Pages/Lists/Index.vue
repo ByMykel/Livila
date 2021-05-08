@@ -47,15 +47,7 @@ export default {
 
     props: {
         recentLists: Object,
-    },
-
-    computed: {
-        page() {
-            return {
-                actual: this.recentLists.current_page,
-                last: this.recentLists.last_page,
-            };
-        },
+        page: Object,
     },
 };
 </script>

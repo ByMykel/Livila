@@ -41,6 +41,7 @@ class ListMovieController extends Controller
 
         return Inertia::render('Lists/Index', [
             'recentLists' => $recentLists,
+            'page' => ['actual' => $recentLists->currentPage(), 'last' => $recentLists->lastPage()]
         ]);
     }
 
@@ -71,6 +72,7 @@ class ListMovieController extends Controller
 
         return Inertia::render('Lists/Popular', [
             'popularLists' => $popularLists,
+            'page' => ['actual' => $popularLists->currentPage(), 'last' => $popularLists->lastPage()]
         ]);
     }
 
@@ -106,7 +108,8 @@ class ListMovieController extends Controller
         }
 
         return Inertia::render('Lists/Friends', [
-            'friendsLists' => $friendsLists
+            'friendsLists' => $friendsLists,
+            'page' => ['actual' => $friendsLists->currentPage(), 'last' => $friendsLists->lastPage()]
         ]);
     }
 

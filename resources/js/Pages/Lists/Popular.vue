@@ -47,15 +47,7 @@ export default {
 
     props: {
         popularLists: Object,
-    },
-
-    computed: {
-        page() {
-            return {
-                actual: this.popularLists.current_page,
-                last: this.popularLists.last_page,
-            };
-        },
+        page: Object,
     },
 };
 </script>

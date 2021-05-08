@@ -47,15 +47,7 @@ export default {
 
     props: {
         friendsLists: Object,
-    },
-
-    computed: {
-        page() {
-            return {
-                actual: this.friendsLists.current_page,
-                last: this.friendsLists.last_page,
-            };
-        },
+        page: Object,
     },
 };
 </script>
