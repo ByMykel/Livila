@@ -1,19 +1,25 @@
 <?php
 
 use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ListMovieController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
 Route::get('/activity', [ActivityController::class, 'index'])->name('activity');
+
+Route::prefix('search/{query?}')->group(function () {
+    Route::get('/', [SearchController::class, 'movies'])->name('search');
+    Route::get('/reviews', [SearchController::class, 'reviews'])->name('search.reviews');
+    Route::get('/lists', [SearchController::class, 'lists'])->name('search.lists');
+    Route::get('/members', [SearchController::class, 'members'])->name('search.members');
+});
 
 Route::prefix('lists')->group(function () {
     Route::get('/', [ListMovieController::class, 'index'])->name('lists');

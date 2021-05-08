@@ -112,6 +112,16 @@
                                 >
                             </div>
                         </div>
+                        <div class="mx-auto hidden sm:block sm:w-2/5">
+                            <input
+                                type="text"
+                                class="w-full text-white bg-black-300 border-0 rounded-md h-9"
+                                v-model="searchText"
+                                @keypress.enter="
+                                    $inertia.visit(route('search', searchText.trim()))
+                                "
+                            />
+                        </div>
                     </div>
                     <div
                         class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
@@ -213,6 +223,7 @@ export default {
         return {
             showingNavigationDropdown: false,
             showingMenuDropdown: false,
+            searchText: "",
         };
     },
 };

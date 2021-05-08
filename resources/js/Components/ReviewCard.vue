@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-black-300 rounded-md shadow p-3 text-white my-2 overflow-hidden relative"
+        class="bg-black-300 rounded-md shadow p-3 text-white mb-2 overflow-hidden relative"
     >
         <div
             class="py-1 px-2 rounded-bl-md absolute top-0 right-0 text-xs font-medium"
