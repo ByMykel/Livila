@@ -117,9 +117,7 @@
                                 type="text"
                                 class="w-full text-white bg-black-300 border-0 rounded-md h-9"
                                 v-model="searchText"
-                                @keypress.enter="
-                                    $inertia.visit(route('search', searchText.trim()))
-                                "
+                                @keypress.enter="searchQuery()"
                             />
                         </div>
                     </div>
@@ -225,6 +223,35 @@ export default {
             showingMenuDropdown: false,
             searchText: "",
         };
+    },
+
+    methods: {
+        searchQuery() {
+            if (!this.searchText.trim().length) return;
+
+            if (this.route().current("search.reviews")) {
+                this.$inertia.visit(
+                    route("search.reviews", this.searchText.trim())
+                );
+                return;
+            }
+
+            if (this.route().current("search.lists")) {
+                this.$inertia.visit(
+                    route("search.lists", this.searchText.trim())
+                );
+                return;
+            }
+
+            if (this.route().current("search.members")) {
+                this.$inertia.visit(
+                    route("search.members", this.searchText.trim())
+                );
+                return;
+            }
+
+            this.$inertia.visit(route("search", this.searchText.trim()));
+        },
     },
 };
 </script>
