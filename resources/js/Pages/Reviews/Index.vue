@@ -6,6 +6,7 @@
                     :movie="movie"
                     :review-page="true"
                     :show-backdrop="false"
+                    isReviewsPage
                 ></movie-details-card>
 
                 <reviews-navbar :movie="movie"></reviews-navbar>

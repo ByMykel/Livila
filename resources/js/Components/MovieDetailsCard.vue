@@ -2,7 +2,7 @@
     <div>
         <!-- TODO: Add link to a full size backdrop image. -->
         <img
-            v-show="showBackdrop"
+            v-show="backdrop && !isReviewsPage"
             class="block md:mb-6 rounded-md h-72 sm:h-80 md:h-96 w-full object-cover shadow-inner"
             :src="backdrop"
         />
@@ -35,18 +35,12 @@
 
 <script>
 export default {
-    components: {},
-
     props: {
         movie: Object,
-        reviewPage: {
-            default: false,
+        isReviewsPage: {
             type: Boolean,
-        },
-        showBackdrop: {
-            default: true,
-            type: Boolean,
-        },
+            default: false
+        }
     },
 
     computed: {
@@ -75,7 +69,5 @@ export default {
             return `<span class="movie-information-tag">${this.movie.release_date}</span><span class="movie-information-tag">${this.movie.runtime}m</span></span><span class="movie-information-tag">${this.movie.vote_average}/10</span>`;
         },
     },
-
-    methods: {},
 };
 </script>
