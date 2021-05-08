@@ -25,7 +25,7 @@
                 <dl
                     class="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10"
                 >
-                    <div class="relative hover:bg-gray-800 rounded-md p-2">
+                    <div class="relative rounded-md p-2">
                         <dt>
                             <div
                                 class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white"
@@ -58,7 +58,7 @@
                         </dd>
                     </div>
 
-                    <div class="relative hover:bg-gray-800 rounded-md p-2">
+                    <div class="relative rounded-md p-2">
                         <dt>
                             <div
                                 class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white"
@@ -88,7 +88,7 @@
                         </dd>
                     </div>
 
-                    <div class="relative hover:bg-gray-800 rounded-md p-2">
+                    <div class="relative rounded-md p-2">
                         <dt>
                             <div
                                 class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white"
@@ -116,7 +116,7 @@
                         </dd>
                     </div>
 
-                    <div class="relative hover:bg-gray-800 rounded-md p-2">
+                    <div class="relative rounded-md p-2">
                         <dt>
                             <div
                                 class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white"
@@ -137,7 +137,7 @@
                             <p
                                 class="ml-16 text-lg leading-6 font-medium text-white"
                             >
-                                Activity and following
+                                Reviews and following
                             </p>
                         </dt>
                         <dd class="mt-2 ml-16 text-base text-gray-400">
@@ -277,7 +277,7 @@
                     <div>
                         <img
                             class="w-full"
-                            src="/images/welcome_1.png"
+                            src="/images/welcome_5.png"
                             alt=""
                         />
                     </div>
