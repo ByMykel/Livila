@@ -32,7 +32,7 @@
         </template>
 
         <template #date>
-            {{ activity.created_at }}
+            <span :title="activity.created_at">{{ activity.created_at_human }}</span>
         </template>
     </activity-card>
 </template>
