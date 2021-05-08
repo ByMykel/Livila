@@ -16,7 +16,37 @@ class ListMovieController extends Controller
 {
     public function index()
     {
-        $popularLists = ListMovie::with('user')->withCount('likes')->orderByDesc('likes_count')->get();
+        $recentLists = ListMovie::with('user')->withCount('likes')->latest()->paginate();
+
+        foreach ($recentLists as $index => $list) {
+            $recentLists[$index]['movies_count'] = DB::table('lists_movies')->where('list_id', $list->id)->get()->count();
+            $moviesId = DB::table('lists_movies')->where('list_id', $list->id)->get()->take(5)->pluck('movie_id');
+            $movies = [];
+
+            foreach ($moviesId as $id) {
+                $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+                    'api_key' => Config::get('services.tmdb.key'),
+                    'language' => 'es-ES'
+                ]);
+
+                if ($response->ok()) {
+                    $movies[] = $response->json();
+                } else {
+                    unset($recentLists[$index]);
+                }
+            }
+
+            $recentLists[$index]['movies'] = $movies;
+        }
+
+        return Inertia::render('Lists/Index', [
+            'recentLists' => $recentLists,
+        ]);
+    }
+
+    public function popular()
+    {
+        $popularLists = ListMovie::with('user')->withCount('likes')->orderByDesc('likes_count')->paginate();
 
         foreach ($popularLists as $index => $list) {
             $popularLists[$index]['movies_count'] = DB::table('lists_movies')->where('list_id', $list->id)->get()->count();
@@ -39,8 +69,44 @@ class ListMovieController extends Controller
             $popularLists[$index]['movies'] = $movies;
         }
 
-        return Inertia::render('Lists/Index', [
-            'popularLists' => $popularLists
+        return Inertia::render('Lists/Popular', [
+            'popularLists' => $popularLists,
+        ]);
+    }
+
+    public function friends()
+    {
+        $user = Auth::user();
+
+        $friendsLists = ListMovie::whereHas('user', function ($query) use ($user) {
+            $query->whereHas('followers', function ($q) use ($user) {
+                $q->where('follower_id', $user->id);
+            });
+        })->with('user')->withCount('likes')->paginate();
+
+        foreach ($friendsLists as $index => $list) {
+            $friendsLists[$index]['movies_count'] = DB::table('lists_movies')->where('list_id', $list->id)->get()->count();
+            $moviesId = DB::table('lists_movies')->where('list_id', $list->id)->get()->take(5)->pluck('movie_id');
+            $movies = [];
+
+            foreach ($moviesId as $id) {
+                $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+                    'api_key' => Config::get('services.tmdb.key'),
+                    'language' => 'es-ES'
+                ]);
+
+                if ($response->ok()) {
+                    $movies[] = $response->json();
+                } else {
+                    unset($friendsLists[$index]);
+                }
+            }
+
+            $friendsLists[$index]['movies'] = $movies;
+        }
+
+        return Inertia::render('Lists/Friends', [
+            'friendsLists' => $friendsLists
         ]);
     }
 

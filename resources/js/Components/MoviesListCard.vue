@@ -12,13 +12,14 @@
                 />
             </a>
         </div>
-
-        <div class="block sm:ml-24">
+        <div class="block sm:ml-24 w-full">
             <a
                 class="hover:text-indigo-400"
                 :href="route('lists.show', list.id)"
             >
-                <h2 class="break-all">{{ moviesList.name }}</h2>
+                <h2 class="block line-clamp-1 break-all">
+                    {{ moviesList.name }}
+                </h2>
             </a>
             <div class="my-0.5 flex items-center">
                 <div>
@@ -31,14 +32,12 @@
                     {{ list.user.name }}
                     <span class="ml-2 text-xs text-black-100">
                         {{ list.movies_count }} movies ·
-                        {{ list.likes_count }} likes · 0 coments
+                        {{ list.likes_count }} likes
                     </span>
                 </div>
             </div>
             <div>
-                <p
-                    class="block text-sm text-black-100 h-16 w-auto overflow-hidden trauncate break-all"
-                >
+                <p class="block text-sm text-black-100 break-all line-clamp-2">
                     {{ moviesList.description }}
                 </p>
             </div>

@@ -14,6 +14,8 @@ Route::get('/', [ActivityController::class, 'index'])->name('home');
 
 Route::prefix('lists')->group(function () {
     Route::get('/', [ListMovieController::class, 'index'])->name('lists');
+    Route::get('/popular', [ListMovieController::class, 'popular'])->name('lists.popular');
+    Route::get('/friends', [ListMovieController::class, 'friends'])->name('lists.friends')->middleware(['auth:sanctum', 'verified']);
     Route::get('/create', [ListMovieController::class, 'create'])->name('lists.create')->middleware(['auth:sanctum', 'verified']);
     Route::post('/store', [ListMovieController::class, 'store'])->name('lists.store')->middleware(['auth:sanctum', 'verified']);
 

@@ -17,10 +17,10 @@
                     </a>
                 </div>
 
-                <lists-navbar :selected="1"></lists-navbar>
+                <lists-navbar :selected="2"></lists-navbar>
 
                 <movies-list-card
-                    v-for="list in recentLists.data"
+                    v-for="list in popularLists.data"
                     :key="list.id"
                     :movies-list="list"
                 ></movies-list-card>
@@ -46,14 +46,14 @@ export default {
     },
 
     props: {
-        recentLists: Object,
+        popularLists: Object,
     },
 
     computed: {
         page() {
             return {
-                actual: this.recentLists.current_page,
-                last: this.recentLists.last_page,
+                actual: this.popularLists.current_page,
+                last: this.popularLists.last_page,
             };
         },
     },
