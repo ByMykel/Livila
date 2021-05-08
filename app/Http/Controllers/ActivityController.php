@@ -26,12 +26,12 @@ class ActivityController extends Controller
         })->with('user')->get();
 
         if (count($activities) === 0) {
-            $followActiveMembers = true;
+            $followActiveMembers = false;
             $activities = Auth::user()->activities()->with('user')->get();
         }
 
-        return Inertia::render('Home', [
-            'followActiveMembers' => $followActiveMembers ?? false,
+        return Inertia::render('Activity', [
+            'followActiveMembers' => $followActiveMembers ?? true,
             'activities' => $activities,
         ]);
     }
