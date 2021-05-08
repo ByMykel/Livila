@@ -115,7 +115,7 @@
                         <div class="mx-auto hidden sm:block sm:w-2/5 relative">
                             <input
                                 type="text"
-                                class="w-full text-white bg-black-300 border-0 rounded-md h-9 focus:ring-indigo-500"
+                                class="w-full text-white bg-black-300 border-0 rounded-md h-9 focus:ring-indigo-500 pr-10"
                                 placeholder="Search"
                                 v-model="searchText"
                                 @keypress.enter="searchQuery()"
@@ -183,7 +183,7 @@
                 <div class="block sm:w-2/5 relative px-2 pt-2">
                     <input
                         type="text"
-                        class="w-full text-white bg-black-300 border-0 rounded-md h-9 focus:ring-indigo-500"
+                        class="w-full text-white bg-black-300 border-0 rounded-md h-9 focus:ring-indigo-500 pr-10"
                         placeholder="Search"
                         v-model="searchText"
                         @keypress.enter="searchQuery()"
