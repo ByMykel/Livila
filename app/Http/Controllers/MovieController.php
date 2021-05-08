@@ -66,6 +66,18 @@ class MovieController extends Controller
 
     public function show($id)
     {
+        $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+            'api_key' => Config::get('services.tmdb.key'),
+            'language' => 'es-ES',
+            'append_to_response' => 'videos,credits'
+        ]);
+
+        if ($response->ok()) {
+            $movie = $response->json();
+        } else {
+            dd(404);
+        }
+
         $friendsId = Auth::user()->following()->get()->pluck('id');
 
         $myReview = Review::where('user_id', Auth::user()->id)->where('movie_id', $id)->get();
@@ -78,12 +90,6 @@ class MovieController extends Controller
         $recentReviews = Review::where('movie_id', $id)->with('user')->withCount('likes')->withcount(['likes as like' => function ($q) {
             return $q->where('user_id', Auth::id());
         }])->orderBy('updated_at', 'desc')->take(4)->get();
-
-        $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-            'api_key' => Config::get('services.tmdb.key'),
-            'language' => 'es-ES',
-            'append_to_response' => 'videos,credits'
-        ])->json();
 
         foreach ($friendsReviews as $index => $movieReview) {
             $response = Http::get('https://api.themoviedb.org/3/movie/' . $movieReview->movie_id, [
