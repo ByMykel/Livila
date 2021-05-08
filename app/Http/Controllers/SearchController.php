@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ListMovie;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
@@ -33,12 +35,12 @@ class SearchController extends Controller
         $reviews = Review::query()
             ->where(function ($query) use ($terms) {
                 foreach ($terms as $term) {
-                    $query->where('review', 'like', '%' . $term . '%');
+                    $query->orWhere('review', 'like', '%' . $term . '%');
                 }
             })
             ->orWhere('review', 'like', '%' . $query . '%')
             ->withcount(['likes as like' => function ($q) {
-                return $q->where('user_id', Auth::id());
+                return $q->orWhere('user_id', Auth::id());
             }])
             ->with('user')
             ->withCount('likes')
@@ -61,6 +63,56 @@ class SearchController extends Controller
             'query' => $query,
             'reviews' => $reviews,
             'page' => ['actual' => $reviews->currentPage(), 'last' => $reviews->lastPage()]
+        ]);
+    }
+
+    public function lists(Request $request, $query)
+    {
+        $terms = explode(" ", $query);
+
+        $lists = ListMovie::query()
+            ->where(function ($query) use ($terms) {
+                foreach ($terms as $term) {
+                    $query->orWhere('name', 'like', '%' . $term . '%');
+                }
+            })
+            ->orWhere(function ($query) use ($terms) {
+                foreach ($terms as $term) {
+                    $query->orWhere('description', 'like', '%' . $term . '%');
+                }
+            })
+            ->withcount(['likes as like' => function ($q) {
+                return $q->where('user_id', Auth::id());
+            }])
+            ->with('user')
+            ->withCount('likes')
+            ->distinct()
+            ->paginate();
+
+        foreach ($lists as $index => $list) {
+            $lists[$index]['movies_count'] = DB::table('lists_movies')->where('list_id', $list->id)->get()->count();
+            $moviesId = DB::table('lists_movies')->where('list_id', $list->id)->get()->take(5)->pluck('movie_id');
+            $movies = [];
+
+            foreach ($moviesId as $id) {
+                $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+                    'api_key' => Config::get('services.tmdb.key'),
+                ]);
+
+                if ($response->ok()) {
+                    $movies[] = $response->json();
+                } else {
+                    unset($lists[$index]);
+                }
+            }
+
+            $lists[$index]['movies'] = $movies;
+        }
+
+        return Inertia::render('Search/Lists', [
+            'query' => $query,
+            'lists' => $lists,
+            'page' => ['actual' => $lists->currentPage(), 'last' => $lists->lastPage()]
         ]);
     }
 }

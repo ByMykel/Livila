@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-black-300 rounded-md shadow p-4 text-white my-2 overflow-hidden flex"
+        class="bg-black-300 rounded-md shadow p-4 text-white mb-2 overflow-hidden flex"
     >
         <div class="hidden sm:flex flex-shrink-0 p-4 w-40">
             <a class="flex" :href="route('lists.show', list.id)">
