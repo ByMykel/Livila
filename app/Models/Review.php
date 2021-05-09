@@ -29,6 +29,10 @@ class Review extends Model
 
     public function getMyReview($movieId)
     {
+        if (!Auth::user()) {
+            return [];
+        }
+
         $review = Review::where('user_id', Auth::user()->id)
             ->where('movie_id', $movieId)
             ->get();
@@ -38,6 +42,10 @@ class Review extends Model
 
     public function getFriendsReviews($movieId)
     {
+        if (!Auth::user()) {
+            return [];
+        }
+
         $user = Auth::user();
 
         $reviews = Review::whereHas('user', function ($query) use ($user) {

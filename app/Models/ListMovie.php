@@ -42,6 +42,10 @@ class ListMovie extends Model
 
     public function getMyLists()
     {
+        if (!Auth::user()) {
+            return [];
+        }
+
         $lists = ListMovie::where('user_id', Auth::user()->id)
             ->get();
 
@@ -50,6 +54,10 @@ class ListMovie extends Model
 
     public function markListWithMovie($lists, $movieId)
     {
+        if (!Auth::user()) {
+            return $lists;
+        }
+
         foreach ($lists as $index => $list) {
             $lists[$index]['contains_movie'] = $this->isListed($list->id, $movieId);
         }

@@ -18,6 +18,10 @@ class Movie extends Model
 
     public function markWatchedMovies($movies)
     {
+        if (!Auth::user()) {
+            return $movies;
+        }
+
         foreach ($movies as $index => $movie) {
             $movies[$index]['watched'] = $this->isWatched($movie['id']);
         }
@@ -32,6 +36,10 @@ class Movie extends Model
 
     public function markLikedMovies($movies)
     {
+        if (!Auth::user()) {
+            return $movies;
+        }
+
         foreach ($movies as $index => $movie) {
             $movies[$index]['liked'] = $this->isLiked($movie['id']);
         }
