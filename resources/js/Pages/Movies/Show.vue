@@ -16,12 +16,12 @@
 
                 <div
                     v-show="showReviewsNavbar"
-                    class="border-b border-black-200 mt-5 mb-5 text-black-100 flex justify-between px-1 cursor-pointer"
+                    class="border-b border-black-200 mt-5 mb-5 text-black-100 flex justify-between px-1"
                 >
                     <div class="flex">
                         <a
                             v-if="recentReviews.length"
-                            class="hover:border-b hover:text-white px-3 border-black-100"
+                            class="hover:border-b hover:text-white px-3 border-black-100 cursor-pointer"
                             :class="{
                                 'text-white border-indigo-600 border-b':
                                     selected === 1,
@@ -31,7 +31,7 @@
                         >
                         <a
                             v-if="popularReviews.length"
-                            class="hover:border-b hover:text-white px-3 border-black-100"
+                            class="hover:border-b hover:text-white px-3 border-black-100 cursor-pointer"
                             :class="{
                                 'text-white border-indigo-600 border-b':
                                     selected === 2,
@@ -41,7 +41,7 @@
                         >
                         <a
                             v-if="friendsReviews.length"
-                            class="hover:border-b hover:text-white px-3 border-black-100"
+                            class="hover:border-b hover:text-white px-3 border-black-100 cursor-pointer"
                             :class="{
                                 'text-white border-indigo-600 border-b':
                                     selected === 3,
@@ -139,6 +139,17 @@ export default {
                 this.recentReviews.length
             );
         },
+
+        // Check if there is at least one list.
+        // showListsNavbar() {
+        //     return (
+        //         this.friendsReviews.length ||
+        //         this.popularReviews.length ||
+        //         this.recentReviews.length
+        //     );
+        // },
+
+
     },
 };
 </script>

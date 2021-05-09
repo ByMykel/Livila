@@ -16,11 +16,8 @@
                 <a
                     v-show="show || movie.watched"
                     :href="route('movies.show', movie.id)"
-                    class="absolute w-full h-full cursor-pointer bg-black-400 bg-opacity-70"
-                    :class="[
-                        border ? 'rounded-sm' : 'rounded',
-                        show ? 'border-2 border-indigo-500' : '',
-                    ]"
+                    class="absolute w-full h-full cursor-pointer bg-black-400 bg-opacity-70 rounded"
+                    :class="[show ? 'border-2 border-indigo-500' : '']"
                 ></a>
             </transition>
 
@@ -69,9 +66,7 @@
                 </svg>
             </button>
 
-            <img v-if="border" class="rounded-sm shadow" :src="poster" />
-
-            <img v-else class="max-h-48 w-full shadow rounded" :src="poster" />
+            <img class="max-h-48 w-full shadow rounded" :src="poster" />
         </div>
 
         <div>
@@ -96,14 +91,8 @@
 
 <script>
 export default {
-    components: {},
-
     props: {
         movie: Object,
-        border: {
-            type: Boolean,
-            default: true,
-        },
     },
 
     data() {

@@ -14,14 +14,14 @@
             <a
                 v-show="page.actual != 1"
                 :href="previousPage"
-                class="relative inline-flex items-center px-4 py-2 border border-gray-900 text-sm font-medium rounded-md text-white bg-gray-800 hover:text-indigo-500"
+                class="relative inline-flex items-center px-4 py-2 border-2 border-black-300 text-sm font-medium rounded-md text-white bg-black-400 hover:text-indigo-500"
             >
                 Previous
             </a>
             <a
                 v-show="page.actual != page.last"
                 :href="nextPage"
-                class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-900 text-sm font-medium rounded-md text-white bg-gray-800 hover:text-indigo-500"
+                class="ml-3 relative inline-flex items-center px-4 py-2 border-2 border-black-300 text-sm font-medium rounded-md text-white bg-black-400 hover:text-indigo-500"
             >
                 Next
             </a>

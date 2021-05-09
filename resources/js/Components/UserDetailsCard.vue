@@ -48,9 +48,11 @@
                     >Lists</a
                 >
                 <a
-                    :href="route('user.likes', user.username)"
+                    :href="route('user.likes.movies', user.username)"
                     :class="[
-                        route().current('user.likes', user.username)
+                        route().current('user.likes.movies', user.username) ||
+                        route().current('user.likes.reviews', user.username) ||
+                        route().current('user.likes.lists', user.username)
                             ? 'text-indigo-400'
                             : 'hover:text-white',
                     ]"
@@ -75,7 +77,7 @@ import UserFollowButton from "@/Components/UserFollowButton";
 
 export default {
     components: {
-        UserFollowButton
+        UserFollowButton,
     },
 
     props: {
