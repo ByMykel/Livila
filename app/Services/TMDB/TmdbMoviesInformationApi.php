@@ -47,4 +47,15 @@ class TmdbMoviesInformationApi
 
         return $movie;
     }
+
+    public function getMoviesById($moviesIds)
+    {
+        $movies = [];
+
+        foreach ($moviesIds as $id) {
+            $movies[] = $this->getMovie($id);
+        }
+
+        return $movies;
+    }
 }

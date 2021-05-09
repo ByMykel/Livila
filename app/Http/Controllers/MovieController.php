@@ -8,10 +8,6 @@ use App\Models\Movie;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 use App\Services\TMDB\TmdbMoviesInformationApi;
 
@@ -21,13 +17,16 @@ class MovieController extends Controller
     protected $movie;
     protected $listMovie;
     protected $activity;
+    protected $review;
 
-    public function __construct(TmdbMoviesInformationApi $tmdbApi)
+    public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie, ListMovie $listMovie, Activity $activity, Review $review, User $user)
     {
         $this->tmdbApi = $tmdbApi;
-        $this->movie = new Movie();
-        $this->listMovie = new ListMovie();
-        $this->activity = new Activity();
+        $this->movie = $movie;
+        $this->listMovie = $listMovie;
+        $this->activity = $activity;
+        $this->review = $review;
+        $this->user = $user;
     }
 
     public function index(Request $request)
@@ -45,42 +44,12 @@ class MovieController extends Controller
 
     public function show($id)
     {
-        $user = Auth::user();
         $movie = $this->tmdbApi->getMovie($id);
 
-        $myReview = Review::where('user_id', Auth::user()->id)
-            ->where('movie_id', $id)
-            ->get();
-
-        $friendsReviews = Review::whereHas('user', function ($query) use ($user) {
-            $query->whereHas('followers', function ($q) use ($user) {
-                $q->where('follower_id', $user->id);
-            });
-        })
-            ->where('movie_id', $id)
-            ->latest()
-            ->take(5)
-            ->get();
-
-        $popularReviews = Review::where('movie_id', $id)
-            ->withcount(['likes as like' => function ($q) {
-                return $q->where('user_id', Auth::id());
-            }])
-            ->with('user')
-            ->withCount('likes')
-            ->latest('likes_count')
-            ->take(5)
-            ->get();
-
-        $recentReviews = Review::where('movie_id', $id)
-            ->withcount(['likes as like' => function ($q) {
-                return $q->where('user_id', Auth::id());
-            }])
-            ->with('user')
-            ->withCount('likes')
-            ->orderBy('updated_at', 'desc')
-            ->take(5)
-            ->get();
+        $myReview = $this->review->getMyReview($id);
+        $friendsReviews = $this->review->getFriendsReviews($id);
+        $popularReviews = $this->review->getPopularReviews($id);
+        $recentReviews = $this->review->getRecentReviews($id);
 
         foreach ($friendsReviews as $index => $_review) {
             $friendsReviews[$index]['movie'] = $movie;
@@ -97,9 +66,7 @@ class MovieController extends Controller
         $movie = $this->movie->markWatchedMovies([$movie])[0];
         $movie = $this->movie->markLikedMovies([$movie])[0];
 
-        $lists = ListMovie::where('user_id', Auth::user()->id)
-            ->get();
-
+        $lists = $this->listMovie->getMyLists();
         $lists = $this->listMovie->markListWithMovie($lists, $id);
 
         return Inertia::render('Movies/Show', [
@@ -134,18 +101,15 @@ class MovieController extends Controller
 
     public function watchedMovies(User $user)
     {
-        $user = User::where('id', $user->id)
-            ->withcount(['followers as follow' => function ($q) {
-                return $q->where('follower_id', Auth::id());
-            }])
-            ->get()[0];
+        $user = $this->user->getUser($user);
 
         $moviesIds = $this->movie->getWatchedMoviesIds($user);
-        $movies = [];
 
-        foreach ($moviesIds->items() as $_index => $movie) {
-            $movies[] = $this->tmdbApi->getMovie($movie->movie_id);
-        }
+        $ids = array_map(function ($movie) {
+            return $movie->movie_id;
+        }, $moviesIds->items());
+
+        $movies = $this->tmdbApi->getMoviesById($ids);
 
         return Inertia::render('Users/Watched', [
             'user' => $user,
