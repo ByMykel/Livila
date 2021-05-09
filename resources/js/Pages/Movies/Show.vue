@@ -6,8 +6,8 @@
 
                 <movie-menu
                     :movie="movie"
-                    :liked="liked"
-                    :watched="watched"
+                    :liked="movie.liked"
+                    :watched="movie.watched"
                     :lists="lists"
                     :review="myReview"
                 />
@@ -120,8 +120,6 @@ export default {
         friendsReviews: Object,
         popularReviews: Object,
         recentReviews: Object,
-        liked: Boolean,
-        watched: Boolean,
         lists: Object,
     },
 

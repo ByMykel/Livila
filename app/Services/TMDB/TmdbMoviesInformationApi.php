@@ -31,4 +31,20 @@ class TmdbMoviesInformationApi
 
         return $movies;
     }
+
+    public function getMovie($id)
+    {
+        $movie = [];
+
+        $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
+            'api_key' => Config::get('services.tmdb.key'),
+            'append_to_response' => 'videos,credits'
+        ]);
+
+        if ($response->ok()) {
+            $movie = $response->json();
+        }
+
+        return $movie;
+    }
 }

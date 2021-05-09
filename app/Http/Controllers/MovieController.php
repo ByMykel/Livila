@@ -23,14 +23,15 @@ class MovieController extends Controller
     {
         $this->tmdbApi = $tmdbApi;
         $this->movie = new Movie();
+        $this->listMovie = new ListMovie();
     }
 
     public function index(Request $request)
     {
         $popular = $this->tmdbApi->getPopular($request->page ?? 1);
 
-        $popular = $this->movie->markWatchedMovies($popular);
-        $popular = $this->movie->markLikedMovies($popular);
+        $popular['results'] = $this->movie->markWatchedMovies($popular['results']);
+        $popular['results'] = $this->movie->markLikedMovies($popular['results']);
 
         return Inertia::render('Movies/Index', [
             'popular' => $popular,
@@ -40,78 +41,62 @@ class MovieController extends Controller
 
     public function show($id)
     {
-        $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-            'api_key' => Config::get('services.tmdb.key'),
-            'language' => 'es-ES',
-            'append_to_response' => 'videos,credits'
-        ]);
+        $user = Auth::user();
+        $movie = $this->tmdbApi->getMovie($id);
 
-        if ($response->ok()) {
-            $movie = $response->json();
-        } else {
-            dd(404);
+        $myReview = Review::where('user_id', Auth::user()->id)
+            ->where('movie_id', $id)
+            ->get();
+
+        $friendsReviews = Review::whereHas('user', function ($query) use ($user) {
+            $query->whereHas('followers', function ($q) use ($user) {
+                $q->where('follower_id', $user->id);
+            });
+        })
+            ->where('movie_id', $id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $popularReviews = Review::where('movie_id', $id)
+            ->withcount(['likes as like' => function ($q) {
+                return $q->where('user_id', Auth::id());
+            }])
+            ->with('user')
+            ->withCount('likes')
+            ->latest('likes_count')
+            ->take(5)
+            ->get();
+
+        $recentReviews = Review::where('movie_id', $id)
+            ->withcount(['likes as like' => function ($q) {
+                return $q->where('user_id', Auth::id());
+            }])
+            ->with('user')
+            ->withCount('likes')
+            ->orderBy('updated_at', 'desc')
+            ->take(5)
+            ->get();
+
+        foreach ($friendsReviews as $index => $_review) {
+            $friendsReviews[$index]['movie'] = $movie;
         }
 
-        $friendsId = Auth::user()->following()->get()->pluck('id');
-
-        $myReview = Review::where('user_id', Auth::user()->id)->where('movie_id', $id)->get();
-        $friendsReviews = Review::whereIn('user_id', $friendsId)->where('movie_id', $id)->with('user')->withCount('likes')->withcount(['likes as like' => function ($q) {
-            return $q->where('user_id', Auth::id());
-        }])->latest()->take(4)->get();
-        $popularReviews = Review::where('movie_id', $id)->with('user')->withCount('likes')->withcount(['likes as like' => function ($q) {
-            return $q->where('user_id', Auth::id());
-        }])->orderBy('likes_count', 'desc')->take(4)->get();
-        $recentReviews = Review::where('movie_id', $id)->with('user')->withCount('likes')->withcount(['likes as like' => function ($q) {
-            return $q->where('user_id', Auth::id());
-        }])->orderBy('updated_at', 'desc')->take(4)->get();
-
-        foreach ($friendsReviews as $index => $movieReview) {
-            $response = Http::get('https://api.themoviedb.org/3/movie/' . $movieReview->movie_id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
-            ]);
-
-            if ($response->ok()) {
-                $friendsReviews[$index]['movie'] = $response->json();
-            } else {
-                unset($friendsReviews[$index]);
-            }
+        foreach ($popularReviews as $index => $_review) {
+            $popularReviews[$index]['movie'] = $movie;
         }
 
-        foreach ($popularReviews as $index => $movieReview) {
-            $response = Http::get('https://api.themoviedb.org/3/movie/' . $movieReview->movie_id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
-            ]);
-
-            if ($response->ok()) {
-                $popularReviews[$index]['movie'] = $response->json();
-            } else {
-                unset($popularReviews[$index]);
-            }
+        foreach ($recentReviews as $index => $_review) {
+            $recentReviews[$index]['movie'] = $movie;
         }
 
-        foreach ($recentReviews as $index => $movieReview) {
-            $response = Http::get('https://api.themoviedb.org/3/movie/' . $movieReview->movie_id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
-            ]);
+        $movie = $this->movie->markWatchedMovies([$movie])[0];
+        $movie = $this->movie->markLikedMovies([$movie])[0];
 
-            if ($response->ok()) {
-                $recentReviews[$index]['movie'] = $response->json();
-            } else {
-                unset($recentReviews[$index]);
-            }
-        }
+        $lists = ListMovie::where('user_id', Auth::user()->id)
+            ->get();
 
-        $liked = DB::table('likes_movies')->where('user_id', Auth::user()->id)->where('movie_id', $id)->count() === 1;
-        $watched = DB::table('movies_watched')->where('user_id', Auth::user()->id)->where('movie_id', $id)->count() === 1;
-
-        $lists = ListMovie::where('user_id', Auth::user()->id)->get();
-
-        foreach ($lists as $index => $list) {
-            $lists[$index]['contains_movie'] = DB::table('lists_movies')->where('list_id', $list->id)->where('movie_id', $id)->count() === 1;
-        }
+        $lists = $this->listMovie->markListWithMovie($lists, $id);
 
         return Inertia::render('Movies/Show', [
             'movie' => $movie,
@@ -119,8 +104,6 @@ class MovieController extends Controller
             'friendsReviews' => $friendsReviews,
             'popularReviews' => $popularReviews,
             'recentReviews' => $recentReviews,
-            'liked' => $liked,
-            'watched' => $watched,
             'lists' => $lists
         ]);
     }

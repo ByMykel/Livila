@@ -18,8 +18,8 @@ class Movie extends Model
 
     public function markWatchedMovies($movies)
     {
-        foreach ($movies['results'] as $index => $movie) {
-            $movies['results'][$index]['watched'] = $this->isWatched($movie['id']);
+        foreach ($movies as $index => $movie) {
+            $movies[$index]['watched'] = $this->isWatched($movie['id']);
         }
 
         return $movies;
@@ -32,8 +32,8 @@ class Movie extends Model
 
     public function markLikedMovies($movies)
     {
-        foreach ($movies['results'] as $index => $movie) {
-            $popular['results'][$index]['liked'] = $this->isLiked($movie['id']);
+        foreach ($movies as $index => $movie) {
+            $movies[$index]['liked'] = $this->isLiked($movie['id']);
         }
 
         return $movies;

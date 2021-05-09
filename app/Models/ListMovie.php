@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class ListMovie extends Model
 {
@@ -31,5 +32,19 @@ class ListMovie extends Model
     public function scopePrivate($query)
     {
         return $query->where('visibility', 0);
+    }
+    
+    public function isListed($listId, $movieId)
+    {
+        return DB::table('lists_movies')->where('list_id', $listId)->where('movie_id', $movieId)->count() === 1;
+    }
+
+    public function markListWithMovie($lists, $movieId)
+    {
+        foreach ($lists as $index => $list) {
+            $lists[$index]['contains_movie'] = $this->isListed($list->id, $movieId);
+        }
+
+        return $lists;
     }
 }
