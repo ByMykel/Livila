@@ -74,7 +74,7 @@
                                 alt="Workflow"
                             />
                         </div>
-                        <div class="hidden sm:block sm:ml-6">
+                        <div class="hidden sm:block sm:ml-6 mr-2">
                             <div class="flex space-x-4">
                                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                                 <a
@@ -112,7 +112,7 @@
                                 >
                             </div>
                         </div>
-                        <div class="mx-auto hidden sm:block sm:w-2/5 relative">
+                        <div class="mx-auto hidden sm:block sm:w-2/4 relative">
                             <input
                                 type="text"
                                 class="w-full text-white bg-black-300 border-0 rounded-md h-9 focus:ring-indigo-500 pr-10"
@@ -169,6 +169,22 @@
                             <dropdown
                                 :showingMenuDropdown="showingMenuDropdown"
                             />
+                        </div>
+
+                        <div
+                            v-if="!$page.props.auth"
+                            class="text-white flex space-x-2"
+                        >
+                            <a
+                                :href="route('login')"
+                                class="px-3 py-2 rounded-md text-sm font-medium bg-black-300 text-white hover:bg-black-200"
+                                >Log in</a
+                            >
+                            <a
+                                :href="route('register')"
+                                class="px-3 py-2 rounded-md text-sm font-medium bg-black-300 text-white hover:bg-black-200"
+                                >Sign up</a
+                            >
                         </div>
                     </div>
                 </div>
