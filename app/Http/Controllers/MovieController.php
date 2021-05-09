@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\ListMovie;
+use App\Models\Movie;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,51 +13,24 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
+use App\Services\TMDB\TmdbMoviesInformationApi;
 
 class MovieController extends Controller
 {
+    protected $tmdbApi;
+
+    public function __construct(TmdbMoviesInformationApi $tmdbApi)
+    {
+        $this->tmdbApi = $tmdbApi;
+        $this->movie = new Movie();
+    }
+
     public function index(Request $request)
     {
-        $response = Http::get('https://api.themoviedb.org/3/movie/popular', [
-            'api_key' => Config::get('services.tmdb.key'),
-            'language' => 'es-ES',
-            'page' => intval($request->page ?? 1) * 2 - 1
-        ]);
+        $popular = $this->tmdbApi->getPopular($request->page ?? 1);
 
-        if ($response->ok()) {
-            $popular = $response->json();
-        } else {
-            dd(404);
-        }
-
-        $response = Http::get('https://api.themoviedb.org/3/movie/popular', [
-            'api_key' => Config::get('services.tmdb.key'),
-            'language' => 'es-ES',
-            'page' => intval($request->page ?? 1) * 2
-        ]);
-
-        if ($response->ok()) {
-            $popular['results'] = array_merge($popular['results'], $response->json()['results']);
-        } else {
-            dd(404);
-        }
-
-        foreach ($popular['results'] as $index => $movie) {
-            $likedMovie = DB::table('likes_movies')->where('user_id', Auth::user()->id)->where('movie_id', $movie['id'])->count() === 1;
-            $watchedMovie = DB::table('movies_watched')->where('user_id', Auth::user()->id)->where('movie_id', $movie['id'])->count() === 1;
-
-            if ($likedMovie) {
-                $popular['results'][$index]['liked'] = true;
-            } else {
-                $popular['results'][$index]['liked'] = false;
-            }
-
-            if ($watchedMovie) {
-                $popular['results'][$index]['watched'] = true;
-            } else {
-                $popular['results'][$index]['watched'] = false;
-            }
-        }
+        $popular = $this->movie->markWatchedMovies($popular);
+        $popular = $this->movie->markLikedMovies($popular);
 
         return Inertia::render('Movies/Index', [
             'popular' => $popular,
