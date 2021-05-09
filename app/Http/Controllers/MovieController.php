@@ -132,26 +132,25 @@ class MovieController extends Controller
         return redirect()->back();
     }
 
-    public function watched(User $user)
+    public function watchedMovies(User $user)
     {
-        $watchedIds = DB::table('movies_watched')->where('user_id', $user->id)->latest()->select('movie_id')->paginate(40);
-        $watched = [];
+        $user = User::where('id', $user->id)
+            ->withcount(['followers as follow' => function ($q) {
+                return $q->where('follower_id', Auth::id());
+            }])
+            ->get()[0];
 
-        foreach ($watchedIds->items() as $index => $movie) {
-            $watched[] = (Http::get('https://api.themoviedb.org/3/movie/' . $movie->movie_id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
-            ]))->json();
+        $moviesIds = $this->movie->getWatchedMoviesIds($user);
+        $movies = [];
+
+        foreach ($moviesIds->items() as $_index => $movie) {
+            $movies[] = $this->tmdbApi->getMovie($movie->movie_id);
         }
-
-        $user = User::where('id', $user->id)->withcount(['followers as follow' => function ($q) {
-            return $q->where('follower_id', Auth::id());
-        }])->get()[0];
 
         return Inertia::render('Users/Watched', [
             'user' => $user,
-            'watched' => $watched,
-            'page' => ['actual' => $watchedIds->currentPage(), 'last' => $watchedIds->lastPage()]
+            'watched' => $movies,
+            'page' => ['actual' => $moviesIds->currentPage(), 'last' => $moviesIds->lastPage()]
         ]);
     }
 }

@@ -92,4 +92,9 @@ class Movie extends Model
 
         $this->markAsWatched($id);
     }
+
+    public function getWatchedMoviesIds(User $user)
+    {
+        return DB::table('movies_watched')->where('user_id', $user->id)->latest()->select('movie_id')->paginate(40);
+    }
 }

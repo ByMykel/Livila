@@ -76,7 +76,7 @@ Route::prefix('user')->group(function () {
         Route::post('/follow', [UserController::class, 'follow'])->name('user.follow')->middleware(['auth:sanctum', 'verified']);
         Route::get('/following', [UserController::class, 'following'])->name('user.following');
         Route::get('/followers', [UserController::class, 'followers'])->name('user.followers');
-        Route::get('/watched', [MovieController::class, 'watched'])->name('user.watched');
+        Route::get('/watched', [MovieController::class, 'watchedMovies'])->name('user.watched');
         Route::get('/reviews', [ReviewController::class, 'reviews'])->name('user.reviews');
         Route::get('/lists', [ListMovieController::class, 'lists'])->name('user.lists');
 
