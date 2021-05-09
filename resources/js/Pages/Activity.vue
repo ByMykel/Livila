@@ -6,6 +6,8 @@
                     :followActiveMembers="followActiveMembers"
                     :activities="activities"
                 ></activity-stream>
+
+                <base-pagination :page="page"></base-pagination>
             </div>
         </div>
     </app-layout>
@@ -14,16 +16,19 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import ActivityStream from "@/Components/ActivityStream";
+import BasePagination from "@/Components/BasePagination";
 
 export default {
     components: {
         AppLayout,
         ActivityStream,
+        BasePagination
     },
 
     props: {
         followActiveMembers: Boolean,
         activities: Object,
+        page: Object
     },
 };
 </script>

@@ -34,6 +34,42 @@ class Activity extends Model
         return "";
     }
 
+    public function getMyActivity()
+    {
+        $activities = Auth::user()
+            ->activities()
+            ->with('user')
+            ->paginate(40);
+
+        return $activities;
+    }
+
+    public function getUserActivity(User $user)
+    {
+        $activities = User::find($user->id)
+            ->activities()
+            ->with('user')
+            ->paginate(40);
+
+        return $activities;
+    }
+
+    public function getFriendsActivity()
+    {
+        $user = Auth::user();
+
+        $activities = Activity::whereHas('user', function ($query) use ($user) {
+            return $query->whereHas('followers', function ($q) use ($user) {
+                $q->where('follower_id', $user->id);
+            });
+        })
+            ->latest()
+            ->with('user')
+            ->paginate(40);
+
+        return $activities;
+    }
+
     public function isLikeMovie($movie)
     {
         return DB::table('activities')->where('type', 'likeMovie')->where('user_id', '=', Auth::user()->id)->where('data->id', '=', $movie['id'])->count() === 1;

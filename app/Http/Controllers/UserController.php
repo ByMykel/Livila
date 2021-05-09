@@ -14,6 +14,13 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
+    protected $activity;
+
+    public function __construct()
+    {
+        $this->activity = new Activity();
+    }
+
     public function show(User $user)
     {
         $moviesId = DB::table('movies_watched')->where('user_id', $user->id)->latest()->get()->take(4)->pluck('movie_id');
@@ -33,14 +40,15 @@ class UserController extends Controller
             return $q->where('follower_id', Auth::id());
         }])->get()[0];
 
-        $activities = User::find($user->id)->activities()->with('user')->get();
+        $activities = $this->activity->getUserActivity($user);
 
         return Inertia::render('Users/Show', [
             'user' => $user,
             'reviews' =>  $reviews,
             'lists' =>  $lists,
             'watched' =>  $watched,
-            'activities' => $activities
+            'activities' => $activities->items(),
+            'page' => ['actual' => $activities->currentPage(), 'last' => $activities->lastPage()]
         ]);
     }
 
