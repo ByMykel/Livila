@@ -5,7 +5,7 @@
     >
         <iframe
             height="480"
-            class="mx-auto w-full rounded-md shadow"
+            class="mx-auto w-full rounded-md shadow h-64 sm:h-80 md:h-106 lg:h-122"
             :src="src"
             :title="video.name"
             frameborder="0"
