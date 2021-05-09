@@ -81,7 +81,6 @@ Route::prefix('user')->group(function () {
         Route::get('/lists', [ListMovieController::class, 'lists'])->name('user.lists');
 
         Route::prefix('likes')->group(function () {
-            Route::get('/', [LikeController::class, 'index'])->name('user.likes');
             Route::get('/movies', [LikeController::class, 'movies'])->name('user.likes.movies');
             Route::get('/lists', [LikeController::class, 'lists'])->name('user.likes.lists');
             Route::get('/reviews', [LikeController::class, 'reviews'])->name('user.likes.reviews');
