@@ -18,12 +18,16 @@ use App\Services\TMDB\TmdbMoviesInformationApi;
 class MovieController extends Controller
 {
     protected $tmdbApi;
+    protected $movie;
+    protected $listMovie;
+    protected $activity;
 
     public function __construct(TmdbMoviesInformationApi $tmdbApi)
     {
         $this->tmdbApi = $tmdbApi;
         $this->movie = new Movie();
         $this->listMovie = new ListMovie();
+        $this->activity = new Activity();
     }
 
     public function index(Request $request)
@@ -108,56 +112,22 @@ class MovieController extends Controller
         ]);
     }
 
-    public function like($id)
+    public function handleLike($id)
     {
-        $movie = DB::table('likes_movies')->where('user_id', Auth::user()->id)->where('movie_id', $id);
+        $movie = $this->tmdbApi->getMovie($id);
 
-        if ($movie->first()) {
-            $movie->delete();
-
-            DB::table('activities')->where('type', 'likeMovie')->where('user_id', '=', Auth::user()->id)->where('data->id', '=', $id)->delete();
-        } else {
-            DB::table('likes_movies')->insert([
-                'user_id' => Auth::user()->id,
-                'movie_id' => $id,
-                'created_at' => NOW(),
-                'updated_at' => NOW(),
-            ]);
-
-            $data = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
-            ]))->json();
-
-            Activity::create(['type' => 'likeMovie', 'user_id' => Auth::user()->id, 'data' => $data]);
-        }
+        $this->activity->handleLikeMovieActivity($movie);
+        $this->movie->handleLike($id);
 
         return redirect()->back();
     }
 
-    public function watch($id)
+    public function handleWatch($id)
     {
-        $movie = DB::table('movies_watched')->where('user_id', Auth::user()->id)->where('movie_id', $id);
+        $movie = $this->tmdbApi->getMovie($id);
 
-        if ($movie->first()) {
-            $movie->delete();
-
-            DB::table('activities')->where('type', 'watchMovie')->where('user_id', Auth::user()->id)->where('data->id', $id)->delete();
-        } else {
-            DB::table('movies_watched')->insert([
-                'user_id' => Auth::user()->id,
-                'movie_id' => $id,
-                'created_at' => NOW(),
-                'updated_at' => NOW(),
-            ]);
-
-            $data = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
-            ]))->json();
-
-            Activity::create(['type' => 'watchMovie', 'user_id' => Auth::user()->id, 'data' => $data]);
-        }
+        $this->activity->handleWatchMovieActivity($movie);
+        $this->movie->handleWatch($id);
 
         return redirect()->back();
     }

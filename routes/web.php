@@ -48,8 +48,8 @@ Route::prefix('movies')->group(function () {
         Route::get('/', [MovieController::class, 'show'])->name('movies.show');
 
         Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-            Route::post('/like', [MovieController::class, 'like'])->name('movies.like');
-            Route::post('/watch', [MovieController::class, 'watch'])->name('movies.watch');
+            Route::post('/like', [MovieController::class, 'handleLike'])->name('movies.like');
+            Route::post('/watch', [MovieController::class, 'handleWatch'])->name('movies.watch');
         });
 
         Route::prefix('reviews')->group(function () {
