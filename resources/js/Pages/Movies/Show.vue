@@ -16,7 +16,7 @@
 
                 <div
                     v-show="showReviewsNavbar"
-                    class="border-b border-black-200 mt-5 mb-5 text-black-100 flex justify-between px-1"
+                    class="border-b border-black-300 mt-5 mb-5 text-black-100 flex justify-between px-1"
                 >
                     <div class="flex">
                         <a

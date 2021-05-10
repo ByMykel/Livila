@@ -1,5 +1,5 @@
 <template>
-    <div class="border-b border-black-200 mt-5 mb-5 text-black-100 flex px-1">
+    <div class="border-b border-black-300 mt-5 mb-5 text-black-100 flex px-1">
         <a
             :href="route('lists')"
             class="hover:border-b hover:text-white px-3 border-black-100"

@@ -1,5 +1,5 @@
 <template>
-    <div class="border-b border-gray-600 mt-5 mb-5 text-gray-400 flex px-1">
+    <div class="border-b border-black-300 mt-5 mb-5 text-gray-400 flex px-1">
         <a
             :href="route('user.likes.movies', user.username)"
             class="hover:border-b hover:text-white px-3 border-gray-500"
