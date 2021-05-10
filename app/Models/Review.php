@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Review extends Model
 {
@@ -86,6 +87,31 @@ class Review extends Model
             ->withCount('likes')
             ->orderBy('updated_at', 'desc')
             ->take(5)
+            ->get();
+
+        return $reviews;
+    }
+
+    public function getLikedReviews(User $user)
+    {
+        $reviews = DB::table('likes_reviews')
+            ->where('user_id', $user->id)
+            ->latest()
+            ->select('review_id')
+            ->paginate(15);
+
+        return $reviews;
+    }
+
+    public function getReviewsByIds($ids)
+    {
+        $reviews = Review::whereIn('id', $ids)
+            ->withcount(['likes as like' => function ($q) {
+                return $q->where('user_id', Auth::id());
+            }])
+            ->with('user')
+            ->withCount('likes')
+            ->latest()
             ->get();
 
         return $reviews;
