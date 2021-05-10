@@ -32,7 +32,7 @@ class TmdbMoviesInformationApi
         return $movies;
     }
 
-    public function getMovie($id)
+    public function getMovieById($id)
     {
         $movie = [];
 
@@ -53,7 +53,24 @@ class TmdbMoviesInformationApi
         $movies = [];
 
         foreach ($moviesIds as $id) {
-            $movies[] = $this->getMovie($id);
+            $movies[] = $this->getMovieById($id);
+        }
+
+        return $movies;
+    }
+
+    public function getMoviesByName($query, $page = 1)
+    {
+        $movies = [];
+
+        $response = Http::get('https://api.themoviedb.org/3/search/movie', [
+            'api_key' => Config::get('services.tmdb.key'),
+            'query' => $query,
+            'page' => $page
+        ]);
+
+        if ($response->ok()) {
+            $movies = $response->json();
         }
 
         return $movies;

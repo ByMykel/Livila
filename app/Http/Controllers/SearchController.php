@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\ListMovie;
+use App\Models\Movie;
 use App\Models\Review;
 use App\Models\User;
+use App\Services\TMDB\TmdbMoviesInformationApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -14,13 +16,19 @@ use Inertia\Inertia;
 
 class SearchController extends Controller
 {
+    protected $tmdbApi;
+
+    public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie)
+    {
+        $this->tmdbApi = $tmdbApi;
+        $this->movie = $movie;
+    }
+
     public function movies(Request $request, $query)
     {
-        $movies = Http::get('https://api.themoviedb.org/3/search/movie', [
-            'api_key' => Config::get('services.tmdb.key'),
-            'query' => urlencode($query),
-            'page' => $request->page ?? 1
-        ])->json();
+        $movies = $this->tmdbApi->getMoviesByName(urlencode($query), $request->page ?? 1);
+        $movies['results'] = $this->movie->markWatchedMovies($movies['results']);
+        $movies['results'] = $this->movie->markLikedMovies($movies['results']);
 
         return Inertia::render('Search/Movies', [
             'query' => $query,

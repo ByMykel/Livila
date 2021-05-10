@@ -45,7 +45,7 @@ class MovieController extends Controller
 
     public function show($id)
     {
-        $movie = $this->tmdbApi->getMovie($id);
+        $movie = $this->tmdbApi->getMovieById($id);
 
         $myReview = $this->review->getMyReview($id);
         $friendsReviews = $this->review->getFriendsReviews($id);
@@ -82,7 +82,7 @@ class MovieController extends Controller
 
     public function handleLike($id)
     {
-        $movie = $this->tmdbApi->getMovie($id);
+        $movie = $this->tmdbApi->getMovieById($id);
 
         $this->activity->handleLikeMovieActivity($movie);
         $this->movie->handleLike($id);
@@ -92,7 +92,7 @@ class MovieController extends Controller
 
     public function handleWatch($id)
     {
-        $movie = $this->tmdbApi->getMovie($id);
+        $movie = $this->tmdbApi->getMovieById($id);
 
         $this->activity->handleWatchMovieActivity($movie);
         $this->movie->handleWatch($id);
