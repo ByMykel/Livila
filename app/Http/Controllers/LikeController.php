@@ -19,11 +19,12 @@ class LikeController extends Controller
     protected $movie;
     protected $user;
 
-    public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie, User $user)
+    public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie, User $user, ListMovie $listMovie)
     {
         $this->tmdbApi = $tmdbApi;
         $this->movie = $movie;
         $this->user = $user;
+        $this->listMovie = $listMovie;
     }
 
     public function movies(User $user)
@@ -50,41 +51,27 @@ class LikeController extends Controller
 
     public function lists(User $user)
     {
-        $listsId = DB::table('likes_lists')->where('user_id', $user->id)->latest()->select('list_id')->paginate(8);
+        $listsIds = $this->listMovie->getLikedLists($user);
+
         $ids = array_map(function ($lists) {
             return $lists->list_id;
-        }, $listsId->items());
-        $lists = ListMovie::whereIn('id', $ids)->with('user')->withCount('likes')->latest()->get();
+        }, $listsIds->items());
+
+        $lists = $this->listMovie->getListsByIds($ids);
 
         foreach ($lists as $index => $list) {
-            $lists[$index]['movies_count'] = DB::table('lists_movies')->where('list_id', $list->id)->get()->count();
-            $listMoviesId = DB::table('lists_movies')->where('list_id', $list->id)->get()->take(5)->pluck('movie_id');
-            $listsMovies = [];
-
-            foreach ($listMoviesId as $id) {
-                $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-                    'api_key' => Config::get('services.tmdb.key'),
-                    'language' => 'es-ES'
-                ]);
-
-                if ($response->ok()) {
-                    $listsMovies[] = $response->json();
-                } else {
-                    unset($lists[$index]);
-                }
-            }
-
+            $lists[$index]['movies_count'] = $this->listMovie->getNumberOfMoviesInAList($list);
+            $listMoviesId = $this->listMovie->getMoviesFromAList($list, 5);
+            $listsMovies = $this->tmdbApi->getMoviesById($listMoviesId);
             $lists[$index]['movies'] = $listsMovies;
         }
 
-        $user = User::where('id', $user->id)->withcount(['followers as follow' => function ($q) {
-            return $q->where('follower_id', Auth::id());
-        }])->get()[0];
+        $user = $this->user->getUser($user);
 
         return Inertia::render('Likes/Lists', [
             'user' => $user,
             'lists' => $lists,
-            'page' => ['actual' => $listsId->currentPage(), 'last' => $listsId->lastPage()]
+            'page' => ['actual' => $listsIds->currentPage(), 'last' => $listsIds->lastPage()]
         ]);
     }
 

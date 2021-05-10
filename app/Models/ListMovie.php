@@ -52,6 +52,48 @@ class ListMovie extends Model
         return $lists;
     }
 
+    public function getNumberOfMoviesInAList($list)
+    {
+        $number = DB::table('lists_movies')
+            ->where('list_id', $list->id)
+            ->get()
+            ->count();
+
+        return $number;
+    }
+
+    public function getListsByIds($ids)
+    {
+        $lists = ListMovie::whereIn('id', $ids)
+            ->with('user')
+            ->withCount('likes')
+            ->latest()
+            ->get();
+
+        return $lists;
+    }
+
+    public function getMoviesFromAList($list, $numberOfMovies = 40)
+    {
+        $lists = DB::table('lists_movies')
+            ->where('list_id', $list->id)
+            ->paginate($numberOfMovies)
+            ->pluck('movie_id');
+
+        return $lists;
+    }
+
+    public function getLikedLists(User $user)
+    {
+        $lists = DB::table('likes_lists')
+            ->where('user_id', $user->id)
+            ->latest()
+            ->select('list_id')
+            ->paginate(15);
+
+        return $lists;
+    }
+
     public function markListWithMovie($lists, $movieId)
     {
         if (!Auth::user()) {
