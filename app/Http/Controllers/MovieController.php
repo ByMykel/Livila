@@ -18,6 +18,7 @@ class MovieController extends Controller
     protected $listMovie;
     protected $activity;
     protected $review;
+    protected $user;
 
     public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie, ListMovie $listMovie, Activity $activity, Review $review, User $user)
     {

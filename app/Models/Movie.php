@@ -105,4 +105,9 @@ class Movie extends Model
     {
         return DB::table('movies_watched')->where('user_id', $user->id)->latest()->select('movie_id')->paginate(40);
     }
+
+    public function getLikedMoviesIds(User $user)
+    {
+        return DB::table('likes_movies')->where('user_id', $user->id)->latest()->select('movie_id')->paginate(40);
+    }
 }

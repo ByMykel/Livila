@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\ListMovie;
+use App\Models\Movie;
 use App\Models\Review;
 use App\Models\User;
+use App\Services\TMDB\TmdbMoviesInformationApi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -13,26 +15,36 @@ use Inertia\Inertia;
 
 class LikeController extends Controller
 {
+    protected $tmdbApi;
+    protected $movie;
+    protected $user;
+
+    public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie, User $user)
+    {
+        $this->tmdbApi = $tmdbApi;
+        $this->movie = $movie;
+        $this->user = $user;
+    }
+
     public function movies(User $user)
     {
-        $moviesId = DB::table('likes_movies')->where('user_id', $user->id)->latest()->select('movie_id')->paginate(40);
-        $movies = [];
+        $moviesIds = $this->movie->getLikedMoviesIds($user);
 
-        foreach ($moviesId->items() as $index => $movie) {
-            $movies[] = (Http::get('https://api.themoviedb.org/3/movie/' . $movie->movie_id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
-            ]))->json();
-        }
+        $ids = array_map(function ($movie) {
+            return $movie->movie_id;
+        }, $moviesIds->items());
 
-        $user = User::where('id', $user->id)->withcount(['followers as follow' => function ($q) {
-            return $q->where('follower_id', Auth::id());
-        }])->get()[0];
+        $movies = $this->tmdbApi->getMoviesById($ids);
+
+        $movies = $this->movie->markWatchedMovies($movies);
+        $movies = $this->movie->markLikedMovies($movies);
+
+        $user = $this->user->getUser($user);
 
         return Inertia::render('Likes/Movies', [
             'user' => $user,
             'movies' => $movies,
-            'page' => ['actual' => $moviesId->currentPage(), 'last' => $moviesId->lastPage()]
+            'page' => ['actual' => $moviesIds->currentPage(), 'last' => $moviesIds->lastPage()]
         ]);
     }
 
