@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\ListMovie;
+use App\Models\Movie;
 use App\Models\User;
+use App\Services\TMDB\TmdbMoviesInformationApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -14,6 +16,21 @@ use Inertia\Inertia;
 
 class ListMovieController extends Controller
 {
+    protected $tmdbApi;
+    protected $movie;
+    protected $listMovie;
+    protected $activity;
+    protected $user;
+
+    public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie, ListMovie $listMovie, Activity $activity, User $user)
+    {
+        $this->tmdbApi = $tmdbApi;
+        $this->movie = $movie;
+        $this->listMovie = $listMovie;
+        $this->activity = $activity;
+        $this->user = $user;
+    }
+
     public function index()
     {
         $recentLists = ListMovie::with('user')->withCount('likes')->latest()->paginate();
@@ -139,44 +156,25 @@ class ListMovieController extends Controller
 
     public function show(ListMovie $listMovie)
     {
-        $moviesId = DB::table('lists_movies')->where('list_id', $listMovie->id)->get()->pluck('movie_id');
-        $watchedMoviesCount = DB::table('movies_watched')->where('user_id', Auth::user()->id)->whereIn('movie_id', $moviesId)->get()->count();
-        $movies = [];
+        $moviesIds = $this->listMovie->getMoviesFromAList($listMovie);
 
-        foreach ($moviesId as $id) {
-            $movies[] = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
-            ]))->json();
-        }
+        $ids = array_map(function ($movie) {
+            return $movie->movie_id;
+        }, $moviesIds->items());
 
-        foreach ($movies as $index => $movie) {
-            $likedMovie = DB::table('likes_movies')->where('user_id', Auth::user()->id)->where('movie_id', $movie['id'])->count() === 1;
-            $watchedMovie = DB::table('movies_watched')->where('user_id', Auth::user()->id)->where('movie_id', $movie['id'])->count() === 1;
+        $watchedMoviesCount = $this->listMovie->getNumberOfWatchedMoviesInAList($ids);
 
-            if ($likedMovie) {
-                $movies[$index]['liked'] = true;
-            } else {
-                $movies[$index]['liked'] = false;
-            }
+        $movies = $this->tmdbApi->getMoviesById($ids);
+        $movies = $this->movie->markWatchedMovies($movies);
+        $movies = $this->movie->markLikedMovies($movies);
 
-            if ($watchedMovie) {
-                $movies[$index]['watched'] = true;
-            } else {
-                $movies[$index]['watched'] = false;
-            }
-        }
-
-        $list = ListMovie::where('id', $listMovie->id)->with('user')->withCount('likes')
-            ->withcount(['likes as like' => function ($q) {
-                return $q->where('user_id', Auth::id());
-            }])
-            ->get();
+        $list = $this->listMovie->getListById($listMovie->id);
 
         return Inertia::render('Lists/Show', [
-            'list' => $list[0],
+            'list' => $list,
             'movies' => $movies,
-            'watchedMoviesCount' => $watchedMoviesCount
+            'watchedMoviesCount' => $watchedMoviesCount,
+            'page' => ['actual' => $moviesIds->currentPage(), 'last' => $moviesIds->lastPage()]
         ]);
     }
 

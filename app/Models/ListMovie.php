@@ -62,6 +62,21 @@ class ListMovie extends Model
         return $number;
     }
 
+    public function getNumberOfWatchedMoviesInAList($moviesIds)
+    {
+        if (!Auth::user()) {
+            return 0;
+        }
+
+        $number = DB::table('movies_watched')
+            ->where('user_id', Auth::user()->id)
+            ->whereIn('movie_id', $moviesIds)
+            ->get()
+            ->count();
+
+        return $number;
+    }
+
     public function getListsByIds($ids)
     {
         $lists = ListMovie::whereIn('id', $ids)
@@ -73,12 +88,26 @@ class ListMovie extends Model
         return $lists;
     }
 
-    public function getMoviesFromAList($list, $numberOfMovies = 40)
+
+    public function getListById($id)
+    {
+        $list = ListMovie::where('id', $id)
+            ->withcount(['likes as like' => function ($q) {
+                return $q->where('user_id', Auth::id());
+            }])
+            ->with('user')
+            ->withCount('likes')
+            ->latest()
+            ->get();
+
+        return $list[0];
+    }
+
+    public function getMoviesFromAList(ListMovie $list, $numberOfMovies = 40)
     {
         $lists = DB::table('lists_movies')
             ->where('list_id', $list->id)
-            ->paginate($numberOfMovies)
-            ->pluck('movie_id');
+            ->paginate($numberOfMovies);
 
         return $lists;
     }

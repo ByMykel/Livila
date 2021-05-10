@@ -19,6 +19,8 @@ class SearchController extends Controller
     protected $tmdbApi;
     protected $movie;
     protected $review;
+    protected $listMovie;
+    protected $user;
 
     public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie, Review $review, ListMovie $listMovie, User $user)
     {
@@ -64,7 +66,12 @@ class SearchController extends Controller
         foreach ($lists as $index => $list) {
             $lists[$index]['movies_count'] = $this->listMovie->getNumberOfMoviesInAList($list);
             $listMoviesId = $this->listMovie->getMoviesFromAList($list, 5);
-            $listsMovies = $this->tmdbApi->getMoviesById($listMoviesId);
+
+            $ids = array_map(function ($movie) {
+                return $movie->movie_id;
+            }, $listMoviesId->items());
+
+            $listsMovies = $this->tmdbApi->getMoviesById($ids);
             $lists[$index]['movies'] = $listsMovies;
         }
 

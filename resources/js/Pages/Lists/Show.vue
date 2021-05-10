@@ -6,7 +6,10 @@
                     class="bg-black-300 p-2 rounded-md shadow mb-5 relative overflow-hidden"
                 >
                     <div
-                        v-show="$page.props.auth.id === list.user_id"
+                        v-show="
+                            $page.props.auth &&
+                            $page.props.auth.id === list.user_id
+                        "
                         class="absolute p-1 top-0 right-0"
                     >
                         <a :href="route('lists.edit', list.id)">
@@ -94,6 +97,8 @@
                 </div>
 
                 <movies-showcase :movies="movies"> </movies-showcase>
+
+                <base-pagination :page="page"></base-pagination>
             </div>
         </div>
     </app-layout>
@@ -102,17 +107,20 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import MoviesShowcase from "@/Components/MoviesShowcase";
+import BasePagination from "@/Components/BasePagination";
 
 export default {
     components: {
         AppLayout,
         MoviesShowcase,
+        BasePagination,
     },
 
     props: {
         list: Object,
         movies: Object,
         watchedMoviesCount: Number,
+        page: Object,
     },
 
     computed: {
