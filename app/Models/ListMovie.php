@@ -106,4 +106,30 @@ class ListMovie extends Model
 
         return $lists;
     }
+
+    public function getListsByName($query)
+    {
+        $terms = explode(" ", $query);
+
+        $lists = ListMovie::query()
+            ->where(function ($query) use ($terms) {
+                foreach ($terms as $term) {
+                    $query->orWhere('name', 'like', '%' . $term . '%');
+                }
+            })
+            ->orWhere(function ($query) use ($terms) {
+                foreach ($terms as $term) {
+                    $query->orWhere('description', 'like', '%' . $term . '%');
+                }
+            })
+            ->withcount(['likes as like' => function ($q) {
+                return $q->where('user_id', Auth::id());
+            }])
+            ->with('user')
+            ->withCount('likes')
+            ->distinct()
+            ->paginate();
+
+        return $lists;
+    }
 }

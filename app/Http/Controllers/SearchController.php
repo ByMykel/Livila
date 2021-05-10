@@ -17,11 +17,16 @@ use Inertia\Inertia;
 class SearchController extends Controller
 {
     protected $tmdbApi;
+    protected $movie;
+    protected $review;
 
-    public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie)
+    public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie, Review $review, ListMovie $listMovie, User $user)
     {
         $this->tmdbApi = $tmdbApi;
         $this->movie = $movie;
+        $this->review = $review;
+        $this->listMovie = $listMovie;
+        $this->user = $user;
     }
 
     public function movies(Request $request, $query)
@@ -39,33 +44,10 @@ class SearchController extends Controller
 
     public function reviews(Request $request, $query)
     {
-        $terms = explode(" ", $query);
-
-        $reviews = Review::query()
-            ->where(function ($query) use ($terms) {
-                foreach ($terms as $term) {
-                    $query->orWhere('review', 'like', '%' . $term . '%');
-                }
-            })
-            ->orWhere('review', 'like', '%' . $query . '%')
-            ->withcount(['likes as like' => function ($q) {
-                return $q->orWhere('user_id', Auth::id());
-            }])
-            ->with('user')
-            ->withCount('likes')
-            ->distinct()
-            ->paginate();
+        $reviews = $this->review->getReviewsByName($query);
 
         foreach ($reviews as $index => $review) {
-            $response = Http::get('https://api.themoviedb.org/3/movie/' . $review->movie_id, [
-                'api_key' => Config::get('services.tmdb.key'),
-            ]);
-
-            if ($response->ok()) {
-                $reviews[$index]['movie'] = $response->json();
-            } else {
-                unset($reviews[$index]);
-            }
+            $reviews[$index]['movie'] = $this->tmdbApi->getMovieById($review->movie_id);
         }
 
         return Inertia::render('Search/Reviews', [
@@ -77,45 +59,13 @@ class SearchController extends Controller
 
     public function lists(Request $request, $query)
     {
-        $terms = explode(" ", $query);
-
-        $lists = ListMovie::query()
-            ->where(function ($query) use ($terms) {
-                foreach ($terms as $term) {
-                    $query->orWhere('name', 'like', '%' . $term . '%');
-                }
-            })
-            ->orWhere(function ($query) use ($terms) {
-                foreach ($terms as $term) {
-                    $query->orWhere('description', 'like', '%' . $term . '%');
-                }
-            })
-            ->withcount(['likes as like' => function ($q) {
-                return $q->where('user_id', Auth::id());
-            }])
-            ->with('user')
-            ->withCount('likes')
-            ->distinct()
-            ->paginate();
+        $lists = $this->listMovie->getListsByName($query);
 
         foreach ($lists as $index => $list) {
-            $lists[$index]['movies_count'] = DB::table('lists_movies')->where('list_id', $list->id)->get()->count();
-            $moviesId = DB::table('lists_movies')->where('list_id', $list->id)->get()->take(5)->pluck('movie_id');
-            $movies = [];
-
-            foreach ($moviesId as $id) {
-                $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-                    'api_key' => Config::get('services.tmdb.key'),
-                ]);
-
-                if ($response->ok()) {
-                    $movies[] = $response->json();
-                } else {
-                    unset($lists[$index]);
-                }
-            }
-
-            $lists[$index]['movies'] = $movies;
+            $lists[$index]['movies_count'] = $this->listMovie->getNumberOfMoviesInAList($list);
+            $listMoviesId = $this->listMovie->getMoviesFromAList($list, 5);
+            $listsMovies = $this->tmdbApi->getMoviesById($listMoviesId);
+            $lists[$index]['movies'] = $listsMovies;
         }
 
         return Inertia::render('Search/Lists', [
@@ -127,14 +77,7 @@ class SearchController extends Controller
 
     public function members(Request $request, $query)
     {
-        $members = User::query()
-            ->where('username', 'like', '%' . $query . '%')
-            ->withcount(['followers as follow' => function ($q) {
-                return $q->where('follower_id', Auth::id());
-            }])
-            ->withCount('followers')
-            ->distinct()
-            ->paginate();
+        $members = $this->user->getUserByName($query);
 
         return Inertia::render('Search/Members', [
             'query' => $query,
