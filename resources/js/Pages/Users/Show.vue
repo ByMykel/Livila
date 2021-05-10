@@ -32,9 +32,6 @@ export default {
 
     props: {
         user: Object,
-        reviews: Object,
-        lists: Object,
-        watched: Object,
         activities: Object,
         page: Object
     },

@@ -14,39 +14,22 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
+    protected $user;
     protected $activity;
 
-    public function __construct()
+    public function __construct(User $user, Activity $activity)
     {
-        $this->activity = new Activity();
+        $this->user = $user;
+        $this->activity = $activity;
     }
 
     public function show(User $user)
     {
-        $moviesId = DB::table('movies_watched')->where('user_id', $user->id)->latest()->get()->take(4)->pluck('movie_id');
-
-        $reviews = Review::where('user_id', $user->id)->latest()->get()->take(4);
-        $lists = ListMovie::whereIn('id', $user->listsMovies()->pluck('id'))->orderBy('updated_at', 'DESC')->get()->take(4);
-        $watched = [];
-
-        foreach ($moviesId as $id) {
-            $watched[] = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
-            ]))->json();
-        }
-
-        $user = User::where('id', $user->id)->withcount(['followers as follow' => function ($q) {
-            return $q->where('follower_id', Auth::id());
-        }])->get()[0];
-
+        $user = $this->user->getUser($user);
         $activities = $this->activity->getUserActivity($user);
 
         return Inertia::render('Users/Show', [
             'user' => $user,
-            'reviews' =>  $reviews,
-            'lists' =>  $lists,
-            'watched' =>  $watched,
             'activities' => $activities->items(),
             'page' => ['actual' => $activities->currentPage(), 'last' => $activities->lastPage()]
         ]);
@@ -54,15 +37,8 @@ class UserController extends Controller
 
     public function follow(User $user)
     {
-        if (Auth::user()->following()->find($user)) {
-            Auth::user()->following()->detach($user);
-
-            DB::table('activities')->where('type', 'followUser')->where('user_id', Auth::user()->id)->where('data->id',  $user->id)->delete();
-        } else {
-            Auth::user()->following()->attach($user);
-
-            Activity::create(['type' => 'followUser', 'user_id' => Auth::user()->id, 'data' => $user]);
-        }
+        $this->activity->handleFollowUser($user);
+        $this->user->handleFollow($user);
 
         return redirect()->back();
     }

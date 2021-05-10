@@ -100,4 +100,31 @@ class User extends Authenticatable
 
         return $result;
     }
+
+    public function isFollowing(User $user)
+    {
+        return Auth::user()->following()->find($user);
+    }
+
+    public function followUser(User $user)
+    {
+        Auth::user()->following()->attach($user);
+    }
+
+    public function unFollowUser(User $user)
+    {
+        Auth::user()->following()->detach($user);
+    }
+
+    public function handleFollow(User $user)
+    {
+        $isFollowing = $this->isFollowing($user);
+
+        if ($isFollowing) {
+            $this->unFollowUser($user);
+            return;
+        }
+
+        $this->followUser($user);
+    }
 }

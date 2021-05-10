@@ -123,4 +123,31 @@ class Activity extends Model
 
         $this->createWatchMovie($movie);
     }
+
+    public function isFollowUser(User $user)
+    {
+        return DB::table('activities')->where('type', 'followUser')->where('user_id', Auth::user()->id)->where('data->id',  $user->id)->count() === 1;
+    }
+
+    public function createFollowUser(User $user)
+    {
+        Activity::create(['type' => 'followUser', 'user_id' => Auth::user()->id, 'data' => $user]);
+    }
+
+    public function deleteFollowUser(User $user)
+    {
+        DB::table('activities')->where('type', 'followUser')->where('user_id', Auth::user()->id)->where('data->id', $user->id)->delete();
+    }
+
+    public function handleFollowUser(User $user)
+    {
+        $isFollowUser = $this->isFollowUser($user);
+
+        if ($isFollowUser) {
+            $this->deleteFollowUser($user);
+            return;
+        }
+
+        $this->createFollowUser($user);
+    }
 }
