@@ -122,14 +122,8 @@ class ReviewController extends Controller
             'spoiler' => $request->spoiler
         ]);
 
-        $data = $review;
-        $data['movie'] = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-            'api_key' => Config::get('services.tmdb.key'),
-            'language' => 'es-ES'
-        ]))->json();
-
-
-        Activity::create(['type' => 'createReview', 'user_id' => Auth::user()->id, 'data' => $data]);
+        $data['movie'] = $this->tmdbApi->getMovieById($id);
+        $this->activity->createCreateReview($data);
 
         return redirect()->back();
     }
@@ -153,8 +147,7 @@ class ReviewController extends Controller
 
     public function destroy($id, Review $review)
     {
-        DB::table('activities')->where('type', 'createReview')->where('user_id', Auth::user()->id)->where('data->movie_id',  $id)->delete();
-
+        $this->activity->deleteCreateReview($id);
         $review->delete();
 
         return redirect()->back();

@@ -163,7 +163,7 @@ class Activity extends Model
 
     public function deleteLikeReview(Review $review)
     {
-        return DB::table('activities')->where('type', 'likeReview')->where('user_id', Auth::id())->where('data->user->id',  $review->user_id)->where('data->movie->id',  $review->movie_id)->delete();
+        DB::table('activities')->where('type', 'likeReview')->where('user_id', Auth::id())->where('data->user->id',  $review->user_id)->where('data->movie->id',  $review->movie_id)->delete();
     }
 
     public function handleLikeReview(Review $review, $data)
@@ -176,5 +176,15 @@ class Activity extends Model
         }
 
         $this->createLikeReview($data);
+    }
+
+    public function createCreateReview($data)
+    {
+        Activity::create(['type' => 'createReview', 'user_id' => Auth::id(), 'data' => $data]);
+    }
+    
+    public function deleteCreateReview($id)
+    {
+        DB::table('activities')->where('type', 'createReview')->where('user_id', Auth::id())->where('data->movie->id',  $id)->delete();
     }
 }
