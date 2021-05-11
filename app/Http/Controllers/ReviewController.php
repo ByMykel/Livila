@@ -2,34 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ReviewRequest;
 use App\Models\Activity;
-use App\Models\Comment;
-use App\Models\ListMovie;
-use App\Models\Movie;
 use App\Models\Review;
 use App\Models\User;
 use App\Services\TMDB\TmdbMoviesInformationApi;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
 class ReviewController extends Controller
 {
     protected $tmdbApi;
-    protected $movie;
-    protected $listMovie;
     protected $activity;
     protected $review;
     protected $user;
 
-    public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie, ListMovie $listMovie, Activity $activity, Review $review, User $user)
+    public function __construct(TmdbMoviesInformationApi $tmdbApi, Activity $activity, Review $review, User $user)
     {
         $this->tmdbApi = $tmdbApi;
-        $this->movie = $movie;
-        $this->listMovie = $listMovie;
         $this->activity = $activity;
         $this->review = $review;
         $this->user = $user;
@@ -107,40 +96,18 @@ class ReviewController extends Controller
         ]);
     }
 
-    public function store($id, Request $request)
+    public function store($id, ReviewRequest $request)
     {
-        $request->validate([
-            'review' => ['required', 'string'],
-            'recommended' => ['required', 'boolean'],
-            'spoiler' => ['required', 'boolean']
-        ]);
-
-        $review = Auth::user()->reviews()->create([
-            'movie_id' => $id,
-            'review' => $request->review,
-            'recommended' => $request->recommended,
-            'spoiler' => $request->spoiler
-        ]);
-
+        $this->review->createReview($id, $request->review, $request->recommended, $request->spoiler);
         $data['movie'] = $this->tmdbApi->getMovieById($id);
         $this->activity->createCreateReview($data);
 
         return redirect()->back();
     }
 
-    public function update($id, Review $review, Request $request)
+    public function update($id, Review $review, ReviewRequest $request)
     {
-        $request->validate([
-            'review' => ['required', 'string'],
-            'recommended' => ['required', 'boolean'],
-            'spoiler' => ['required', 'boolean']
-        ]);
-
-        $review->update([
-            'review' => $request->review,
-            'recommended' => $request->recommended,
-            'spoiler' => $request->spoiler
-        ]);
+        $this->review->updateReview($review, $request->review, $request->recommended, $request->spoiler);
 
         return redirect()->back();
     }

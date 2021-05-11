@@ -181,4 +181,23 @@ class Review extends Model
 
         $this->markAsLiked($review);
     }
+
+    public function createReview($movieId, $review, $recommended, $spoiler)
+    {
+        Auth::user()->reviews()->create([
+            'movie_id' => $movieId,
+            'review' => $review,
+            'recommended' => $recommended,
+            'spoiler' => $spoiler
+        ]);
+    }
+
+    public function updateReview(Review $review, $reviewText, $recommended, $spoiler)
+    {
+        $review->update([
+            'review' => $reviewText,
+            'recommended' => $recommended,
+            'spoiler' => $spoiler
+        ]);
+    }
 }
