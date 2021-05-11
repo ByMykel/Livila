@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\Comment;
+use App\Models\ListMovie;
+use App\Models\Movie;
 use App\Models\Review;
 use App\Models\User;
+use App\Services\TMDB\TmdbMoviesInformationApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -15,102 +18,92 @@ use Inertia\Inertia;
 
 class ReviewController extends Controller
 {
+    protected $tmdbApi;
+    protected $movie;
+    protected $listMovie;
+    protected $activity;
+    protected $review;
+    protected $user;
+
+    public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie, ListMovie $listMovie, Activity $activity, Review $review, User $user)
+    {
+        $this->tmdbApi = $tmdbApi;
+        $this->movie = $movie;
+        $this->listMovie = $listMovie;
+        $this->activity = $activity;
+        $this->review = $review;
+        $this->user = $user;
+    }
+
     public function index($id)
     {
-        $reviewsId = Review::where('movie_id', $id)->with('user')->withCount('likes')->withcount(['likes as like' => function ($q) {
-            return $q->where('user_id', Auth::id());
-        }])->orderBy('updated_at', 'desc')->paginate(8);
-        $reviews = $reviewsId->items();
+        $reviews = $this->review->getRecentReviews($id);
+        $movie = $this->tmdbApi->getMovieById($id);
 
-        $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-            'api_key' => Config::get('services.tmdb.key'),
-            'language' => 'es-ES',
-            'append_to_response' => 'videos,credits'
-        ])->json();
-
-        foreach ($reviews as $index => $review) {
-            $response = Http::get('https://api.themoviedb.org/3/movie/' . $review->movie_id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
+        if (count($reviews) === 0) {
+            return Inertia::render('Reviews/Index', [
+                'movie' => $movie,
+                'reviews' => [],
+                'page' => ['actual' => 1, 'last' => 1]
             ]);
+        }
 
-            if ($response->ok()) {
-                $reviews[$index]['movie'] = $response->json();
-            } else {
-                unset($reviews[$index]);
-            }
+        foreach ($reviews->items() as $index => $_review) {
+            $reviews[$index]['movie'] = $movie;
         }
 
         return Inertia::render('Reviews/Index', [
             'movie' => $movie,
-            'reviews' => $reviews,
-            'page' => ['actual' => $reviewsId->currentPage(), 'last' => $reviewsId->lastPage()]
+            'reviews' => $reviews->items(),
+            'page' => ['actual' => $reviews->currentPage(), 'last' => $reviews->lastPage()]
         ]);
     }
 
     public function popular($id)
     {
-        $reviewsId = Review::where('movie_id', $id)->with('user')->withCount('likes')->withcount(['likes as like' => function ($q) {
-            return $q->where('user_id', Auth::id());
-        }])->orderBy('likes_count', 'desc')->paginate(8);
-        $reviews = $reviewsId->items();
+        $reviews = $this->review->getPopularReviews($id);
+        $movie = $this->tmdbApi->getMovieById($id);
 
-        $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-            'api_key' => Config::get('services.tmdb.key'),
-            'language' => 'es-ES',
-            'append_to_response' => 'videos,credits'
-        ])->json();
-
-        foreach ($reviews as $index => $review) {
-            $response = Http::get('https://api.themoviedb.org/3/movie/' . $review->movie_id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
+        if (count($reviews) === 0) {
+            return Inertia::render('Reviews/Popular', [
+                'movie' => $movie,
+                'reviews' => [],
+                'page' => ['actual' => 1, 'last' => 1]
             ]);
+        }
 
-            if ($response->ok()) {
-                $reviews[$index]['movie'] = $response->json();
-            } else {
-                unset($reviews[$index]);
-            }
+        foreach ($reviews->items() as $index => $_review) {
+            $reviews[$index]['movie'] = $movie;
         }
 
         return Inertia::render('Reviews/Popular', [
             'movie' => $movie,
-            'reviews' => $reviews,
-            'page' => ['actual' => $reviewsId->currentPage(), 'last' => $reviewsId->lastPage()]
+            'reviews' => $reviews->items(),
+            'page' => ['actual' => $reviews->currentPage(), 'last' => $reviews->lastPage()]
         ]);
     }
 
     public function friends($id)
     {
-        $reviewsId = Review::whereIn('user_id', Auth::user()->following()->get()->pluck('id'))->where('movie_id', $id)->with('user')->withCount('likes')->withcount(['likes as like' => function ($q) {
-            return $q->where('user_id', Auth::id());
-        }])->orderBy('updated_at', 'desc')->paginate(8);
-        $reviews = $reviewsId->items();
+        $reviews = $this->review->getFriendsReviews($id);
+        $movie = $this->tmdbApi->getMovieById($id);
 
-        $movie = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-            'api_key' => Config::get('services.tmdb.key'),
-            'language' => 'es-ES',
-            'append_to_response' => 'videos,credits'
-        ])->json();
-
-        foreach ($reviews as $index => $review) {
-            $response = Http::get('https://api.themoviedb.org/3/movie/' . $review->movie_id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
+        if (count($reviews) === 0) {
+            return Inertia::render('Reviews/Friends', [
+                'movie' => $movie,
+                'reviews' => [],
+                'page' => ['actual' => 1, 'last' => 1]
             ]);
+        }
 
-            if ($response->ok()) {
-                $reviews[$index]['movie'] = $response->json();
-            } else {
-                unset($reviews[$index]);
-            }
+        foreach ($reviews->items() as $index => $_review) {
+            $reviews[$index]['movie'] = $movie;
         }
 
         return Inertia::render('Reviews/Friends', [
             'movie' => $movie,
-            'reviews' => $reviews,
-            'page' => ['actual' => $reviewsId->currentPage(), 'last' => $reviewsId->lastPage()]
+            'reviews' => $reviews->items(),
+            'page' => ['actual' => $reviews->currentPage(), 'last' => $reviews->lastPage()]
         ]);
     }
 
@@ -134,7 +127,7 @@ class ReviewController extends Controller
             'api_key' => Config::get('services.tmdb.key'),
             'language' => 'es-ES'
         ]))->json();
-        
+
 
         Activity::create(['type' => 'createReview', 'user_id' => Auth::user()->id, 'data' => $data]);
 
@@ -161,69 +154,44 @@ class ReviewController extends Controller
     public function destroy($id, Review $review)
     {
         DB::table('activities')->where('type', 'createReview')->where('user_id', Auth::user()->id)->where('data->movie_id',  $id)->delete();
-        
+
         $review->delete();
 
         return redirect()->back();
     }
 
-    public function like($id, Review $review)
+    public function handleLike($id, Review $review)
     {
-        $q = DB::table('likes_reviews')->where('user_id', Auth::user()->id)->where('review_id', $review->id);
+        $data['user'] = User::find($review->user_id);
+        $data['movie'] = $this->tmdbApi->getMovieById($id);
 
-        if ($q->first()) {
-            $q->delete();
-
-            DB::table('activities')->where('type', 'likeReview')->where('user_id', Auth::user()->id)->where('data->user_id',  $review->user_id)->where('data->movie_id',  $review->movie_id)->delete();
-        } else {
-            DB::table('likes_reviews')->insert([
-                'user_id' => Auth::user()->id,
-                'review_id' => $review->id,
-                'created_at' => NOW(),
-                'updated_at' => NOW(),
-            ]);
-
-            $data = $review;
-            $data['user'] = User::find($review->user_id);
-            $data['movie'] = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
-            ]))->json();
-
-            Activity::create(['type' => 'likeReview', 'user_id' => Auth::user()->id, 'data' => $data]);
-        }
+        $this->activity->handleLikeReview($review, $data);
+        $this->review->handleLike($review);
 
         return redirect()->back();
     }
 
     public function reviews(User $user)
     {
-        $reviewsId = Review::where('user_id', $user->id)->with('user')->withCount('likes')->withcount(['likes as like' => function ($q) {
-            return $q->where('user_id', Auth::id());
-        }])->orderBy('updated_at', 'desc')->paginate(8);
-        $reviews = $reviewsId->items();
+        $reviews = $this->review->getUserReviews($user);
+        $user = $this->user->getUser($user);
 
-        foreach ($reviews as $index => $review) {
-            $response = Http::get('https://api.themoviedb.org/3/movie/' . $review->movie_id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
+        if (count($reviews) === 0) {
+            return Inertia::render('Users/Reviews', [
+                'user' => $user,
+                'reviews' => [],
+                'page' => ['actual' => 1, 'last' => 1]
             ]);
-
-            if ($response->ok()) {
-                $reviews[$index]['movie'] = $response->json();
-            } else {
-                unset($reviews[$index]);
-            }
         }
 
-        $user = User::where('id', $user->id)->withcount(['followers as follow' => function ($q) {
-            return $q->where('follower_id', Auth::id());
-        }])->get()[0];
+        foreach ($reviews->items() as $index => $review) {
+            $reviews[$index]['movie'] = $this->tmdbApi->getMovieById($review->movie_id);
+        }
 
         return Inertia::render('Users/Reviews', [
             'user' => $user,
-            'reviews' => $reviews,
-            'page' => ['actual' => $reviewsId->currentPage(), 'last' => $reviewsId->lastPage()]
+            'reviews' => $reviews->items(),
+            'page' => ['actual' => $reviews->currentPage(), 'last' => $reviews->lastPage()]
         ]);
     }
 }

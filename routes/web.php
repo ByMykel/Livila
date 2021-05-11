@@ -63,7 +63,7 @@ Route::prefix('movies')->group(function () {
                 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
                     Route::post('/update', [ReviewController::class, 'update'])->name('movies.reviews.update');
                     Route::delete('/destroy', [ReviewController::class, 'destroy'])->name('movies.reviews.destroy');
-                    Route::post('/like', [ReviewController::class, 'like'])->name('movies.reviews.like');
+                    Route::post('/like', [ReviewController::class, 'handleLike'])->name('movies.reviews.like');
                 });
             });
         });

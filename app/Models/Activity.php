@@ -150,4 +150,31 @@ class Activity extends Model
 
         $this->createFollowUser($user);
     }
+
+    public function isLikeReview(Review $review)
+    {
+        return DB::table('activities')->where('type', 'likeReview')->where('user_id', Auth::id())->where('data->user->id',  $review->user_id)->where('data->movie->id',  $review->movie_id)->count() === 1;
+    }
+
+    public function createLikeReview($data)
+    {
+        Activity::create(['type' => 'likeReview', 'user_id' => Auth::id(), 'data' => $data]);
+    }
+
+    public function deleteLikeReview(Review $review)
+    {
+        return DB::table('activities')->where('type', 'likeReview')->where('user_id', Auth::id())->where('data->user->id',  $review->user_id)->where('data->movie->id',  $review->movie_id)->delete();
+    }
+
+    public function handleLikeReview(Review $review, $data)
+    {
+        $isLikeReview = $this->isLikeReview($review);
+
+        if ($isLikeReview) {
+            $this->deleteLikeReview($review);
+            return;
+        }
+
+        $this->createLikeReview($data);
+    }
 }

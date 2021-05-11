@@ -48,9 +48,14 @@ class MovieController extends Controller
         $movie = $this->tmdbApi->getMovieById($id);
 
         $myReview = $this->review->getMyReview($id);
-        $friendsReviews = $this->review->getFriendsReviews($id);
-        $popularReviews = $this->review->getPopularReviews($id);
-        $recentReviews = $this->review->getRecentReviews($id);
+        $friendsReviews = $this->review->getFriendsReviews($id, 5);
+        $friendsReviews = count($friendsReviews) > 0 ? $friendsReviews->items() : [];
+
+        $popularReviews = $this->review->getPopularReviews($id, 5);
+        $popularReviews = count($popularReviews) > 0 ? $popularReviews->items() : [];
+
+        $recentReviews = $this->review->getRecentReviews($id, 5);
+        $recentReviews = count($recentReviews) > 0 ? $recentReviews->items() : [];
 
         foreach ($friendsReviews as $index => $_review) {
             $friendsReviews[$index]['movie'] = $movie;

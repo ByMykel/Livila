@@ -34,14 +34,28 @@ class Review extends Model
             return [];
         }
 
-        $review = Review::where('user_id', Auth::user()->id)
+        $review = Review::where('user_id', Auth::id())
             ->where('movie_id', $movieId)
             ->get();
 
         return $review;
     }
 
-    public function getFriendsReviews($movieId)
+    public function getUserReviews(User $user)
+    {
+        $reviews = Review::where('user_id', $user->id)
+            ->withcount(['likes as like' => function ($q) {
+                return $q->where('user_id', Auth::id());
+            }])
+            ->orderBy('updated_at', 'desc')
+            ->with('user')
+            ->withCount('likes')
+            ->paginate(15);
+
+        return $reviews;
+    }
+
+    public function getFriendsReviews($movieId, $numberOfReviews = 40)
     {
         if (!Auth::user()) {
             return [];
@@ -56,13 +70,12 @@ class Review extends Model
         })
             ->where('movie_id', $movieId)
             ->latest()
-            ->take(5)
-            ->get();
+            ->paginate($numberOfReviews);
 
         return $reviews;
     }
 
-    public function getPopularReviews($movieId)
+    public function getPopularReviews($movieId, $numberOfReviews = 40)
     {
         $reviews = Review::where('movie_id', $movieId)
             ->withcount(['likes as like' => function ($q) {
@@ -71,13 +84,12 @@ class Review extends Model
             ->with('user')
             ->withCount('likes')
             ->latest('likes_count')
-            ->take(5)
-            ->get();
+            ->paginate($numberOfReviews);
 
         return $reviews;
     }
 
-    public function getRecentReviews($movieId)
+    public function getRecentReviews($movieId, $numberOfReviews = 40)
     {
         $reviews = Review::where('movie_id', $movieId)
             ->withcount(['likes as like' => function ($q) {
@@ -86,8 +98,7 @@ class Review extends Model
             ->with('user')
             ->withCount('likes')
             ->orderBy('updated_at', 'desc')
-            ->take(5)
-            ->get();
+            ->paginate($numberOfReviews);
 
         return $reviews;
     }
@@ -137,5 +148,37 @@ class Review extends Model
             ->paginate();
 
         return $reviews;
+    }
+
+    public function isLiked(Review $review)
+    {
+        return  DB::table('likes_reviews')->where('user_id', Auth::user()->id)->where('review_id', $review->id)->count() === 1;
+    }
+
+    public function markAsLiked(Review $review)
+    {
+        DB::table('likes_reviews')->insert([
+            'user_id' => Auth::user()->id,
+            'review_id' => $review->id,
+            'created_at' => NOW(),
+            'updated_at' => NOW(),
+        ]);
+    }
+
+    public function unmarkAsLiked(Review $review)
+    {
+        DB::table('likes_reviews')->where('user_id', Auth::user()->id)->where('review_id', $review->id)->delete();
+    }
+
+    public function handleLike(Review $review)
+    {
+        $isLiked = $this->isLiked($review);
+
+        if ($isLiked) {
+            $this->unmarkAsLiked($review);
+            return;
+        }
+
+        $this->markAsLiked($review);
     }
 }
