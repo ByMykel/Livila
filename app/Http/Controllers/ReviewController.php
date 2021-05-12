@@ -29,13 +29,13 @@ class ReviewController extends Controller
         $reviews = $this->review->getRecentReviews($id);
         $movie = $this->tmdbApi->getMovieById($id);
 
-        if (count($reviews) === 0) {
-            return Inertia::render('Reviews/Index', [
-                'movie' => $movie,
-                'reviews' => [],
-                'page' => ['actual' => 1, 'last' => 1]
-            ]);
-        }
+        // if (count($reviews) === 0) {
+        //     return Inertia::render('Reviews/Index', [
+        //         'movie' => $movie,
+        //         'reviews' => [],
+        //         'page' => ['actual' => 1, 'last' => 1]
+        //     ]);
+        // }
 
         foreach ($reviews->items() as $index => $_review) {
             $reviews[$index]['movie'] = $movie;
@@ -53,13 +53,13 @@ class ReviewController extends Controller
         $reviews = $this->review->getPopularReviews($id);
         $movie = $this->tmdbApi->getMovieById($id);
 
-        if (count($reviews) === 0) {
-            return Inertia::render('Reviews/Popular', [
-                'movie' => $movie,
-                'reviews' => [],
-                'page' => ['actual' => 1, 'last' => 1]
-            ]);
-        }
+        // if (count($reviews) === 0) {
+        //     return Inertia::render('Reviews/Popular', [
+        //         'movie' => $movie,
+        //         'reviews' => [],
+        //         'page' => ['actual' => 1, 'last' => 1]
+        //     ]);
+        // }
 
         foreach ($reviews->items() as $index => $_review) {
             $reviews[$index]['movie'] = $movie;
@@ -77,13 +77,13 @@ class ReviewController extends Controller
         $reviews = $this->review->getFriendsReviews($id);
         $movie = $this->tmdbApi->getMovieById($id);
 
-        if (count($reviews) === 0) {
-            return Inertia::render('Reviews/Friends', [
-                'movie' => $movie,
-                'reviews' => [],
-                'page' => ['actual' => 1, 'last' => 1]
-            ]);
-        }
+        // if (count($reviews) === 0) {
+        //     return Inertia::render('Reviews/Friends', [
+        //         'movie' => $movie,
+        //         'reviews' => [],
+        //         'page' => ['actual' => 1, 'last' => 1]
+        //     ]);
+        // }
 
         foreach ($reviews->items() as $index => $_review) {
             $reviews[$index]['movie'] = $movie;
@@ -136,13 +136,13 @@ class ReviewController extends Controller
         $reviews = $this->review->getUserReviews($user);
         $user = $this->user->getUser($user);
 
-        if (count($reviews) === 0) {
-            return Inertia::render('Users/Reviews', [
-                'user' => $user,
-                'reviews' => [],
-                'page' => ['actual' => 1, 'last' => 1]
-            ]);
-        }
+        // if (count($reviews) === 0) {
+        //     return Inertia::render('Users/Reviews', [
+        //         'user' => $user,
+        //         'reviews' => [],
+        //         'page' => ['actual' => 1, 'last' => 1]
+        //     ]);
+        // }
 
         foreach ($reviews->items() as $index => $review) {
             $reviews[$index]['movie'] = $this->tmdbApi->getMovieById($review->movie_id);

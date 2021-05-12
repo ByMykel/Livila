@@ -20,7 +20,7 @@
                 <lists-navbar :selected="2"></lists-navbar>
 
                 <movies-list-card
-                    v-for="list in popularLists.data"
+                    v-for="list in popularLists"
                     :key="list.id"
                     :movies-list="list"
                 ></movies-list-card>

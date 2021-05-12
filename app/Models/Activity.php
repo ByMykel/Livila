@@ -182,9 +182,78 @@ class Activity extends Model
     {
         Activity::create(['type' => 'createReview', 'user_id' => Auth::id(), 'data' => $data]);
     }
-    
+
     public function deleteCreateReview($id)
     {
         DB::table('activities')->where('type', 'createReview')->where('user_id', Auth::id())->where('data->movie->id',  $id)->delete();
+    }
+
+    public function createCreateList($data)
+    {
+        Activity::create(['type' => 'createList', 'user_id' => Auth::id(), 'data' => $data]);
+    }
+
+    public function deleteCreateList(ListMovie $listMovie)
+    {
+        DB::table('activities')->where('type', 'createList')->where('user_id', Auth::user()->id)->where('data->id',  $listMovie->id)->delete();
+    }
+
+    public function isLikeList(ListMovie $listMovie)
+    {
+        return DB::table('activities')->where('type', 'likeList')->where('user_id', Auth::id())->where('data->id', $listMovie->id)->count() === 1;
+    }
+
+    public function createLikeList($data)
+    {
+        Activity::create(['type' => 'likeList', 'user_id' => Auth::id(), 'data' => $data]);
+    }
+
+    public function deleteLikeList(ListMovie $listMovie)
+    {
+        DB::table('activities')->where('type', 'likeList')->where('user_id', Auth::id())->where('data->id', $listMovie->id)->delete();
+    }
+
+    public function handleLikeList(ListMovie $listMovie, $data)
+    {
+        $isLikeList = $this->isLikeList($listMovie);
+
+        if ($isLikeList) {
+            $this->deleteLikeList($listMovie);
+            return;
+        }
+
+        $this->createLikeList($data);
+    }
+
+    public function isAddList(ListMovie $listMovie)
+    {
+        return DB::table('activities')->where('type', 'addList')->where('user_id', Auth::id())->where('data->id',  $listMovie->id)->count() === 1;
+    }
+
+    public function createAddList($data)
+    {
+        Activity::create(['type' => 'addList', 'user_id' => Auth::id(), 'data' => $data]);
+    }
+
+    public function deleteAddList(ListMovie $listMovie)
+    {
+        DB::table('activities')->where('type', 'addList')->where('user_id', Auth::id())->where('data->id',  $listMovie->id)->delete();
+    }
+
+    public function handleAddList(ListMovie $listMovie, $data)
+    {
+        $isAddList = $this->isAddList($listMovie);
+
+        if ($isAddList) {
+            $this->deleteAddList($listMovie);
+            return;
+        }
+
+        $this->createAddList($data);
+    }
+
+    public function deleteAllLikeList(ListMovie $listMovie)
+    {
+        DB::table('activities')->where('type', 'likeList')->where('data->id', $listMovie->id)->delete();
     }
 }

@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreListMovieRequest;
+use App\Http\Requests\UpdateListMovieRequest;
 use App\Models\Activity;
 use App\Models\ListMovie;
 use App\Models\Movie;
 use App\Models\User;
 use App\Services\TMDB\TmdbMoviesInformationApi;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
 class ListMovieController extends Controller
@@ -33,99 +30,66 @@ class ListMovieController extends Controller
 
     public function index()
     {
-        $recentLists = ListMovie::with('user')->withCount('likes')->latest()->paginate();
+        $recentLists = $this->listMovie->getRecentLists();
 
-        foreach ($recentLists as $index => $list) {
-            $recentLists[$index]['movies_count'] = DB::table('lists_movies')->where('list_id', $list->id)->get()->count();
-            $moviesId = DB::table('lists_movies')->where('list_id', $list->id)->get()->take(5)->pluck('movie_id');
-            $movies = [];
+        foreach ($recentLists->items() as $index => $list) {
+            $recentLists[$index]['movies_count'] = $this->listMovie->getNumberOfMoviesInAList($list);
+            $listMoviesIds = $this->listMovie->getMoviesFromAList($list, 5);
 
-            foreach ($moviesId as $id) {
-                $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-                    'api_key' => Config::get('services.tmdb.key'),
-                    'language' => 'es-ES'
-                ]);
+            $ids = array_map(function ($movie) {
+                return $movie->movie_id;
+            }, $listMoviesIds->items());
 
-                if ($response->ok()) {
-                    $movies[] = $response->json();
-                } else {
-                    unset($recentLists[$index]);
-                }
-            }
-
-            $recentLists[$index]['movies'] = $movies;
+            $listsMovies = $this->tmdbApi->getMoviesById($ids);
+            $recentLists[$index]['movies'] = $listsMovies;
         }
 
         return Inertia::render('Lists/Index', [
-            'recentLists' => $recentLists,
+            'recentLists' => $recentLists->items(),
             'page' => ['actual' => $recentLists->currentPage(), 'last' => $recentLists->lastPage()]
         ]);
     }
 
     public function popular()
     {
-        $popularLists = ListMovie::with('user')->withCount('likes')->orderByDesc('likes_count')->paginate();
+        $popularLists = $this->listMovie->getPopularLists();
 
-        foreach ($popularLists as $index => $list) {
-            $popularLists[$index]['movies_count'] = DB::table('lists_movies')->where('list_id', $list->id)->get()->count();
-            $moviesId = DB::table('lists_movies')->where('list_id', $list->id)->get()->take(5)->pluck('movie_id');
-            $movies = [];
+        foreach ($popularLists->items() as $index => $list) {
+            $popularLists[$index]['movies_count'] = $this->listMovie->getNumberOfMoviesInAList($list);
+            $listMoviesIds = $this->listMovie->getMoviesFromAList($list, 5);
 
-            foreach ($moviesId as $id) {
-                $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-                    'api_key' => Config::get('services.tmdb.key'),
-                    'language' => 'es-ES'
-                ]);
+            $ids = array_map(function ($movie) {
+                return $movie->movie_id;
+            }, $listMoviesIds->items());
 
-                if ($response->ok()) {
-                    $movies[] = $response->json();
-                } else {
-                    unset($popularLists[$index]);
-                }
-            }
-
-            $popularLists[$index]['movies'] = $movies;
+            $listsMovies = $this->tmdbApi->getMoviesById($ids);
+            $popularLists[$index]['movies'] = $listsMovies;
         }
 
         return Inertia::render('Lists/Popular', [
-            'popularLists' => $popularLists,
+            'popularLists' => $popularLists->items(),
             'page' => ['actual' => $popularLists->currentPage(), 'last' => $popularLists->lastPage()]
         ]);
     }
 
     public function friends()
     {
-        $user = Auth::user();
+        $friendsLists = $this->listMovie->getFriendsLists();
 
-        $friendsLists = ListMovie::whereHas('user', function ($query) use ($user) {
-            $query->whereHas('followers', function ($q) use ($user) {
-                $q->where('follower_id', $user->id);
-            });
-        })->with('user')->withCount('likes')->paginate();
+        foreach ($friendsLists->items() as $index => $list) {
+            $friendsLists[$index]['movies_count'] = $this->listMovie->getNumberOfMoviesInAList($list);
+            $listMoviesIds = $this->listMovie->getMoviesFromAList($list, 5);
 
-        foreach ($friendsLists as $index => $list) {
-            $friendsLists[$index]['movies_count'] = DB::table('lists_movies')->where('list_id', $list->id)->get()->count();
-            $moviesId = DB::table('lists_movies')->where('list_id', $list->id)->get()->take(5)->pluck('movie_id');
-            $movies = [];
+            $ids = array_map(function ($movie) {
+                return $movie->movie_id;
+            }, $listMoviesIds->items());
 
-            foreach ($moviesId as $id) {
-                $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-                    'api_key' => Config::get('services.tmdb.key'),
-                    'language' => 'es-ES'
-                ]);
-
-                if ($response->ok()) {
-                    $movies[] = $response->json();
-                } else {
-                    unset($friendsLists[$index]);
-                }
-            }
-
-            $friendsLists[$index]['movies'] = $movies;
+            $listsMovies = $this->tmdbApi->getMoviesById($ids);
+            $friendsLists[$index]['movies'] = $listsMovies;
         }
 
         return Inertia::render('Lists/Friends', [
-            'friendsLists' => $friendsLists,
+            'friendsLists' => $friendsLists->items(),
             'page' => ['actual' => $friendsLists->currentPage(), 'last' => $friendsLists->lastPage()]
         ]);
     }
@@ -135,21 +99,10 @@ class ListMovieController extends Controller
         return Inertia::render('Lists/Create');
     }
 
-    public function store(Request $request)
+    public function store(StoreListMovieRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'string'],
-            'description' => ['required', 'string'],
-            'visibility' => ['required', 'boolean']
-        ]);
-
-        $list = Auth::user()->listsMovies()->create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'visibility' => $request->visibility
-        ]);
-
-        Activity::create(['type' => 'createList', 'user_id' => Auth::user()->id, 'data' => $list]);
+        $list = $this->listMovie->createListMovie($request->name, $request->description, $request->visibility);
+        $this->activity->createCreateList($list);
 
         return redirect()->back();
     }
@@ -180,15 +133,8 @@ class ListMovieController extends Controller
 
     public function edit(ListMovie $listMovie)
     {
-        $moviesId = DB::table('lists_movies')->where('list_id', $listMovie->id)->get()->pluck('movie_id');
-        $movies = [];
-
-        foreach ($moviesId as $id) {
-            $movies[] = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
-            ]))->json();
-        }
+        $moviesId = $this->listMovie->getAllMoviesInAList($listMovie);
+        $movies = $this->tmdbApi->getMoviesById($moviesId);
 
         return Inertia::render('Lists/Edit', [
             'list' => $listMovie,
@@ -196,30 +142,17 @@ class ListMovieController extends Controller
         ]);
     }
 
-    public function update(Request $request, ListMovie $listMovie)
+    public function update(UpdateListMovieRequest $request, ListMovie $listMovie)
     {
-        $request->validate([
-            'name' => ['required', 'string'],
-            'description' => ['required', 'string'],
-            'visibility' => ['required', 'boolean'],
-            'removedMovies.*' => ['integer']
-        ]);
-
-        $listMovie->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'visibility' => $request->visibility
-        ]);
-
-        DB::table('lists_movies')->where('list_id', $listMovie->id)->whereIn('movie_id', $request->removedMovies)->delete();
+        $this->listMovie->updateListMovie($listMovie, $request->name, $request->description, $request->visibility, $request->removedMovies);
 
         return redirect()->back();
     }
 
     public function destroy(ListMovie $listMovie)
     {
-        DB::table('activities')->where('type', 'createList')->where('user_id', Auth::user()->id)->where('data->id',  $listMovie->id)->delete();
-
+        $this->activity->deleteCreateList($listMovie);
+        $this->activity->deleteAllLikeList($listMovie);
         $listMovie->delete();
 
         return redirect()->back();
@@ -227,90 +160,47 @@ class ListMovieController extends Controller
 
     public function lists(User $user)
     {
-        $listsId = ListMovie::where('user_id', $user->id)->with('user')->withCount('likes')->orderBy('updated_at', 'desc')->paginate(8);
-        $lists = $listsId->items();
+        $listsIds = $this->listMovie->getUserLists($user);
 
-        foreach ($listsId->items() as $index => $list) {
-            $lists[$index]['movies_count'] = DB::table('lists_movies')->where('list_id', $list->id)->get()->count();
-            $moviesId = DB::table('lists_movies')->where('list_id', $list->id)->get()->take(5)->pluck('movie_id');
-            $movies = [];
+        foreach ($listsIds->items() as $index => $list) {
+            $listsIds[$index]['movies_count'] = $this->listMovie->getNumberOfMoviesInAList($list);
+            $listMoviesIds = $this->listMovie->getMoviesFromAList($list, 5);
 
-            foreach ($moviesId as $id) {
-                $response = Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-                    'api_key' => Config::get('services.tmdb.key'),
-                    'language' => 'es-ES'
-                ]);
+            $ids = array_map(function ($movie) {
+                return $movie->movie_id;
+            }, $listMoviesIds->items());
 
-                if ($response->ok()) {
-                    $movies[] = $response->json();
-                } else {
-                    unset($lists[$index]);
-                }
-            }
-
-            $lists[$index]['movies'] = $movies;
+            $listsMovies = $this->tmdbApi->getMoviesById($ids);
+            $listsIds[$index]['movies'] = $listsMovies;
         }
 
-        $user = User::where('id', $user->id)->withcount(['followers as follow' => function ($q) {
-            return $q->where('follower_id', Auth::id());
-        }])->get()[0];
+        $user = $this->user->getUser($user);
 
         return Inertia::render('Users/Lists', [
             'user' => $user,
-            'lists' => $lists,
-            'page' => ['actual' => $listsId->currentPage(), 'last' => $listsId->lastPage()]
+            'lists' => $listsIds->items(),
+            'page' => ['actual' => $listsIds->currentPage(), 'last' => $listsIds->lastPage()]
         ]);
     }
 
-    public function list(ListMovie $listMovie, $id)
+    public function handleList(ListMovie $listMovie, $id)
     {
-        $movie = DB::table('lists_movies')->where('list_id', $listMovie->id)->where('movie_id', $id);
+        $data = $listMovie;
+        $data['movie'] = $this->tmdbApi->getMovieById($id);
 
-        if ($movie->first()) {
-            $movie->delete();
-
-            DB::table('activities')->where('type', 'addList')->where('user_id', Auth::user()->id)->where('data->id',  $listMovie->id)->delete();
-        } else {
-            DB::table('lists_movies')->insert([
-                'list_id' => $listMovie->id,
-                'movie_id' => $id,
-                'created_at' => NOW(),
-                'updated_at' => NOW(),
-            ]);
-
-            $data = $listMovie;
-            $data['movie'] = (Http::get('https://api.themoviedb.org/3/movie/' . $id, [
-                'api_key' => Config::get('services.tmdb.key'),
-                'language' => 'es-ES'
-            ]))->json();;
-
-            Activity::create(['type' => 'addList', 'user_id' => Auth::user()->id, 'data' => $data]);
-        }
+        $this->activity->handleAddList($listMovie, $data);
+        $this->listMovie->handleListed($listMovie, $id);
 
         return redirect()->back();
     }
 
-    public function like(ListMovie $listMovie)
+    public function handleLike(ListMovie $listMovie)
     {
-        $list = DB::table('likes_lists')->where('user_id', Auth::user()->id)->where('list_id', $listMovie->id);
+        $data = $listMovie;
+        $data['user'] = User::find($listMovie->user_id);
 
-        if ($list->first()) {
-            $list->delete();
-
-            DB::table('activities')->where('type', 'likeList')->where('user_id', Auth::user()->id)->where('data->id', $listMovie->id)->delete();
-        } else {
-            DB::table('likes_lists')->insert([
-                'user_id' => Auth::user()->id,
-                'list_id' => $listMovie->id,
-                'created_at' => NOW(),
-                'updated_at' => NOW(),
-            ]);
-
-            $data = $listMovie;
-            $data['user'] = User::find($listMovie->user_id);
-
-            Activity::create(['type' => 'likeList', 'user_id' => Auth::user()->id, 'data' => $data]);
-        }
+        $this->activity->handleLikeList($listMovie, $data);
+        $this->listMovie->handleLike($listMovie);
 
         return redirect()->back();
     }

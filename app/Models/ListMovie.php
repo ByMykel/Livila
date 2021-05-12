@@ -25,6 +25,11 @@ class ListMovie extends Model
         return $this->belongsToMany(User::class, 'likes_lists', 'list_id');
     }
 
+    public function movies()
+    {
+        return $this->belongsToMany(ListMovie::class, 'lists_movies', 'list_id', 'list_id');
+    }
+
     public function scopePublic($query)
     {
         return $query->where('visibility', 1);
@@ -38,6 +43,57 @@ class ListMovie extends Model
     public function isListed($listId, $movieId)
     {
         return DB::table('lists_movies')->where('list_id', $listId)->where('movie_id', $movieId)->count() === 1;
+    }
+
+    public function getRecentLists()
+    {
+        $lists = ListMovie::with('user')
+            ->withCount('likes')
+            ->latest()
+            ->paginate();
+
+        return $lists;
+    }
+
+    public function getPopularLists()
+    {
+        $lists = ListMovie::with('user')
+            ->withCount('likes')
+            ->orderByDesc('likes_count')
+            ->paginate();
+
+        return $lists;
+    }
+
+    public function getFriendsLists()
+    {
+        if (!Auth::user()) {
+            return [];
+        }
+
+        $user = Auth::user();
+
+        $lists = ListMovie::whereHas('user', function ($query) use ($user) {
+            $query->whereHas('followers', function ($q) use ($user) {
+                $q->where('follower_id', $user->id);
+            });
+        })
+            ->withCount('likes')
+            ->with('user')
+            ->paginate();
+
+        return $lists;
+    }
+
+    public function getUserLists(User $user)
+    {
+        $lists = ListMovie::where('user_id', $user->id)
+            ->with('user')
+            ->withCount('likes')
+            ->orderByDesc('updated_at')
+            ->paginate(15);
+
+        return $lists;
     }
 
     public function getMyLists()
@@ -54,10 +110,7 @@ class ListMovie extends Model
 
     public function getNumberOfMoviesInAList($list)
     {
-        $number = DB::table('lists_movies')
-            ->where('list_id', $list->id)
-            ->get()
-            ->count();
+        $number = ListMovie::find($list->id)->movies()->count();
 
         return $number;
     }
@@ -160,5 +213,95 @@ class ListMovie extends Model
             ->paginate();
 
         return $lists;
+    }
+
+    public function createListMovie($name, $description, $visibility)
+    {
+        return Auth::user()->listsMovies()->create([
+            'name' => $name,
+            'description' => $description,
+            'visibility' => $visibility
+        ]);
+    }
+
+    public function updateListMovie(ListMovie $listMovie, $name, $description, $visibility, $removedMovies)
+    {
+        $listMovie->update([
+            'name' => $name,
+            'description' => $description,
+            'visibility' => $visibility
+        ]);
+
+        // Remove movies from list.
+        DB::table('lists_movies')
+            ->where('list_id', $listMovie->id)
+            ->whereIn('movie_id', $removedMovies)
+            ->delete();
+    }
+
+    public function isLiked(ListMovie $listMovie)
+    {
+        return DB::table('likes_lists')->where('user_id', Auth::id())->where('list_id', $listMovie->id)->count() === 1;
+    }
+
+    public function markAsLiked(ListMovie $listMovie)
+    {
+        DB::table('likes_lists')->insert([
+            'user_id' => Auth::user()->id,
+            'list_id' => $listMovie->id,
+            'created_at' => NOW(),
+            'updated_at' => NOW(),
+        ]);
+    }
+
+    public function unmarkAsLiked(ListMovie $listMovie)
+    {
+        DB::table('likes_lists')->where('user_id', Auth::id())->where('list_id', $listMovie->id)->delete();
+    }
+
+    public function handleLike(ListMovie $listMovie)
+    {
+        $isLiked = $this->isLiked($listMovie);
+
+        if ($isLiked) {
+            $this->unmarkAsLiked($listMovie);
+            return;
+        }
+
+        $this->markAsLiked($listMovie);
+    }
+
+
+
+    public function markAsListed(ListMovie $listMovie, $id)
+    {
+        DB::table('lists_movies')->insert([
+            'list_id' => $listMovie->id,
+            'movie_id' => $id,
+            'created_at' => NOW(),
+            'updated_at' => NOW(),
+        ]);
+    }
+
+    public function unmarkAsListed(ListMovie $listMovie, $movieId)
+    {
+        DB::table('lists_movies')->where('list_id', $listMovie->id)->where('movie_id', $movieId)->delete();
+    }
+
+    public function handleListed(ListMovie $listMovie, $movieId)
+    {
+        $isListed = $this->isListed($listMovie->id, $movieId);
+
+        if ($isListed) {
+            $this->unmarkAsListed($listMovie, $movieId);
+            return;
+        }
+
+        $this->markAsListed($listMovie, $movieId);
+    }
+
+    public function getAllMoviesInAList(ListMovie $listMovie)
+    {
+        return DB::table('lists_movies')->where('list_id', $listMovie->id)->get()->pluck('movie_id');
     }
 }

@@ -20,7 +20,7 @@
                 <lists-navbar :selected="3"></lists-navbar>
 
                 <movies-list-card
-                    v-for="list in friendsLists.data"
+                    v-for="list in friendsLists"
                     :key="list.id"
                     :movies-list="list"
                 ></movies-list-card>

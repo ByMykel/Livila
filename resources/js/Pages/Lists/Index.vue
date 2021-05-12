@@ -20,7 +20,7 @@
                 <lists-navbar :selected="1"></lists-navbar>
 
                 <movies-list-card
-                    v-for="list in recentLists.data"
+                    v-for="list in recentLists"
                     :key="list.id"
                     :movies-list="list"
                 ></movies-list-card>
