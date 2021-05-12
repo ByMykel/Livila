@@ -1,46 +1,50 @@
 <template>
-    <div>
-        <!-- <div
-            v-if="border"
-            @mouseenter="(show = true), (remove = true)"
-            @mouseleave="(show = false), (remove = false)"
-        >
-            <img
-                class="rounded-sm"
-                :src="poster"
-            />
-        </div> -->
-
+    <div
+        class="relative cursor-pointer"
+        :title="movie.title"
+        @mouseenter="show = true"
+        @mouseleave="show = false"
+        @click="$parent.$emit('remove-movie', movie.id)"
+    >
         <div
-            @mouseenter="(show = true), (remove = true)"
-            @mouseleave="(show = false), (remove = false)"
-            class="relative"
-            :title="movie.title"
+            v-show="show || deleted"
+            class="absolute w-full h-full flex justify-center items-center"
         >
-            <div
-                v-show="remove"
-                class="absolute w-full h-full flex justify-center items-center cursor-pointer"
-                @click="$parent.$emit('remove-movie', movie.id)"
+            <svg
+                v-if="!deleted"
+                class="w-10 h-10 text-white bg-red-600 rounded-full p-2 duration-100 z-10"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
             >
-                <svg
-                    class="w-16 h-16 text-white bg-red-600 rounded-full p-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        fill-rule="evenodd"
-                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                        clip-rule="evenodd"
-                    ></path>
-                </svg>
-            </div>
-            
-            <img
-                class="duration-100 max-h-48 object-cover shadow rounded-md"
-                :src="poster"
-            />
+                <path
+                    fill-rule="evenodd"
+                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                    clip-rule="evenodd"
+                ></path>
+            </svg>
+
+            <svg
+                v-else
+                :class="{ 'bg-green-600': show }"
+                class="w-10 h-10 text-white bg-red-600 rounded-full p-2 duration-100 z-10"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    fill-rule="evenodd"
+                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                    clip-rule="evenodd"
+                ></path>
+            </svg>
         </div>
+
+        <img
+            :style="[deleted ? { filter: 'grayscale(100%)' } : {}]"
+            class="max-h-48 object-cover shadow rounded-md"
+            :src="poster"
+        />
     </div>
 </template>
 
@@ -50,10 +54,7 @@ export default {
 
     props: {
         movie: Object,
-        border: {
-            default: true,
-            type: Boolean,
-        },
+        deleted: Boolean,
     },
 
     data() {

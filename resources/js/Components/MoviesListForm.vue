@@ -194,8 +194,6 @@ export default {
         };
     },
 
-    computed: {},
-
     methods: {
         submitHandler() {
             if (this.editing) {
@@ -206,6 +204,12 @@ export default {
         },
 
         updateList() {
+            const removedMovies = this.movies.filter(
+                (movie) => movie.deleted === true
+            );
+
+            this.form.removedMovies = removedMovies.map((movie) => movie.id);
+
             this.$inertia.post(route("lists.update", this.list.id), this.form, {
                 preserveState: false,
                 preserveScroll: true,
@@ -230,17 +234,13 @@ export default {
         },
 
         cancel() {
-            this.$inertia.visit(
-                route("lists.show", this.list.id)
-            );
+            this.$inertia.visit(route("lists.show", this.list.id));
         },
 
         removeMovie(id) {
-            this.form.removedMovies.push(id);
-
             for (let i = 0; i < this.movies.length; i++) {
                 if (this.movies[i].id === id) {
-                    this.movies.splice(i, 1);
+                    this.movies[i].deleted = !this.movies[i].deleted;
                     return;
                 }
             }
