@@ -65,12 +65,12 @@
                         <div class="flex-shrink-0 flex items-center">
                             <img
                                 class="block lg:hidden h-9 w-auto"
-                                src="images/logo.svg"
+                                src="/images/logo.svg"
                                 alt="Workflow"
                             />
                             <img
                                 class="hidden lg:block h-9 w-auto"
-                                src="images/logo-text.svg"
+                                src="/images/logo-text.svg"
                                 alt="Workflow"
                             />
                         </div>
