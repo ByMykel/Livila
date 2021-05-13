@@ -50,22 +50,19 @@ class MovieController extends Controller
         $myReview = $this->review->getMyReview($id);
         $friendsReviews = $this->review->getFriendsReviews($id, 5);
         $friendsReviews = count($friendsReviews) > 0 ? $friendsReviews->items() : [];
-
+        
         $popularReviews = $this->review->getPopularReviews($id, 5);
-        $popularReviews = count($popularReviews) > 0 ? $popularReviews->items() : [];
-
         $recentReviews = $this->review->getRecentReviews($id, 5);
-        $recentReviews = count($recentReviews) > 0 ? $recentReviews->items() : [];
 
         foreach ($friendsReviews as $index => $_review) {
             $friendsReviews[$index]['movie'] = $movie;
         }
 
-        foreach ($popularReviews as $index => $_review) {
+        foreach ($popularReviews->items() as $index => $_review) {
             $popularReviews[$index]['movie'] = $movie;
         }
 
-        foreach ($recentReviews as $index => $_review) {
+        foreach ($recentReviews->items() as $index => $_review) {
             $recentReviews[$index]['movie'] = $movie;
         }
 
@@ -79,8 +76,8 @@ class MovieController extends Controller
             'movie' => $movie,
             'myReview' => $myReview,
             'friendsReviews' => $friendsReviews,
-            'popularReviews' => $popularReviews,
-            'recentReviews' => $recentReviews,
+            'popularReviews' => $popularReviews->items(),
+            'recentReviews' => $recentReviews->items(),
             'lists' => $lists
         ]);
     }

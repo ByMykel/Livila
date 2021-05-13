@@ -76,6 +76,13 @@ class ListMovieController extends Controller
     {
         $friendsLists = $this->listMovie->getFriendsLists();
 
+        if (count($friendsLists) === 0) {
+            return Inertia::render('Lists/Friends', [
+                'friendsLists' => [],
+                'page' => ['actual' => 1, 'last' => 1]
+            ]);
+        }
+
         foreach ($friendsLists->items() as $index => $list) {
             $friendsLists[$index]['movies_count'] = $this->listMovie->getNumberOfMoviesInAList($list);
             $listMoviesIds = $this->listMovie->getMoviesFromAList($list, 5);
