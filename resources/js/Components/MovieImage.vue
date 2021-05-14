@@ -20,7 +20,6 @@
                     :class="[show ? 'border-2 border-indigo-500' : '']"
                 ></a>
             </transition>
-
             <button v-show="show" class="absolute left-1 top-1" @click="like()">
                 <svg
                     class="hidden sm:block w-5 h-5 hover:text-blue-500 text-gray-100"
@@ -40,7 +39,6 @@
                     ></path>
                 </svg>
             </button>
-
             <button
                 v-show="show"
                 class="absolute right-1 top-1"
@@ -65,23 +63,42 @@
                     ></path>
                 </svg>
             </button>
-
-            <img class="max-h-48 w-full shadow rounded" :src="poster" />
+            <div
+                v-show="showSkeletonImage"
+                class="bg-black-300 h-44 w-full shadow rounded animate-pulse"
+            ></div>
+            <img
+                v-show="!showSkeletonImage"
+                class="max-h-48 w-full shadow rounded"
+                :src="poster"
+                @load="showSkeletonImage = false"
+            />
         </div>
 
         <div>
+            <div
+                v-show="!showSkeletonTitle"
+                class="bg-black-300 h-5 w-full shadow rounded animate-pulse"
+            ></div>
             <p
+                v-show="showSkeletonTitle"
                 :title="movie.title"
                 :class="{ 'opacity-40': movie.watched }"
                 class="truncate text-white text-sm font-semibold"
+                @load="showSkeletonTitle = false"
             >
                 {{ movie.title }}
             </p>
-
+            <div
+                v-show="!showSkeletonYear"
+                class="bg-black-300 h-4 w-full shadow rounded animate-pulse"
+            ></div>
             <p
+                v-show="showSkeletonYear"
                 :title="movie.title"
                 :class="{ 'opacity-40': movie.watched }"
                 class="truncate text-gray-400 text-xs"
+                @load="showSkeletonYear = false"
             >
                 {{ year }}
             </p>
@@ -98,6 +115,9 @@ export default {
     data() {
         return {
             show: false,
+            showSkeletonImage: true,
+            showSkeletonTitle: true,
+            showSkeletonYear: true,
         };
     },
 
