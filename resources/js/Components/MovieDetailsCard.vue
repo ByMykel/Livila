@@ -1,15 +1,29 @@
 <template>
     <div>
         <!-- TODO: Add link to a full size backdrop image. -->
+        <div
+            v-show="showSkeletonBackdrop"
+            class="bg-black-300 md:mb-6 rounded-md h-72 sm:h-80 md:h-96 w-full animate-pulse"
+        ></div>
         <img
-            v-show="backdrop && !isReviewsPage"
+            v-show="!showSkeletonBackdrop && backdrop && !isReviewsPage"
             class="block md:mb-6 rounded-md h-72 sm:h-80 md:h-96 w-full object-cover shadow-inner"
             :src="backdrop"
+            @load="showSkeletonBackdrop = false"
         />
 
         <div class="md:flex flex-1">
             <div class="hidden md:block md:mr-6 flex-initial z-10">
-                <img class="shadow rounded-md mx-auto w-72" :src="poster" />
+                <div
+                    v-show="showSkeletonPoster"
+                    class="bg-black-300 h-96 rounded-md mx-auto w-72 animate-pulse"
+                ></div>
+                <img
+                    v-show="!showSkeletonPoster"
+                    class="shadow rounded-md mx-auto w-72"
+                    :src="poster"
+                    @load="showSkeletonPoster = false"
+                />
             </div>
             <div class="flex flex-col lg:flex-row flex-1 relative z-0">
                 <div class="w-full p-1">
@@ -39,8 +53,15 @@ export default {
         movie: Object,
         isReviewsPage: {
             type: Boolean,
-            default: false
-        }
+            default: false,
+        },
+    },
+
+    data() {
+        return {
+            showSkeletonBackdrop: true,
+            showSkeletonPoster: true,
+        };
     },
 
     computed: {
