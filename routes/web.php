@@ -70,7 +70,7 @@ Route::prefix('movies')->group(function () {
     });
 });
 
-Route::prefix('user')->group(function () {
+Route::prefix('u')->group(function () {
     Route::prefix('{user:username}')->group(function () {
         Route::get('/', [UserController::class, 'show'])->name('user');
         Route::post('/follow', [UserController::class, 'follow'])->name('user.follow')->middleware(['auth:sanctum', 'verified']);
