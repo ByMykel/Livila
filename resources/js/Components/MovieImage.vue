@@ -74,31 +74,18 @@
                 @load="showSkeletonImage = false"
             />
         </div>
-
         <div>
-            <div
-                v-show="!showSkeletonTitle"
-                class="bg-black-300 h-5 w-full shadow rounded animate-pulse"
-            ></div>
             <p
-                v-show="showSkeletonTitle"
                 :title="movie.title"
                 :class="{ 'opacity-40': movie.watched }"
                 class="truncate text-white text-sm font-semibold"
-                @load="showSkeletonTitle = false"
             >
                 {{ movie.title }}
             </p>
-            <div
-                v-show="!showSkeletonYear"
-                class="bg-black-300 h-4 w-full shadow rounded animate-pulse"
-            ></div>
             <p
-                v-show="showSkeletonYear"
                 :title="movie.title"
                 :class="{ 'opacity-40': movie.watched }"
                 class="truncate text-gray-400 text-xs"
-                @load="showSkeletonYear = false"
             >
                 {{ year }}
             </p>
