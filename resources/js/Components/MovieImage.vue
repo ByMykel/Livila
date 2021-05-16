@@ -103,8 +103,6 @@ export default {
         return {
             show: false,
             showSkeletonImage: true,
-            showSkeletonTitle: true,
-            showSkeletonYear: true,
         };
     },
 
