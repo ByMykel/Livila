@@ -19,7 +19,7 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import UserDetailsCard from "@/Components/UserDetailsCard";
-import ActivityHandler from "@/Components/ActivityHandler";
+import ActivityHandler from "@/Components/Activity/ActivityHandler";
 import BasePagination from "@/Components/BasePagination";
 
 export default {

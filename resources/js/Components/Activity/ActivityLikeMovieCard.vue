@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import ActivityCard from "@/Components/ActivityCard";
+import ActivityCard from "@/Components/Activity/ActivityCard";
 
 export default {
     components: {

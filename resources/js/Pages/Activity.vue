@@ -15,7 +15,7 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import ActivityStream from "@/Components/ActivityStream";
+import ActivityStream from "@/Components/Activity/ActivityStream";
 import BasePagination from "@/Components/BasePagination";
 
 export default {

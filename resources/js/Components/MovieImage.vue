@@ -20,7 +20,11 @@
                     :class="[show ? 'border-2 border-indigo-500' : '']"
                 ></a>
             </transition>
-            <button v-show="show" class="absolute left-1 top-1" @click="like()">
+            <button
+                v-show="show && $page.props.auth"
+                class="absolute left-1 top-1"
+                @click="like()"
+            >
                 <svg
                     class="hidden sm:block w-5 h-5 hover:text-blue-500 text-gray-100"
                     :class="[
@@ -40,7 +44,7 @@
                 </svg>
             </button>
             <button
-                v-show="show"
+                v-show="show && $page.props.auth"
                 class="absolute right-1 top-1"
                 @click="watch()"
             >

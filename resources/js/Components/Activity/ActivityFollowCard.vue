@@ -2,14 +2,14 @@
     <activity-card>
         <template #icon>
             <svg
-                class="w-5 h-5 text-red-500 mx-2"
+                class="w-5 h-5 text-indigo-500 mx-2"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
             >
                 <path
                     fill-rule="evenodd"
-                    d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
                     clip-rule="evenodd"
                 ></path>
             </svg>
@@ -22,17 +22,11 @@
                     :href="route('user', activity.user.username)"
                     >{{ activity.user.username }}</a
                 >
-                liked
+                followed
                 <a
                     class="text-indigo-400 hover:text-indigo-500"
-                    :href="route('user', activity.data.user.username)"
-                    >{{ activity.data.user.username }}'s</a
-                >
-                review of
-                <a
-                    class="text-indigo-400 hover:text-indigo-500"
-                    :href="route('movies.show', activity.data.movie.id)"
-                    >{{ activity.data.movie.title }}</a
+                    :href="route('user', activity.data.username)"
+                    >{{ activity.data.username }}</a
                 >
             </span>
         </template>
@@ -44,7 +38,7 @@
 </template>
 
 <script>
-import ActivityCard from "@/Components/ActivityCard";
+import ActivityCard from "@/Components/Activity/ActivityCard";
 
 export default {
     components: {

@@ -41,14 +41,14 @@
 </template>
 
 <script>
-import ActivityWatchMovieCard from "@/Components/ActivityWatchMovieCard";
-import ActivityLikeMovieCard from "@/Components/ActivityLikeMovieCard";
-import ActivityLikeReviewCard from "@/Components/ActivityLikeReviewCard";
-import ActivityFollowCard from "@/Components/ActivityFollowCard";
-import ActivityLikeListCard from "@/Components/ActivityLikeListCard";
-import ActivityCreateReviewCard from "@/Components/ActivityCreateReviewCard";
-import ActivityCreateListCard from "@/Components/ActivityCreateListCard";
-import ActivityAddListCard from "@/Components/ActivityAddListCard";
+import ActivityWatchMovieCard from "@/Components/Activity/ActivityWatchMovieCard";
+import ActivityLikeMovieCard from "@/Components/Activity/ActivityLikeMovieCard";
+import ActivityLikeReviewCard from "@/Components/Activity/ActivityLikeReviewCard";
+import ActivityFollowCard from "@/Components/Activity/ActivityFollowCard";
+import ActivityLikeListCard from "@/Components/Activity/ActivityLikeListCard";
+import ActivityCreateReviewCard from "@/Components/Activity/ActivityCreateReviewCard";
+import ActivityCreateListCard from "@/Components/Activity/ActivityCreateListCard";
+import ActivityAddListCard from "@/Components/Activity/ActivityAddListCard";
 
 export default {
     components: {

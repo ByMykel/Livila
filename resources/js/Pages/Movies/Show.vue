@@ -5,6 +5,7 @@
                 <movie-details-card :movie="movie" />
 
                 <movie-menu
+                    v-show="$page.props.auth"
                     :movie="movie"
                     :liked="movie.liked"
                     :watched="movie.watched"
@@ -146,8 +147,6 @@ export default {
         //         this.recentReviews.length
         //     );
         // },
-
-
     },
 };
 </script>

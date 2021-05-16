@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import ActivityHandler from "@/Components/ActivityHandler";
+import ActivityHandler from "@/Components/Activity/ActivityHandler";
 
 export default {
     components: {
