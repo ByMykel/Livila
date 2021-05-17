@@ -25,10 +25,10 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import ReviewCard from "@/Components/ReviewCard";
+import ReviewCard from "@/Components/Reviews/ReviewCard";
 import BasePagination from "@/Components/BasePagination";
 import MovieDetailsCard from "@/Components/Movies/MovieDetailsCard";
-import ReviewsNavbar from "@/Components/ReviewsNavbar";
+import ReviewsNavbar from "@/Components/Reviews/ReviewsNavbar";
 
 export default {
     components: {

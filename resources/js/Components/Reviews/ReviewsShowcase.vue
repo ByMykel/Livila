@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import ReviewImage from "@/Components/ReviewImage.vue";
+import ReviewImage from "@/Components/Reviews/ReviewImage.vue";
 
 export default {
     components: {

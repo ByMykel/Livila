@@ -101,7 +101,7 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import ReviewCard from "@/Components/ReviewCard";
+import ReviewCard from "@/Components/Reviews/ReviewCard";
 import MovieMenu from "@/Components/Movies/MovieMenu";
 import MovieDetailsCard from "@/Components/Movies/MovieDetailsCard";
 import MovieVideo from "@/Components/Movies/MovieVideo";

@@ -80,7 +80,7 @@
 
 <script>
 import MoviesListFormMenu from "@/Components/MoviesListFormMenu";
-import ReviewForm from "@/Components/ReviewForm";
+import ReviewForm from "@/Components/Reviews/ReviewForm";
 
 export default {
     components: {

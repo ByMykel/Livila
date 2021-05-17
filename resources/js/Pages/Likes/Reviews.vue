@@ -22,7 +22,7 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import UserDetailsCard from "@/Components/UserDetailsCard";
-import ReviewCard from "@/Components/ReviewCard";
+import ReviewCard from "@/Components/Reviews/ReviewCard";
 import BasePagination from "@/Components/BasePagination";
 import LikesNavbar from "@/Components/LikesNavbar";
 

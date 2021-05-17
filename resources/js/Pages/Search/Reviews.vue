@@ -26,7 +26,7 @@ import AppLayout from "@/Layouts/AppLayout";
 import MoviesSearchShowcase from "@/Components/Movies/MoviesSearchShowcase";
 import BasePagination from "@/Components/BasePagination";
 import SearchShowcase from "@/Components/SearchShowcase";
-import ReviewCard from '../../Components/ReviewCard.vue';
+import ReviewCard from '../../Components/Reviews/ReviewCard.vue';
 
 export default {
     components: {
