@@ -19,7 +19,7 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import UserDetailsCard from "@/Components/UserDetailsCard";
-import MoviesListCard from "@/Components/MoviesListCard";
+import MoviesListCard from "@/Components/MoviesList/MoviesListCard";
 import BasePagination from "@/Components/BasePagination";
 
 export default {

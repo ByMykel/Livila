@@ -14,7 +14,7 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import MoviesListForm from "@/Components/MoviesListForm";
+import MoviesListForm from "@/Components/MoviesList/MoviesListForm";
 
 export default {
     components: {

@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import MoviesListFormMenu from "@/Components/MoviesListFormMenu";
+import MoviesListFormMenu from "@/Components/MoviesList/MoviesListFormMenu";
 import ReviewForm from "@/Components/Reviews/ReviewForm";
 
 export default {

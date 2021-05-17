@@ -50,7 +50,7 @@ import AppLayout from "@/Layouts/AppLayout";
 import MoviesSearchShowcase from "@/Components/Movies/MoviesSearchShowcase";
 import BasePagination from "@/Components/BasePagination";
 import SearchShowcase from "@/Components/SearchShowcase";
-import MoviesListCard from "@/Components/MoviesListCard";
+import MoviesListCard from "@/Components/MoviesList/MoviesListCard";
 import UserFollowButton from "@/Components/UserFollowButton";
 
 export default {

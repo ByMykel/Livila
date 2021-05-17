@@ -33,7 +33,7 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import MoviesListCard from "@/Components/MoviesListCard";
+import MoviesListCard from "@/Components/MoviesList/MoviesListCard";
 import ListsNavbar from "@/Components/ListsNavbar";
 import BasePagination from "../../Components/BasePagination.vue";
 

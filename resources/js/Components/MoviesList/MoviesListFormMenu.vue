@@ -223,7 +223,7 @@
 </template>
 
 <script>
-import MoviesListShowcase from "@/Components/MoviesListShowcase";
+import MoviesListShowcase from "@/Components/MoviesList/MoviesListShowcase";
 
 export default {
     components: {
