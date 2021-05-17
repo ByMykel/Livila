@@ -22,7 +22,7 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import MoviesSearchShowcase from "@/Components/MoviesSearchShowcase";
+import MoviesSearchShowcase from "@/Components/Movies/MoviesSearchShowcase";
 import BasePagination from "@/Components/BasePagination";
 import SearchShowcase from "@/Components/SearchShowcase";
 import MoviesListCard from "@/Components/MoviesListCard";

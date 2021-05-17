@@ -102,9 +102,9 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import ReviewCard from "@/Components/ReviewCard";
-import MovieMenu from "@/Components/MovieMenu";
-import MovieDetailsCard from "@/Components/MovieDetailsCard";
-import MovieVideo from "@/Components/MovieVideo";
+import MovieMenu from "@/Components/Movies/MovieMenu";
+import MovieDetailsCard from "@/Components/Movies/MovieDetailsCard";
+import MovieVideo from "@/Components/Movies/MovieVideo";
 
 export default {
     components: {

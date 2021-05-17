@@ -15,7 +15,7 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import UserDetailsCard from "@/Components/UserDetailsCard";
-import MoviesShowcase from "@/Components/MoviesShowcase";
+import MoviesShowcase from "@/Components/Movies/MoviesShowcase";
 import BasePagination from "@/Components/BasePagination";
 
 export default {

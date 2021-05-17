@@ -27,7 +27,7 @@
 import AppLayout from "@/Layouts/AppLayout";
 import ReviewCard from "@/Components/ReviewCard";
 import BasePagination from "@/Components/BasePagination";
-import MovieDetailsCard from "@/Components/MovieDetailsCard";
+import MovieDetailsCard from "@/Components/Movies/MovieDetailsCard";
 import ReviewsNavbar from "@/Components/ReviewsNavbar";
 
 export default {
