@@ -153,7 +153,7 @@ class ListMovieController extends Controller
     {
         $this->listMovie->updateListMovie($listMovie, $request->name, $request->description, $request->visibility, $request->removedMovies);
 
-        return redirect()->back();
+        return redirect()->route('lists.show', $listMovie->id);
     }
 
     public function destroy(ListMovie $listMovie)
