@@ -1,8 +1,16 @@
 <template>
     <div class="md:grid md:grid-cols-3 md:gap-6">
         <jet-section-title>
-            <template #title><slot name="title"></slot></template>
-            <template #description><slot name="description"></slot></template>
+            <template #title>
+                <span class="text-white">
+                    <slot name="title"></slot>
+                </span>
+            </template>
+            <template #description>
+                <span class="text-black-100">
+                    <slot name="description"></slot>
+                </span>
+            </template>
         </jet-section-title>
 
         <div class="mt-5 md:mt-0 md:col-span-2">
