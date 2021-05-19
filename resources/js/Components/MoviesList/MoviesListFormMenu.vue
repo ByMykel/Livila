@@ -257,11 +257,15 @@ export default {
 
     methods: {
         createList() {
-            this.$inertia.post(route("lists.store"), this.form, {
-                preserveState: true,
-                preserveScroll: true,
-                resetOnSuccess: false,
-            });
+            this.$inertia.post(
+                route("lists.store", { returnBack: true }),
+                this.form,
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                    resetOnSuccess: false,
+                }
+            );
 
             this.creating = false;
             this.form = {

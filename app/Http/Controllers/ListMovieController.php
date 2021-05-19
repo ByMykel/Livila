@@ -111,7 +111,11 @@ class ListMovieController extends Controller
         $list = $this->listMovie->createListMovie($request->name, $request->description, $request->visibility);
         $this->activity->createCreateList($list);
 
-        return redirect()->back();
+        if ($request->returnBack) {
+            return redirect()->back();
+        }
+
+        return redirect()->route('lists.show', $list->id);
     }
 
     public function show(ListMovie $listMovie)
