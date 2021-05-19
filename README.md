@@ -10,7 +10,7 @@ Built with Laravel 8, Vue, TailwindCSS and Inertia.js.
 
 ![Home](https://i.imgur.com/u6TEWJ4.jpg)
 ![Movies](https://i.imgur.com/FX7gEG8.jpg)
-![John Wick: Chapter 3](https://i.imgur.com/Qx6wzDZ.jpg)
+![Godzilla vs. Kong](https://i.imgur.com/bo82zZA.jpg)
 ![Search Movie](https://i.imgur.com/HO9Ewpi.jpg)
 
 ### Install
