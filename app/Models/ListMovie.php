@@ -103,6 +103,7 @@ class ListMovie extends Model
         }
 
         $lists = ListMovie::where('user_id', Auth::user()->id)
+            ->latest()
             ->get();
 
         return $lists;
