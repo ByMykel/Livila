@@ -3,6 +3,26 @@
         class="bg-black-300 rounded-md shadow p-3 text-white mb-2 overflow-hidden relative"
     >
         <div
+            v-show="!isAuthUserReview && review.spoiler && !showSpoiler"
+            class="absolute h-full w-full bg-black-300 top-0 left-0 flex flex-col items-center justify-center"
+        >
+            <a
+                v-show="showMovieTitleInSpoilerAlert"
+                :href="route('movies.show', review.movie.id)"
+                class="text-indigo-400 hover:underline"
+                >Movie: {{ review.movie.title }} ({{ year }})</a
+            >
+            <div class="text-black-100">This review may contain spoilers.</div>
+            <div
+                class="cursor-pointer hover:underline"
+                @click="showSpoiler = true"
+            >
+                Click to see spoiler
+            </div>
+        </div>
+
+        <div
+            v-show="isAuthUserReview || !review.spoiler || showSpoiler"
             class="py-1 px-2 rounded-bl-md absolute top-0 right-0 text-xs font-medium"
             :class="review.recommended ? 'bg-green-500' : 'bg-red-500'"
         >
@@ -63,7 +83,9 @@
                     </a>
                 </p>
 
-                <p class="text-xs text-black-100">{{ review.updated_at }}</p>
+                <p class="text-xs text-black-100">
+                    {{ review.created_at_human }}
+                </p>
             </div>
         </div>
 
@@ -81,9 +103,10 @@
         </div>
 
         <div class="flex text-sm">
-            <div class="flex mr-5 cursor-pointer" @click="like()">
+            <div class="flex mr-5">
                 <svg
-                    class="w-5 h-5 text-black-100 hover:text-red-400"
+                    @click="like()"
+                    class="w-5 h-5 text-black-100 hover:text-red-400 cursor-pointer"
                     :class="{ 'text-red-500 hover:text-red-400': review.like }"
                     fill="currentColor"
                     viewBox="0 0 20 20"
@@ -110,9 +133,26 @@ export default {
             default: false,
             type: Boolean,
         },
+        showMovieTitleInSpoilerAlert: {
+            default: false,
+            type: Boolean,
+        },
+    },
+
+    data() {
+        return {
+            showSpoiler: false,
+        };
     },
 
     computed: {
+        isAuthUserReview() {
+            return (
+                this.$page.props.auth &&
+                this.$page.props.auth.id === this.review.user.id
+            );
+        },
+
         isRecommended() {
             return this.review.recommended ? "Recommended" : "Not Recommended";
         },
@@ -126,6 +166,10 @@ export default {
             }
 
             return "/images/default_poster_path.png";
+        },
+
+        year() {
+            return new Date(this.review.movie.release_date).getFullYear();
         },
     },
 

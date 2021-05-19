@@ -13,6 +13,8 @@ class Review extends Model
 
     protected $guarded = [];
 
+    protected $appends = ['created_at_human'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -26,6 +28,15 @@ class Review extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function getCreatedAtHumanAttribute()
+    {
+        if ($this->created_at) {
+            return $this->created_at->diffForHumans();
+        }
+
+        return "";
     }
 
     public function getMyReview($movieId)

@@ -11,6 +11,7 @@
                     :key="review.id"
                     :review="review"
                     :showTitle="true"
+                    showMovieTitleInSpoilerAlert
                 />
 
                 <base-pagination :page="page"></base-pagination>
