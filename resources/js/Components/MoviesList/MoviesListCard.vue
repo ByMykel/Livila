@@ -11,7 +11,7 @@
                 >
                     <div
                         v-show="showSkeletonImage"
-                        class="bg-black-200 h-full rounded-md shadow-md border border-indigo-400 animate-pulse"
+                        class="bg-black-200 h-36 rounded-md shadow-md border border-indigo-400 animate-pulse"
                     ></div>
                     <img
                         v-show="!showSkeletonImage"
