@@ -4,12 +4,22 @@
     >
         <div class="hidden sm:flex flex-shrink-0 p-4 w-40">
             <a class="flex" :href="route('lists.show', list.id)">
-                <img
-                    class="w-24 -m-7 rounded-md shadow-md border border-indigo-400"
+                <span
                     v-for="movie in moviesList.movies"
                     :key="movie.id"
-                    :src="poster(movie)"
-                />
+                    class="inline w-24 -m-7"
+                >
+                    <div
+                        v-show="showSkeletonImage"
+                        class="bg-black-200 h-full rounded-md shadow-md border border-indigo-400 animate-pulse"
+                    ></div>
+                    <img
+                        v-show="!showSkeletonImage"
+                        class="rounded-md shadow-md border border-indigo-400"
+                        :src="poster(movie)"
+                        @load="showSkeletonImage = false"
+                    />
+                </span>
             </a>
         </div>
         <div class="block sm:ml-24 w-full">
@@ -54,6 +64,7 @@ export default {
     data() {
         return {
             list: this.moviesList,
+            showSkeletonImage: true,
         };
     },
 

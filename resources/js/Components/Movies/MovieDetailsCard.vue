@@ -2,7 +2,7 @@
     <div>
         <!-- TODO: Add link to a full size backdrop image. -->
         <div
-            v-show="showSkeletonBackdrop"
+            v-show="showSkeletonBackdrop && backdrop && !isReviewsPage"
             class="bg-black-300 md:mb-6 rounded-md h-72 sm:h-80 md:h-96 w-full animate-pulse"
         ></div>
         <img
