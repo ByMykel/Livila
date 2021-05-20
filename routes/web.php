@@ -30,7 +30,7 @@ Route::prefix('lists')->group(function () {
 
     Route::prefix('{listMovie}')->group(function () {
         Route::get('/', [ListMovieController::class, 'show'])->name('lists.show');
-        Route::post('/like', [ListMovieController::class, 'handleLike'])->name('lists.like');
+        Route::post('/like', [ListMovieController::class, 'handleLike'])->name('lists.like')->middleware(['auth:sanctum', 'verified']);
         Route::post('/store/{movie}', [ListMovieController::class, 'handleList'])->name('lists.store.movie');
 
         Route::middleware(['auth:sanctum', 'verified'])->group(function () {

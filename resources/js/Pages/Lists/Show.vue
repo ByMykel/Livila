@@ -2,9 +2,7 @@
     <app-layout>
         <div class="py-6 px-1">
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <div
-                    class="bg-black-300 p-2 rounded-md shadow mb-5 relative overflow-hidden"
-                >
+                <div class="bg-black-300 p-2 rounded-md shadow mb-5 relative">
                     <div
                         v-show="
                             $page.props.auth &&
@@ -35,10 +33,54 @@
                         {{ list.description }}
                     </p>
 
-                    <p class="text-white mt-3 flex items-center">
-                        <span class="flex items-center mr-3">
+                    <div class="text-white mt-3 flex items-center flex-wrap">
+                        <div class="flex items-center mr-4">
                             <svg
-                                class="w-5 h-5 text-black-100 mr-1"
+                                class="w-5 h-5 text-black-100 mr-2"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                                    clip-rule="evenodd"
+                                ></path>
+                            </svg>
+
+                            <a
+                                :href="route('user', list.user.username)"
+                                class="text-sm hover:text-indigo-400"
+                                >{{ list.user.username }}</a
+                            >
+                        </div>
+
+                        <div class="flex items-center mr-4">
+                            <svg
+                                class="w-5 h-5 text-black-100 mr-2"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4zm2 0h1V9h-1v2zm1-4V5h-1v2h1zM5 5v2H4V5h1zm0 4H4v2h1V9zm-1 4h1v2H4v-2z"
+                                    clip-rule="evenodd"
+                                ></path>
+                            </svg>
+
+                            <div class="text-sm">
+                                {{ this.movies.length }}
+                            </div>
+                        </div>
+
+                        <div
+                            v-show="$page.props.auth"
+                            class="flex items-center mr-4"
+                            :title="watched"
+                        >
+                            <svg
+                                class="w-5 h-5 text-black-100 mr-2"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -53,15 +95,14 @@
                                 ></path>
                             </svg>
 
-                            <span>{{ watched }}</span>
-                        </span>
+                            <div class="text-sm flex items-center">
+                                {{ watchedMoviesCount }}
+                            </div>
+                        </div>
 
-                        <span
-                            class="flex items-center cursor-pointer"
-                            @click="like()"
-                        >
+                        <div class="flex items-center" @click="like()">
                             <svg
-                                class="w-5 h-5 text-black-100 mr-1"
+                                class="w-5 h-5 text-black-100 mr-2 hover:text-red-400 cursor-pointer"
                                 :class="{ 'text-red-500': list.like }"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
@@ -74,11 +115,12 @@
                                 ></path>
                             </svg>
 
-                            <span>{{ list.likes_count }} likes</span>
-                        </span>
-                    </p>
+                            <div class="text-sm">{{ list.likes_count }}</div>
+                        </div>
+                    </div>
 
                     <div
+                        v-show="progressWatched && $page.props.auth"
                         class="text-center bg-black-400 rounded-sm mt-1 relative h-4"
                     >
                         <div
@@ -87,7 +129,6 @@
                                 progressWatched === 100
                                     ? 'bg-green-500'
                                     : 'bg-indigo-500',
-                                [progressWatched ? '' : 'ml-4'],
                             ]"
                             :style="progressWatchedStyle"
                         >
