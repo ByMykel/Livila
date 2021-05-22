@@ -87,7 +87,7 @@
                     />
                 </div>
 
-                <div v-if="selected === 3">
+                <div v-if="$page.props.auth && selected === 3">
                     <review-card
                         v-for="review in friendsReviews"
                         :key="'friend' + review.id"

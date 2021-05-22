@@ -17,6 +17,7 @@
             >Popular</a
         >
         <a
+            v-if="$page.props.auth"
             :href="route('lists.friends')"
             class="hover:border-b hover:text-white px-3 border-black-100"
             :class="{

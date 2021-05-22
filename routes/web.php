@@ -24,7 +24,7 @@ Route::prefix('search/{query?}')->group(function () {
 Route::prefix('lists')->group(function () {
     Route::get('/', [ListMovieController::class, 'index'])->name('lists');
     Route::get('/popular', [ListMovieController::class, 'popular'])->name('lists.popular');
-    Route::get('/friends', [ListMovieController::class, 'friends'])->name('lists.friends');
+    Route::get('/friends', [ListMovieController::class, 'friends'])->name('lists.friends')->middleware(['auth:sanctum', 'verified']);
     Route::get('/create', [ListMovieController::class, 'create'])->name('lists.create')->middleware(['auth:sanctum', 'verified']);
     Route::post('/store', [ListMovieController::class, 'store'])->name('lists.store')->middleware(['auth:sanctum', 'verified']);
 
@@ -55,7 +55,7 @@ Route::prefix('movies')->group(function () {
         Route::prefix('reviews')->group(function () {
             Route::get('/', [ReviewController::class, 'index'])->name('movies.reviews.index');
             Route::get('/popular', [ReviewController::class, 'popular'])->name('movies.reviews.popular');
-            Route::get('/friends', [ReviewController::class, 'friends'])->name('movies.reviews.friends');
+            Route::get('/friends', [ReviewController::class, 'friends'])->name('movies.reviews.friends')->middleware(['auth:sanctum', 'verified']);
             Route::post('/store', [ReviewController::class, 'store'])->name('movies.reviews.store')->middleware(['auth:sanctum', 'verified']);
 
 

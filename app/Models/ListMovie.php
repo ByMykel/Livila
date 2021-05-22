@@ -91,6 +91,7 @@ class ListMovie extends Model
     public function getUserLists(User $user)
     {
         $lists = ListMovie::where('user_id', $user->id)
+            ->where('visibility', 1)
             ->with('user')
             ->withCount('likes')
             ->orderByDesc('updated_at')
@@ -137,6 +138,7 @@ class ListMovie extends Model
     public function getListsByIds($ids)
     {
         $lists = ListMovie::whereIn('id', $ids)
+            ->where('visibility', 1)
             ->with('user')
             ->withCount('likes')
             ->latest()
