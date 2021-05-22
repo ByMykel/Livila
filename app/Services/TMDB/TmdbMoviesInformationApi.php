@@ -18,6 +18,8 @@ class TmdbMoviesInformationApi
 
         if ($response->ok()) {
             $movies = $response->json();
+        } else {
+            return abort(404);
         }
 
         $response = Http::get('https://api.themoviedb.org/3/movie/popular', [
@@ -27,6 +29,8 @@ class TmdbMoviesInformationApi
 
         if ($response->ok()) {
             $movies['results'] = array_merge($movies['results'], $response->json()['results']);
+        } else {
+            return abort(404);
         }
 
         return $movies;
