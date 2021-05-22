@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Activity;
 use App\Models\ListMovie;
 use App\Models\Review;
 use App\Models\User;
@@ -30,7 +31,9 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'username' => 'Livila'
+        ]);
 
         $marvelList = ListMovie::factory()->create([
             'user_id' => $user->id,
@@ -103,6 +106,39 @@ class DatabaseSeeder extends Seeder
                     'updated_at' => now()
                 ]
             );
+        }
+
+        foreach ($movies as $movie) {
+            Review::factory()->create([
+                'user_id' => $user->id,
+                'movie_id' => $movie['id']
+            ]);
+
+            if (random_int(0, 1)) {
+                DB::table('movies_watched')->insert(
+                    [
+                        'user_id' => $user->id,
+                        'movie_id' => $movie['id'],
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]
+                );
+
+                Activity::create(['type' => 'watchMovie', 'user_id' => $user->id, 'data' => $movie]);
+            }
+
+            if (random_int(0, 1)) {
+                DB::table('likes_movies')->insert(
+                    [
+                        'user_id' => $user->id,
+                        'movie_id' => $movie['id'],
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]
+                );
+
+                Activity::create(['type' => 'likeMovie', 'user_id' => $user->id, 'data' => $movie]);
+            }
         }
     }
 }
