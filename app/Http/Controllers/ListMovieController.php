@@ -9,6 +9,7 @@ use App\Models\ListMovie;
 use App\Models\Movie;
 use App\Models\User;
 use App\Services\TMDB\TmdbMoviesInformationApi;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ListMovieController extends Controller
@@ -120,6 +121,10 @@ class ListMovieController extends Controller
 
     public function show(ListMovie $listMovie)
     {
+        if (Auth::id() !== $listMovie->user_id && !$listMovie->visibility) {
+            return abort(403);
+        }
+
         $moviesIds = $this->listMovie->getMoviesFromAList($listMovie);
 
         $ids = array_map(function ($movie) {
@@ -144,6 +149,10 @@ class ListMovieController extends Controller
 
     public function edit(ListMovie $listMovie)
     {
+        if (Auth::id() !== $listMovie->user_id) {
+            return abort(403);
+        }
+
         $moviesId = $this->listMovie->getAllMoviesInAList($listMovie);
         $movies = $this->tmdbApi->getMoviesById($moviesId);
 
@@ -155,6 +164,10 @@ class ListMovieController extends Controller
 
     public function update(UpdateListMovieRequest $request, ListMovie $listMovie)
     {
+        if (Auth::id() !== $listMovie->user_id) {
+            return abort(403);
+        }
+
         $this->listMovie->updateListMovie($listMovie, $request->name, $request->description, $request->visibility, $request->removedMovies);
 
         return redirect()->route('lists.show', $listMovie->id);
@@ -162,6 +175,10 @@ class ListMovieController extends Controller
 
     public function destroy(ListMovie $listMovie)
     {
+        if (Auth::id() !== $listMovie->user_id) {
+            return abort(403);
+        }
+        
         $this->activity->deleteCreateList($listMovie);
         $this->activity->deleteAllLikeList($listMovie);
         $listMovie->delete();

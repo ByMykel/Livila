@@ -47,7 +47,8 @@ class ListMovie extends Model
 
     public function getRecentLists()
     {
-        $lists = ListMovie::with('user')
+        $lists = ListMovie::where('visibility', 1)
+            ->with('user')
             ->withCount('likes')
             ->latest()
             ->paginate();
@@ -57,7 +58,8 @@ class ListMovie extends Model
 
     public function getPopularLists()
     {
-        $lists = ListMovie::with('user')
+        $lists = ListMovie::where('visibility', 1)
+            ->with('user')
             ->withCount('likes')
             ->orderByDesc('likes_count')
             ->paginate();
@@ -78,6 +80,7 @@ class ListMovie extends Model
                 $q->where('follower_id', $user->id);
             });
         })
+            ->where('visibility', 1)
             ->withCount('likes')
             ->with('user')
             ->paginate();

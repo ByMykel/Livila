@@ -80,6 +80,11 @@ class Review extends Model
             });
         })
             ->where('movie_id', $movieId)
+            ->withcount(['likes as like' => function ($q) {
+                return $q->where('user_id', Auth::id());
+            }])
+            ->with('user')
+            ->withCount('likes')
             ->latest()
             ->paginate($numberOfReviews);
 

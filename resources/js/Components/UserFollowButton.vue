@@ -47,7 +47,7 @@ export default {
                 route("user.follow", this.user),
                 {},
                 {
-                    preserveState: false,
+                    preserveState: true,
                     preserveScroll: true,
                     resetOnSuccess: false,
                 }

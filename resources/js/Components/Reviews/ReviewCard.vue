@@ -182,7 +182,7 @@ export default {
                 ]),
                 {},
                 {
-                    preserveState: false,
+                    preserveState: true,
                     preserveScroll: true,
                     resetOnSuccess: false,
                 }

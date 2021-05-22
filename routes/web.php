@@ -34,9 +34,9 @@ Route::prefix('lists')->group(function () {
         Route::post('/store/{movie}', [ListMovieController::class, 'handleList'])->name('lists.store.movie');
 
         Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-            Route::get('/edit', [ListMovieController::class, 'edit'])->name('lists.edit');
-            Route::post('/update', [ListMovieController::class, 'update'])->name('lists.update');
-            Route::delete('/destroy', [ListMovieController::class, 'destroy'])->name('lists.destroy');
+            Route::get('/edit', [ListMovieController::class, 'edit'])->name('lists.edit')->middleware(['auth:sanctum', 'verified']);
+            Route::post('/update', [ListMovieController::class, 'update'])->name('lists.update')->middleware(['auth:sanctum', 'verified']);
+            Route::delete('/destroy', [ListMovieController::class, 'destroy'])->name('lists.destroy')->middleware(['auth:sanctum', 'verified']);
         });
     });
 });
