@@ -118,6 +118,8 @@ class MovieController extends Controller
         }, $moviesIds->items());
 
         $movies = $this->tmdbApi->getMoviesById($ids);
+        $movies = $this->movie->markWatchedMovies($movies);
+        $movies = $this->movie->markLikedMovies($movies);
 
         return Inertia::render('Users/Watched', [
             'user' => $user,

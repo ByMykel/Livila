@@ -14,7 +14,7 @@
                 leave-to-class="transform opacity-0"
             >
                 <a
-                    v-show="show || movie.watched"
+                    v-show="show || (movie.watched && !isUser)"
                     :href="route('movies.show', movie.id)"
                     class="absolute w-full h-full cursor-pointer bg-black-400 bg-opacity-70 rounded"
                     :class="[show ? 'border-2 border-indigo-500' : '']"
@@ -101,6 +101,10 @@
 export default {
     props: {
         movie: Object,
+        isUser: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {

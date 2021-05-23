@@ -4,7 +4,10 @@
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <user-details-card :user="user"></user-details-card>
 
-                <movies-showcase :movies="watched"></movies-showcase>
+                <movies-showcase
+                    :movies="watched"
+                    :isUser="isUser"
+                ></movies-showcase>
 
                 <base-pagination :page="page"></base-pagination>
             </div>
@@ -23,13 +26,21 @@ export default {
         AppLayout,
         UserDetailsCard,
         MoviesShowcase,
-        BasePagination
+        BasePagination,
     },
 
     props: {
         user: Object,
         watched: Object,
         page: Object,
+    },
+
+    computed: {
+        isUser() {
+            if (!this.$page.props.auth) return false;
+
+            return this.$page.props.auth.id === this.user.id;
+        },
     },
 };
 </script>
