@@ -39,7 +39,7 @@ class MovieController extends Controller
 
         return Inertia::render('Movies/Index', [
             'popular' => $popular,
-            'page' => ['actual' => intval($request->page ?? 1), 'last' => intval($popular['total_pages']) / 2]
+            'page' => ['actual' => intval($request->page ?? 1), 'last' => floor(intval($popular['total_pages']) / 2)]
         ]);
     }
 
