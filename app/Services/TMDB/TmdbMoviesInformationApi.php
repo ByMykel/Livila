@@ -36,6 +36,38 @@ class TmdbMoviesInformationApi
         return $movies;
     }
 
+    public function getTrendingMoviesToday()
+    {
+        $movies = [];
+
+        $response = Http::get('https://api.themoviedb.org/3/trending/movie/day', [
+            'api_key' => Config::get('services.tmdb.key'),
+            'page' => 1
+        ]);
+
+        if ($response->ok()) {
+            $movies = $response->json();
+        }
+
+        return $movies;
+    }
+
+    public function getUpcomingMovies()
+    {
+        $movies = [];
+
+        $response = Http::get('https://api.themoviedb.org/3/movie/upcoming', [
+            'api_key' => Config::get('services.tmdb.key'),
+            'page' => 1
+        ]);
+
+        if ($response->ok()) {
+            $movies = $response->json();
+        }
+
+        return $movies;
+    }
+
     public function getMovieById($id)
     {
         $movie = [];

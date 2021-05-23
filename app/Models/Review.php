@@ -216,4 +216,13 @@ class Review extends Model
             'spoiler' => $spoiler
         ]);
     }
+
+    public function getLatestReviews()
+    {
+        $reviews = Review::latest()
+            ->take(8)
+            ->pluck('movie_id');
+
+        return $reviews;
+    }
 }

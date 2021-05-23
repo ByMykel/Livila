@@ -9,9 +9,9 @@ class ActivityController extends Controller
 {
     protected $activity;
 
-    public function __construct()
+    public function __construct(Activity $activity)
     {
-        $this->activity = new Activity();
+        $this->activity = $activity;
     }
 
     public function index()
