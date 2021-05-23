@@ -17,7 +17,7 @@
 
                 <div
                     v-show="showReviewsNavbar"
-                    class="border-b border-black-300 mt-5 mb-5 text-black-100 flex justify-between px-1"
+                    class="border-b border-black-300 mt-10 mb-5 text-black-100 flex justify-between px-1"
                 >
                     <div class="flex">
                         <a
@@ -94,6 +94,14 @@
                         :review="review"
                     />
                 </div>
+
+                <div
+                    class="border-b border-black-300 mt-10 mb-5 text-black-100 px-1"
+                >
+                    Similar movies
+                </div>
+
+                <movies-showcase :movies="similarMovies"></movies-showcase>
             </div>
         </div>
     </app-layout>
@@ -105,6 +113,7 @@ import ReviewCard from "@/Components/Reviews/ReviewCard";
 import MovieMenu from "@/Components/Movies/MovieMenu";
 import MovieDetailsCard from "@/Components/Movies/MovieDetailsCard";
 import MovieVideo from "@/Components/Movies/MovieVideo";
+import MoviesShowcase from "@/Components/Movies/MoviesShowcase";
 
 export default {
     components: {
@@ -113,6 +122,7 @@ export default {
         MovieMenu,
         MovieDetailsCard,
         MovieVideo,
+        MoviesShowcase,
     },
 
     props: {
@@ -122,6 +132,7 @@ export default {
         popularReviews: Object,
         recentReviews: Object,
         lists: Object,
+        similarMovies: Object,
     },
 
     data() {

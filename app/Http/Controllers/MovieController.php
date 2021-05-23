@@ -47,10 +47,14 @@ class MovieController extends Controller
     {
         $movie = $this->tmdbApi->getMovieById($id);
 
+        $similarMovies = array_slice($this->tmdbApi->getSimilarById($id)['results'], 0, 8);
+        $similarMovies = $this->movie->markWatchedMovies($similarMovies);
+        $similarMovies = $this->movie->markLikedMovies($similarMovies);
+
         $myReview = $this->review->getMyReview($id);
         $friendsReviews = $this->review->getFriendsReviews($id, 5);
         $friendsReviews = count($friendsReviews) > 0 ? $friendsReviews->items() : [];
-        
+
         $popularReviews = $this->review->getPopularReviews($id, 5);
         $recentReviews = $this->review->getRecentReviews($id, 5);
 
@@ -78,7 +82,8 @@ class MovieController extends Controller
             'friendsReviews' => $friendsReviews,
             'popularReviews' => $popularReviews->items(),
             'recentReviews' => $recentReviews->items(),
-            'lists' => $lists
+            'lists' => $lists,
+            'similarMovies' => $similarMovies
         ]);
     }
 

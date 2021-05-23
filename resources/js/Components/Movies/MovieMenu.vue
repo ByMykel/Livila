@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-black-300 rounded-md shadow relative p-2 mt-4">
+    <div class="bg-black-300 rounded-md shadow relative p-2 mt-10">
         <div class="bg-black-400 rounded-md flex justify-around p-2 text-white">
             <button @click="like()">
                 <svg

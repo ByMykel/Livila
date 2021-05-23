@@ -3,11 +3,11 @@
         <!-- TODO: Add link to a full size backdrop image. -->
         <div
             v-show="showSkeletonBackdrop && backdrop && !isReviewsPage"
-            class="bg-black-300 md:mb-6 rounded-md h-72 sm:h-80 md:h-96 w-full animate-pulse"
+            class="bg-black-300 md:mb-10 rounded-md h-72 sm:h-80 md:h-96 w-full animate-pulse"
         ></div>
         <img
             v-show="!showSkeletonBackdrop && backdrop && !isReviewsPage"
-            class="block md:mb-6 rounded-md h-72 sm:h-80 md:h-96 w-full object-cover shadow-inner"
+            class="block md:mb-10 rounded-md h-72 sm:h-80 md:h-96 w-full object-cover shadow-inner"
             :src="backdrop"
             @load="showSkeletonBackdrop = false"
         />
