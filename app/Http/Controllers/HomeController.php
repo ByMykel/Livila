@@ -10,6 +10,8 @@ use Inertia\Inertia;
 class HomeController extends Controller
 {
     protected $tmdbApi;
+    protected $movie;
+    protected $review;
 
     public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie, Review $review)
     {

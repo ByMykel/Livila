@@ -24,7 +24,7 @@
                             {{ movie.title }}
                         </div>
                         <div class="text-black-100 font-bold uppercase">
-                            2012
+                            {{ year }}
                         </div>
                     </div>
                     <div class="flex items-center justify-center">
@@ -72,6 +72,10 @@ export default {
             }
 
             return "";
+        },
+
+        year() {
+            return new Date(this.movie.release_date).getFullYear();
         },
     },
 };

@@ -13,7 +13,7 @@ class TmdbMoviesInformationApi
 
         $response = Http::get('https://api.themoviedb.org/3/movie/popular', [
             'api_key' => Config::get('services.tmdb.key'),
-            'page' => $page * 2
+            'page' => $page * 2 - 1
         ]);
 
         if ($response->ok()) {
@@ -24,13 +24,11 @@ class TmdbMoviesInformationApi
 
         $response = Http::get('https://api.themoviedb.org/3/movie/popular', [
             'api_key' => Config::get('services.tmdb.key'),
-            'page' => $page * 2 - 1
+            'page' => $page * 2
         ]);
 
         if ($response->ok()) {
             $movies['results'] = array_merge($movies['results'], $response->json()['results']);
-        } else {
-            return abort(404);
         }
 
         return $movies;

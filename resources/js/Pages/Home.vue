@@ -4,9 +4,9 @@
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <welcome-card v-if="!$page.props.auth"></welcome-card>
                 <div v-else>
-                    <home-random-movie-card
+                    <home-movie-card
                         :movie="movie"
-                    ></home-random-movie-card>
+                    ></home-movie-card>
 
                     <div
                         v-if="justReviewed.length"
@@ -52,14 +52,14 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import WelcomeCard from "@/Components/WelcomeCard";
-import HomeRandomMovieCard from "@/Components/HomeRandomMovieCard";
+import HomeMovieCard from "@/Components/HomeMovieCard";
 import MoviesShowcase from "@/Components/Movies/MoviesShowcase";
 
 export default {
     components: {
         AppLayout,
         WelcomeCard,
-        HomeRandomMovieCard,
+        HomeMovieCard,
         MoviesShowcase,
     },
 
