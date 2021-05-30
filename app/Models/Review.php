@@ -156,7 +156,7 @@ class Review extends Model
             })
             ->orWhere('review', 'like', '%' . $query . '%')
             ->withcount(['likes as like' => function ($q) {
-                return $q->orWhere('user_id', Auth::id());
+                return $q->where('user_id', Auth::id());
             }])
             ->with('user')
             ->withCount('likes')
