@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="bg-black-500 relative z-10 shadow">
+        <nav class="bg-black-500 z-10 shadow fixed w-full">
             <div class="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8">
                 <div class="relative flex items-center justify-between h-13">
                     <div
@@ -281,7 +281,7 @@
         </nav>
 
         <!-- Page Content -->
-        <main>
+        <main class="pt-10">
             <slot></slot>
         </main>
     </div>

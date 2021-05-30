@@ -51,7 +51,7 @@
                 @click="watch()"
             >
                 <svg
-                    class="block w-5 h-5 hover:text-blue-500 text-gray-100"
+                    class="hidden sm:block w-5 h-5 hover:text-blue-500 text-gray-100"
                     :class="[
                         movie.watched
                             ? 'text-green-500'

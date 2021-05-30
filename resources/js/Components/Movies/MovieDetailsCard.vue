@@ -13,7 +13,7 @@
         />
 
         <div class="md:flex flex-1">
-            <div class="hidden md:block md:mr-6 flex-initial z-10">
+            <div class="hidden md:block md:mr-6 flex-initial">
                 <div
                     v-show="showSkeletonPoster"
                     class="bg-black-300 h-96 rounded-md mx-auto w-72 animate-pulse"
@@ -25,7 +25,7 @@
                     @load="showSkeletonPoster = false"
                 />
             </div>
-            <div class="flex flex-col lg:flex-row flex-1 relative z-0">
+            <div class="flex flex-col lg:flex-row flex-1 relative">
                 <div class="w-full p-1">
                     <p
                         class="text-center md:text-left mt-1 text-3xl font-extrabold text-white"

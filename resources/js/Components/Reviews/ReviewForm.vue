@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-5 md:mt-0 md:col-span-2 relative z-10">
+    <div class="mt-5 md:mt-0 md:col-span-2 relative">
         <form @submit.prevent="submitHandler">
             <div class="shadow rounded-md overflow-hidden">
                 <div class="px-4 py-5 bg-black-300 space-y-6 sm:p-6">
