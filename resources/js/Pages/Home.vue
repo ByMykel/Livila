@@ -4,9 +4,17 @@
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <welcome-card v-if="!$page.props.auth"></welcome-card>
                 <div v-else>
-                    <home-movie-card
-                        :movie="movie"
-                    ></home-movie-card>
+                    <div
+                        v-if="recommendedMovies.length"
+                        class="border-b border-black-300 mt-10 mb-5 text-black-100 px-1"
+                    >
+                        Recommended movies for you
+                    </div>
+
+                    <movies-showcase
+                        v-if="recommendedMovies.length"
+                        :movies="recommendedMovies"
+                    ></movies-showcase>
 
                     <div
                         v-if="justReviewed.length"
@@ -52,19 +60,17 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import WelcomeCard from "@/Components/WelcomeCard";
-import HomeMovieCard from "@/Components/HomeMovieCard";
 import MoviesShowcase from "@/Components/Movies/MoviesShowcase";
 
 export default {
     components: {
         AppLayout,
         WelcomeCard,
-        HomeMovieCard,
         MoviesShowcase,
     },
 
     props: {
-        movie: Object,
+        recommendedMovies: Object,
         trendingMovies: Object,
         upcomingMovies: Object,
         justReviewed: Object,

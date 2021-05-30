@@ -22,10 +22,10 @@ class HomeController extends Controller
 
     public function index()
     {
-        $movies = $this->tmdbApi->getPopular()['results'];
-        $randomMovie = array_rand($movies, 1);
-
-        $movie = $movies[$randomMovie];
+        $lastWatchedMovie = $this->movie->getLastWatchedMovie()->movie_id ?? null;
+        $recommendedMovies = array_slice($this->tmdbApi->getRecommendedById($lastWatchedMovie)['results'] ?? [], 0, 16);
+        $recommendedMovies = $this->movie->markWatchedMovies($recommendedMovies);
+        $recommendedMovies = $this->movie->markLikedMovies($recommendedMovies);
 
         $trendingMovies = array_slice($this->tmdbApi->getTrendingMoviesToday()['results'], 0, 16);
         $trendingMovies = $this->movie->markWatchedMovies($trendingMovies);
@@ -41,7 +41,7 @@ class HomeController extends Controller
         $justReviewed = $this->movie->markLikedMovies($justReviewed);
 
         return Inertia::render('Home', [
-            'movie' => $movie,
+            'recommendedMovies' => $recommendedMovies,
             'trendingMovies' => $trendingMovies,
             'upcomingMovies' => $upcomingMovies,
             'justReviewed' => $justReviewed,

@@ -110,4 +110,13 @@ class Movie extends Model
     {
         return DB::table('likes_movies')->where('user_id', $user->id)->latest()->select('movie_id')->paginate(40);
     }
+
+    public function getLastWatchedMovie()
+    {
+        if (!Auth::user()) {
+            return [];
+        }
+
+        return DB::table('movies_watched')->where('user_id', Auth::id())->latest()->select('movie_id')->first(); 
+    }
 }

@@ -125,4 +125,20 @@ class TmdbMoviesInformationApi
 
         return $movies;
     }
+
+    public function getRecommendedById($id, $page = 1)
+    {
+        $movies = [];
+
+        $response = Http::get('https://api.themoviedb.org/3/movie/' . $id . '/recommendations', [
+            'api_key' => Config::get('services.tmdb.key'),
+            'page' => $page
+        ]);
+
+        if ($response->ok()) {
+            $movies = $response->json();
+        }
+
+        return $movies;
+    }
 }

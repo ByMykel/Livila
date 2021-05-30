@@ -132,6 +132,8 @@ export default {
 
     methods: {
         like() {
+            this.movie.liked = !this.movie.liked;
+
             this.$inertia.post(
                 route("movies.like", this.movie.id),
                 {},
@@ -144,6 +146,8 @@ export default {
         },
 
         watch() {
+            this.movie.watched = !this.movie.watched;
+
             this.$inertia.post(
                 route("movies.watch", this.movie.id),
                 {},
