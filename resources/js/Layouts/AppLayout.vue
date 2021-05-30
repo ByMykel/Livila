@@ -2,7 +2,7 @@
     <div>
         <nav class="bg-black-500 relative z-10 shadow">
             <div class="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8">
-                <div class="relative flex items-center justify-between h-16">
+                <div class="relative flex items-center justify-between h-13">
                     <div
                         class="absolute inset-y-0 left-0 flex items-center sm:hidden"
                     >
@@ -63,32 +63,33 @@
                         class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start"
                     >
                         <div class="flex-shrink-0 flex items-center">
-                            <img
-                                class="block lg:hidden h-9 w-auto"
-                                src="/images/logo.svg"
-                                alt="Workflow"
-                            />
-                            <img
-                                class="hidden lg:block h-9 w-auto"
-                                src="/images/logo-text.svg"
-                                alt="Workflow"
-                            />
+                            <a :href="route('home')">
+                                <div
+                                    v-show="showSkeletonLogo"
+                                    class="block lg:hidden bg-black-400 h-9 w-10 animate-pulse rounded"
+                                ></div>
+                                <div
+                                    v-show="showSkeletonLogo"
+                                    class="hidden lg:block bg-black-400 h-9 w-24 animate-pulse rounded"
+                                ></div>
+                                <img
+                                    v-show="!showSkeletonLogo"
+                                    class="block lg:hidden h-9 w-auto"
+                                    src="/images/logo.svg"
+                                    alt="Livila"
+                                    @load="showSkeletonLogo = false"
+                                />
+                                <img
+                                    v-show="!showSkeletonLogo"
+                                    class="hidden lg:block h-9 w-auto"
+                                    src="/images/logo-text.svg"
+                                    alt="Livila"
+                                    @load="showSkeletonLogo = false"
+                                />
+                            </a>
                         </div>
                         <div class="hidden sm:block sm:ml-6 mr-2">
                             <div class="flex space-x-4">
-                                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                                <a
-                                    :href="route('home')"
-                                    class="px-3 py-2 rounded-md text-sm font-medium"
-                                    :class="
-                                        route().current('home')
-                                            ? 'bg-black-300 text-white'
-                                            : 'text-gray-300 hover:bg-black-200 hover:text-white'
-                                    "
-                                    aria-current="page"
-                                    >Home</a
-                                >
-
                                 <a
                                     :href="route('movies')"
                                     class="px-3 py-2 rounded-md text-sm font-medium"
@@ -143,24 +144,56 @@
                     >
                         <a
                             v-if="$page.props.auth"
-                            :href="route('activity')"
-                            class="bg-black-300 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                            :href="
+                                route('user.watched', $page.props.auth.username)
+                            "
+                            class="bg-black-300 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white mr-1.5"
                         >
-                            <span class="sr-only">View notifications</span>
                             <svg
-                                class="h-6 w-6"
-                                xmlns="http://www.w3.org/2000/svg"
+                                class="w-6 h-6"
                                 fill="none"
-                                viewBox="0 0 24 24"
                                 stroke="currentColor"
-                                aria-hidden="true"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
                             >
                                 <path
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
                                     stroke-width="2"
-                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                                />
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                ></path>
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                ></path>
+                            </svg>
+                        </a>
+
+                        <a
+                            v-if="$page.props.auth"
+                            :href="
+                                route(
+                                    'user.likes.movies',
+                                    $page.props.auth.username
+                                )
+                            "
+                            class="bg-black-300 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                        >
+                            <svg
+                                class="w-6 h-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                                ></path>
                             </svg>
                         </a>
 
@@ -222,19 +255,6 @@
                     </div>
                 </div>
                 <div class="px-2 pt-2 pb-3 space-y-1">
-                    <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                    <a
-                        :href="route('home')"
-                        class="block px-3 py-2 rounded-md text-base font-medium"
-                        :class="
-                            route().current('home')
-                                ? 'bg-black-300 text-white'
-                                : 'text-gray-300 hover:bg-black-200 hover:text-white'
-                        "
-                        aria-current="page"
-                        >Home</a
-                    >
-
                     <a
                         :href="route('movies')"
                         class="block px-3 py-2 rounded-md text-base font-medium"
@@ -280,6 +300,7 @@ export default {
             showingNavigationDropdown: false,
             showingMenuDropdown: false,
             searchText: "",
+            showSkeletonLogo: true,
         };
     },
 

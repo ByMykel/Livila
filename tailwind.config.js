@@ -24,6 +24,7 @@ module.exports = {
                 },
             },
             height: theme => ({
+                "13": "3.25rem",
                 "106": "26rem",
                 "114": "28rem",
                 "122": "30rem",
