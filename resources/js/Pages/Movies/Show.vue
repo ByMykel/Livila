@@ -150,15 +150,6 @@ export default {
                 this.recentReviews.length
             );
         },
-
-        // Check if there is at least one list.
-        // showListsNavbar() {
-        //     return (
-        //         this.friendsReviews.length ||
-        //         this.popularReviews.length ||
-        //         this.recentReviews.length
-        //     );
-        // },
     },
 };
 </script>

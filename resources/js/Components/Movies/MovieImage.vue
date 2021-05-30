@@ -96,7 +96,7 @@
                 {{ movie.title }}
             </p>
             <p
-                :title="movie.title"
+                :title="movie.release_date"
                 :class="{ 'opacity-40': movie.watched && !isUser }"
                 class="truncate text-gray-400 text-xs"
             >
@@ -135,6 +135,8 @@ export default {
         },
 
         year() {
+            if (!this.movie.release_date) return "UNKNOWN";
+
             return new Date(this.movie.release_date).getFullYear();
         },
     },

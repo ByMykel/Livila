@@ -32,10 +32,35 @@
                     >
                         {{ movie.title }}
                     </p>
-                    <p
-                        class="text-center md:text-left mt-2 mb-3 text-sm text-indigo-300"
-                        v-html="movieStats"
-                    ></p>
+                    <div
+                        class="text-center md:text-left mt-2 mb-3 text-sm text-indigo-300 flex flex-wrap gap-y-1"
+                    >
+                        <span
+                            v-if="movie.release_date"
+                            class="movie-information-tag"
+                            :title="movie.release_date"
+                        >
+                            {{ year }}
+                        </span>
+                        <span
+                            v-if="movie.genres.length"
+                            class="movie-information-tag"
+                        >
+                            {{ movieGenres }}
+                        </span>
+                        <span
+                            v-if="movie.runtime"
+                            class="movie-information-tag"
+                        >
+                            {{ movieRuntime }}
+                        </span>
+                        <span
+                            v-if="movie.vote_average"
+                            class="movie-information-tag"
+                        >
+                            {{ movie.vote_average }}/10
+                        </span>
+                    </div>
                     <div>
                         <p class="text-md text-black-100">
                             {{ movie.overview }}
@@ -88,6 +113,28 @@ export default {
 
         movieStats() {
             return `<span class="movie-information-tag">${this.movie.release_date}</span><span class="movie-information-tag">${this.movie.runtime}m</span></span><span class="movie-information-tag">${this.movie.vote_average}/10</span>`;
+        },
+
+        movieRuntime() {
+            let runtime = this.movie.runtime;
+
+            if (runtime < 60) {
+                return `${runtime}min`;
+            }
+
+            if (runtime % 60 === 0) {
+                return `${runtime / 60}h`;
+            }
+
+            return `${parseInt(runtime / 60)}h ${runtime % 60}min`;
+        },
+
+        movieGenres() {
+            return this.movie.genres.map((item) => item.name).join(", ");
+        },
+
+        year() {
+            return new Date(this.movie.release_date).getFullYear();
         },
     },
 };
