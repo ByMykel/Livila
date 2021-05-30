@@ -30,16 +30,6 @@ class ListMovie extends Model
         return $this->belongsToMany(ListMovie::class, 'lists_movies', 'list_id', 'list_id');
     }
 
-    public function scopePublic($query)
-    {
-        return $query->where('visibility', 1);
-    }
-
-    public function scopePrivate($query)
-    {
-        return $query->where('visibility', 0);
-    }
-
     public function isListed($listId, $movieId)
     {
         return DB::table('lists_movies')->where('list_id', $listId)->where('movie_id', $movieId)->count() === 1;
@@ -90,8 +80,10 @@ class ListMovie extends Model
 
     public function getUserLists(User $user)
     {
+        $visibility = Auth::id() === $user->id ? [1, 0] : [1];
+
         $lists = ListMovie::where('user_id', $user->id)
-            ->where('visibility', 1)
+            ->whereIn('visibility', $visibility)
             ->with('user')
             ->withCount('likes')
             ->orderByDesc('updated_at')
