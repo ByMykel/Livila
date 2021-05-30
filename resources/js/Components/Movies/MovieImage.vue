@@ -22,7 +22,7 @@
             </transition>
             <button
                 v-show="show && $page.props.auth"
-                class="absolute left-1 top-1"
+                class="absolute left-1 top-1 focus:outline-none"
                 @click="like()"
             >
                 <svg
@@ -32,38 +32,47 @@
                             ? 'text-red-500'
                             : 'opacity-40 hover:opacity-100',
                     ]"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                 >
                     <path
-                        fill-rule="evenodd"
-                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                        clip-rule="evenodd"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                     ></path>
                 </svg>
             </button>
             <button
                 v-show="show && $page.props.auth"
-                class="absolute right-1 top-1"
+                class="absolute right-1 top-1 focus:outline-none"
                 @click="watch()"
             >
                 <svg
-                    class="hidden sm:block w-5 h-5 hover:text-blue-500 text-gray-100"
+                    class="block w-5 h-5 hover:text-blue-500 text-gray-100"
                     :class="[
                         movie.watched
                             ? 'text-green-500'
                             : 'opacity-40 hover:opacity-100',
                     ]"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                 >
-                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
                     <path
-                        fill-rule="evenodd"
-                        d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                        clip-rule="evenodd"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                     ></path>
                 </svg>
             </button>

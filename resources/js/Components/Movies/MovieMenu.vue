@@ -1,7 +1,9 @@
 <template>
     <div class="bg-black-300 rounded-md shadow relative p-2 mt-10">
-        <div class="bg-black-400 rounded-md flex justify-around p-2 text-white">
-            <button @click="like()">
+        <div
+            class="bg-black-400 rounded-md flex justify-around p-2 text-black-100"
+        >
+            <button class="focus:outline-none" @click="like()">
                 <svg
                     class="w-6 h-6 hover:text-red-400"
                     :class="{ 'text-red-500': liked }"
@@ -17,7 +19,7 @@
                 </svg>
             </button>
 
-            <button @click="watch()">
+            <button class="focus:outline-none" @click="watch()">
                 <svg
                     class="w-6 h-6 hover:text-green-400"
                     :class="{ 'text-green-500': watched }"
@@ -34,7 +36,10 @@
                 </svg>
             </button>
 
-            <button @click="(showReview = false), (showList = !showList)">
+            <button
+                class="focus:outline-none"
+                @click="(showReview = false), (showList = !showList)"
+            >
                 <svg
                     class="w-6 h-6 hover:text-yellow-400"
                     :class="{ 'text-yellow-500': showList }"
@@ -48,7 +53,10 @@
                 </svg>
             </button>
 
-            <button @click="(showList = false), (showReview = !showReview)">
+            <button
+                class="focus:outline-none"
+                @click="(showList = false), (showReview = !showReview)"
+            >
                 <svg
                     class="w-6 h-6 hover:text-blue-400"
                     :class="{ 'text-blue-500': showReview }"
