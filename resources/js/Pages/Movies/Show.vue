@@ -96,6 +96,7 @@
                 </div>
 
                 <div
+                    v-if="similarMovies.length"
                     class="border-b border-black-300 mt-10 mb-5 text-black-100 px-1"
                 >
                     Similar movies

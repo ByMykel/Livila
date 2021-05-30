@@ -81,14 +81,14 @@
         <div>
             <p
                 :title="movie.title"
-                :class="{ 'opacity-40': movie.watched }"
+                :class="{ 'opacity-40': movie.watched && !isUser }"
                 class="truncate text-white text-sm font-semibold"
             >
                 {{ movie.title }}
             </p>
             <p
                 :title="movie.title"
-                :class="{ 'opacity-40': movie.watched }"
+                :class="{ 'opacity-40': movie.watched && !isUser }"
                 class="truncate text-gray-400 text-xs"
             >
                 {{ year }}
