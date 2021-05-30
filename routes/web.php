@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ListMovieController;
@@ -12,7 +11,6 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/activity', [ActivityController::class, 'index'])->name('activity');
 
 Route::prefix('search/{query?}')->group(function () {
     Route::get('/', [SearchController::class, 'movies'])->name('search');

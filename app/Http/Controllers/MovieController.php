@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Activity;
 use App\Models\ListMovie;
 use App\Models\Movie;
 use App\Models\Review;
@@ -16,16 +15,14 @@ class MovieController extends Controller
     protected $tmdbApi;
     protected $movie;
     protected $listMovie;
-    protected $activity;
     protected $review;
     protected $user;
 
-    public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie, ListMovie $listMovie, Activity $activity, Review $review, User $user)
+    public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie, ListMovie $listMovie, Review $review, User $user)
     {
         $this->tmdbApi = $tmdbApi;
         $this->movie = $movie;
         $this->listMovie = $listMovie;
-        $this->activity = $activity;
         $this->review = $review;
         $this->user = $user;
     }
@@ -91,7 +88,6 @@ class MovieController extends Controller
     {
         $movie = $this->tmdbApi->getMovieById($id);
 
-        $this->activity->handleLikeMovieActivity($movie);
         $this->movie->handleLike($id);
 
         return redirect()->back();
@@ -101,7 +97,6 @@ class MovieController extends Controller
     {
         $movie = $this->tmdbApi->getMovieById($id);
 
-        $this->activity->handleWatchMovieActivity($movie);
         $this->movie->handleWatch($id);
 
         return redirect()->back();

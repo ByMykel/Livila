@@ -85,11 +85,6 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class)->latest();
     }
 
-    public function activities()
-    {
-        return $this->hasMany(Activity::class)->latest();
-    }
-
     public function getUser(User $user)
     {
         $result = User::where('id', $user->id)

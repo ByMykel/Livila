@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ReviewRequest;
-use App\Models\Activity;
 use App\Models\Review;
 use App\Models\User;
 use App\Services\TMDB\TmdbMoviesInformationApi;
@@ -12,14 +11,12 @@ use Inertia\Inertia;
 class ReviewController extends Controller
 {
     protected $tmdbApi;
-    protected $activity;
     protected $review;
     protected $user;
 
-    public function __construct(TmdbMoviesInformationApi $tmdbApi, Activity $activity, Review $review, User $user)
+    public function __construct(TmdbMoviesInformationApi $tmdbApi, Review $review, User $user)
     {
         $this->tmdbApi = $tmdbApi;
-        $this->activity = $activity;
         $this->review = $review;
         $this->user = $user;
     }
@@ -84,7 +81,6 @@ class ReviewController extends Controller
     {
         $this->review->createReview($id, $request->review, $request->recommended, $request->spoiler);
         $data['movie'] = $this->tmdbApi->getMovieById($id);
-        $this->activity->createCreateReview($data);
 
         return redirect()->back();
     }
@@ -98,7 +94,6 @@ class ReviewController extends Controller
 
     public function destroy($id, Review $review)
     {
-        $this->activity->deleteCreateReview($id);
         $review->delete();
 
         return redirect()->back();
@@ -109,7 +104,6 @@ class ReviewController extends Controller
         $data['user'] = User::find($review->user_id);
         $data['movie'] = $this->tmdbApi->getMovieById($id);
 
-        $this->activity->handleLikeReview($review, $data);
         $this->review->handleLike($review);
 
         return redirect()->back();

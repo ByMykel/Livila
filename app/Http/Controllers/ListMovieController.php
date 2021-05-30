@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreListMovieRequest;
 use App\Http\Requests\UpdateListMovieRequest;
-use App\Models\Activity;
 use App\Models\ListMovie;
 use App\Models\Movie;
 use App\Models\User;
@@ -17,15 +16,13 @@ class ListMovieController extends Controller
     protected $tmdbApi;
     protected $movie;
     protected $listMovie;
-    protected $activity;
     protected $user;
 
-    public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie, ListMovie $listMovie, Activity $activity, User $user)
+    public function __construct(TmdbMoviesInformationApi $tmdbApi, Movie $movie, ListMovie $listMovie, User $user)
     {
         $this->tmdbApi = $tmdbApi;
         $this->movie = $movie;
         $this->listMovie = $listMovie;
-        $this->activity = $activity;
         $this->user = $user;
     }
 
@@ -110,7 +107,6 @@ class ListMovieController extends Controller
     public function store(StoreListMovieRequest $request)
     {
         $list = $this->listMovie->createListMovie($request->name, $request->description, $request->visibility);
-        $this->activity->createCreateList($list);
 
         if ($request->returnBack) {
             return redirect()->back();
@@ -179,8 +175,6 @@ class ListMovieController extends Controller
             return abort(403);
         }
         
-        $this->activity->deleteCreateList($listMovie);
-        $this->activity->deleteAllLikeList($listMovie);
         $listMovie->delete();
 
         return redirect()->back();
@@ -216,7 +210,6 @@ class ListMovieController extends Controller
         $data = $listMovie;
         $data['movie'] = $this->tmdbApi->getMovieById($id);
 
-        $this->activity->handleAddList($listMovie, $data);
         $this->listMovie->handleListed($listMovie, $id);
 
         return redirect()->back();
@@ -227,7 +220,6 @@ class ListMovieController extends Controller
         $data = $listMovie;
         $data['user'] = User::find($listMovie->user_id);
 
-        $this->activity->handleLikeList($listMovie, $data);
         $this->listMovie->handleLike($listMovie);
 
         return redirect()->back();

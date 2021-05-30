@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Activity;
 use App\Models\ListMovie;
 use App\Models\Review;
 use App\Models\User;
@@ -123,8 +122,6 @@ class DatabaseSeeder extends Seeder
                         'updated_at' => now()
                     ]
                 );
-
-                Activity::create(['type' => 'watchMovie', 'user_id' => $user->id, 'data' => $movie]);
             }
 
             if (random_int(0, 1)) {
@@ -136,8 +133,6 @@ class DatabaseSeeder extends Seeder
                         'updated_at' => now()
                     ]
                 );
-
-                Activity::create(['type' => 'likeMovie', 'user_id' => $user->id, 'data' => $movie]);
             }
         }
     }
