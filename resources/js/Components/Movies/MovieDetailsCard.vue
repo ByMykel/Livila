@@ -2,11 +2,11 @@
     <div>
         <!-- TODO: Add link to a full size backdrop image. -->
         <div
-            v-show="showSkeletonBackdrop && backdrop && !isReviewsPage"
+            v-show="showSkeletonBackdrop && backdrop && !hideBackdrop"
             class="bg-black-300 md:mb-10 rounded-md h-72 sm:h-80 md:h-96 w-full animate-pulse"
         ></div>
         <img
-            v-show="!showSkeletonBackdrop && backdrop && !isReviewsPage"
+            v-show="!showSkeletonBackdrop && backdrop && !hideBackdrop"
             class="block md:mb-10 rounded-md h-72 sm:h-80 md:h-96 w-full object-cover shadow-inner"
             :src="backdrop"
             @load="showSkeletonBackdrop = false"
@@ -76,7 +76,7 @@
 export default {
     props: {
         movie: Object,
-        isReviewsPage: {
+        hideBackdrop: {
             type: Boolean,
             default: false,
         },

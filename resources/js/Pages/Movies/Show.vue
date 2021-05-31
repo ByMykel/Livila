@@ -16,6 +16,36 @@
                 <movie-video :videos="movie.videos.results" />
 
                 <div
+                    v-if="movie.credits.cast.length"
+                    class="border-b border-black-300 mt-10 mb-5 text-black-100 px-1 flex justify-between"
+                >
+                    <span>Cast</span>
+
+                    <div class="flex items-center">
+                        <a :href="route('cast.index', movie.id)">
+                            <svg
+                                class="w-4 h-4 mx-3 text-white hover:text-indigo-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                ></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <cast-showcase
+                    :castMembers="movie.credits.cast.slice(0, 8)"
+                ></cast-showcase>
+
+                <div
                     v-show="showReviewsNavbar"
                     class="border-b border-black-300 mt-10 mb-5 text-black-100 flex justify-between px-1"
                 >
@@ -115,6 +145,7 @@ import MovieMenu from "@/Components/Movies/MovieMenu";
 import MovieDetailsCard from "@/Components/Movies/MovieDetailsCard";
 import MovieVideo from "@/Components/Movies/MovieVideo";
 import MoviesShowcase from "@/Components/Movies/MoviesShowcase";
+import CastShowcase from "@/Components/Cast/CastShowcase";
 
 export default {
     components: {
@@ -124,6 +155,7 @@ export default {
         MovieDetailsCard,
         MovieVideo,
         MoviesShowcase,
+        CastShowcase,
     },
 
     props: {

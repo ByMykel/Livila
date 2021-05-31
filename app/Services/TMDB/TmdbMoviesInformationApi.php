@@ -141,4 +141,42 @@ class TmdbMoviesInformationApi
 
         return $movies;
     }
+
+    public function getMovieCredits($id)
+    {
+        $credits = [];
+
+        $response = Http::get('https://api.themoviedb.org/3/movie/' . $id . '/credits', [
+            'api_key' => Config::get('services.tmdb.key')
+        ]);
+
+        if ($response->ok()) {
+            $credits = $response->json();
+        }
+
+        return $credits;
+    }
+
+    public function getActor($id)
+    {
+        $actor = [];
+
+        $response = Http::get('https://api.themoviedb.org/3/person/' . $id, [
+            'api_key' => Config::get('services.tmdb.key'),
+        ]);
+
+        if ($response->ok()) {
+            $actor = $response->json();
+        }
+
+        $response = Http::get('https://api.themoviedb.org/3/person/' . $id . '/movie_credits', [
+            'api_key' => Config::get('services.tmdb.key'),
+        ]);
+
+        if ($response->ok() && isset($actor)) {
+            $actor['movies'] = $response->json()['cast'];
+        }
+
+        return $actor;
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CastController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ListMovieController;
@@ -39,11 +40,19 @@ Route::prefix('lists')->group(function () {
     });
 });
 
+Route::prefix('cast')->group(function () {
+    Route::get('/{id}', [CastController::class, 'show'])->name('cast.show');
+});
+
 Route::prefix('movies')->group(function () {
     Route::get('/', [MovieController::class, 'index'])->name('movies');
 
     Route::prefix('{movie}')->group(function () {
         Route::get('/', [MovieController::class, 'show'])->name('movies.show');
+
+        Route::prefix('cast')->group(function () {
+            Route::get('/', [CastController::class, 'index'])->name('cast.index');
+        });
 
         Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::post('/like', [MovieController::class, 'handleLike'])->name('movies.like');
