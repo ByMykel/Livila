@@ -42,11 +42,12 @@
                 </div>
 
                 <cast-showcase
+                    v-if="movie.credits.cast.length"
                     :castMembers="movie.credits.cast.slice(0, 8)"
                 ></cast-showcase>
 
                 <div
-                    v-show="showReviewsNavbar"
+                    v-if="showReviewsNavbar"
                     class="border-b border-black-300 mt-10 mb-5 text-black-100 flex justify-between px-1"
                 >
                     <div class="flex">
@@ -101,7 +102,7 @@
                     </div>
                 </div>
 
-                <div v-if="selected === 1">
+                <div v-if="selected === 1 && recentReviews.length">
                     <review-card
                         v-for="review in recentReviews"
                         :key="'recent' + review.id"
@@ -109,7 +110,7 @@
                     />
                 </div>
 
-                <div v-if="selected === 2">
+                <div v-if="selected === 2 && popularReviews.length">
                     <review-card
                         v-for="review in popularReviews"
                         :key="'popular' + review.id"
@@ -117,7 +118,13 @@
                     />
                 </div>
 
-                <div v-if="$page.props.auth && selected === 3">
+                <div
+                    v-if="
+                        $page.props.auth &&
+                        selected === 3 &&
+                        friendsReviews.length
+                    "
+                >
                     <review-card
                         v-for="review in friendsReviews"
                         :key="'friend' + review.id"
@@ -132,7 +139,10 @@
                     Similar movies
                 </div>
 
-                <movies-showcase :movies="similarMovies"></movies-showcase>
+                <movies-showcase
+                    v-if="similarMovies.length"
+                    :movies="similarMovies"
+                ></movies-showcase>
             </div>
         </div>
     </app-layout>
