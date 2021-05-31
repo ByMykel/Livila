@@ -63,7 +63,7 @@ export default {
                 );
             }
 
-            return "/images/default_poster_path.png";
+            return "/images/default_profile_path.png";
         },
     },
 
