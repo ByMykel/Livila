@@ -2,7 +2,7 @@
 
 ### About Livila
 
-A social network for movie lovers. Keep track of every movie you’ve ever watched, compile and share lists of movies, write and share reviews, and follow friends and other members.
+A social network that allows you to keep track of every movie you’ve watched, compile and share lists, write and share reviews, follow friends and more.
 
 Built with Laravel 8, Vue, TailwindCSS and Inertia.js.
 

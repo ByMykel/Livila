@@ -5,7 +5,7 @@
                 <p
                     class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl"
                 >
-                    The social network for film lovers
+                    The social network for movie lovers
                 </p>
                 <p class="mt-4 max-w-3xl text-xl text-gray-400 lg:mx-auto">
                     <a
@@ -18,12 +18,9 @@
                         class="text-gray-200 hover:text-indigo-400"
                         :href="route('register')"
                         >Sing up</a
-                    >
-                    to get started. We’re your home for logging, rating and
-                    reviewing films, your watchlist of titles to see, your
-                    source for lists and inspiration, a cast and crew database
-                    and an activity stream of passionate film criticism,
-                    discussion and discovery.
+                    >. Livila is a social network that allows you to keep track
+                    of every movie you’ve watched, compile and share lists,
+                    write and share reviews, follow friends and more.
                 </p>
             </div>
 
@@ -55,12 +52,12 @@
                             <p
                                 class="ml-16 text-lg leading-6 font-medium text-white"
                             >
-                                Tell us what you’ve seen
+                                Tell us what you've seen
                             </p>
                         </dt>
                         <dd class="mt-2 ml-16 text-base text-gray-400">
-                            Keep track of every film you’ve ever watched (or
-                            just start from the day you join)
+                            Keep track of every movie you've watched (or just
+                            start from the day you join)
                         </dd>
                     </div>
 
@@ -85,12 +82,12 @@
                             <p
                                 class="ml-16 text-lg leading-6 font-medium text-white"
                             >
-                                Tell us what you’ve liked
+                                Tell us what you've liked
                             </p>
                         </dt>
                         <dd class="mt-2 ml-16 text-base text-gray-400">
-                            Show some love for your favorite films, lists and
-                            reviews with a “like”
+                            Show some love for your favorite movies, lists and
+                            reviews
                         </dd>
                     </div>
 
@@ -117,8 +114,7 @@
                             </p>
                         </dt>
                         <dd class="mt-2 ml-16 text-base text-gray-400">
-                            Compile and share lists of films on any topic and
-                            keep a watchlist of films to see
+                            Compile and share lists of movies
                         </dd>
                     </div>
 
@@ -161,14 +157,12 @@
                     <div class="mb-3 lb:mb-0 lg:ml-16 flex items-center">
                         <div>
                             <p class="text-lg leading-6 font-medium text-white">
-                                Tell us what you’ve seen
+                                Tell us what you've seen
                             </p>
                             <p class="mt-2 text-base text-gray-400">
-                                Get your Livila underway by visiting our Movies
-                                section and marking a few films you’ve seen. We
-                                add all watched titles to your Films tab and
-                                then we can show you reviews containing spoilers
-                                (usually hidden) and other cool stuff.
+                                Visit the Movies section an mark some movies
+                                you've seen. All these movies are added to your
+                                Watched tab of your profile.
                             </p>
                         </div>
                     </div>
@@ -196,14 +190,12 @@
                     <div class="mt-3 lb:mt-0 lg:mr-16 flex items-center">
                         <div>
                             <p class="text-lg leading-6 font-medium text-white">
-                                Browse your watched films
+                                Browse your watched movies
                             </p>
                             <p class="mt-2 text-base text-gray-400">
-                                Now that you’ve added some films, you can find
-                                them in the Films tab of your profile. As you
-                                add more content, your profile starts to reflect
-                                your taste. You can also browse the films of
-                                other members.
+                                Now that you've added some movies, you can find
+                                them in the Watched tab of your profile. You can
+                                also browse the movies of other members.
                             </p>
                         </div>
                     </div>
@@ -215,11 +207,11 @@
                     <div class="mb-3 lb:mb-0 lg:ml-16 flex items-center">
                         <div>
                             <p class="text-lg leading-6 font-medium text-white">
-                                Review a film
+                                Review a movie
                             </p>
                             <p class="mt-2 text-base text-gray-400">
                                 The best way to tell others your opinion about a
-                                movies is by describing what you liked or
+                                movie is by describing what you liked or
                                 disliked and whether you recommend it to others.
                             </p>
                         </div>
@@ -252,47 +244,16 @@
                             </p>
                             <p class="mt-2 text-base text-gray-400">
                                 Lists are a great way to share a collection of
-                                related films.
+                                related movies.
                             </p>
                             <p class="mt-1 text-base text-gray-400">
                                 Start a list on your Lists tab (or from the menu
-                                on a movie page), then add films. The first time
-                                you make a list public, it’s shared with your
-                                followers.
+                                on a movie page), then add movies.
                             </p>
                         </div>
-                    </div>
-                </div>
-
-                <div
-                    class="lg:mx-auto lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-12 mb-16 lg:mb-10"
-                >
-                    <div class="mb-3 lb:mb-0 lg:ml-16 flex items-center">
-                        <div>
-                            <p class="text-lg leading-6 font-medium text-white">
-                                Following and activity
-                            </p>
-                            <p class="mt-2 text-base text-gray-400">
-                                The best way to find members to follow is by
-                                reading reviews of films you like, to identify
-                                the voices and opinions you dig
-                            </p>
-                        </div>
-                    </div>
-
-                    <div>
-                        <img
-                            class="w-full"
-                            src="/images/welcome_5.png"
-                            alt=""
-                        />
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
-
-<script>
-export default {};
-</script>
