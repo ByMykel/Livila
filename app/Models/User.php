@@ -137,4 +137,32 @@ class User extends Authenticatable
 
         return $users;
     }
+
+    public function getUserFollowers(User $user)
+    {
+        $followers = User::whereHas('following', function ($query) use ($user) {
+            $query->where('followed_id', $user->id);
+        })
+            ->withcount(['followers as follow' => function ($q) {
+                return $q->where('follower_id', Auth::id());
+            }])
+            ->withcount('followers')
+            ->paginate();
+
+        return $followers;
+    }
+
+    public function getUserFollowing(User $user)
+    {
+        $following = User::whereHas('followers', function ($query) use ($user) {
+            $query->where('follower_id', $user->id);
+        })
+            ->withcount(['followers as follow' => function ($q) {
+                return $q->where('follower_id', Auth::id());
+            }])
+            ->withcount('followers')
+            ->paginate();
+
+        return $following;
+    }
 }

@@ -7,36 +7,11 @@
                     :query="query"
                     :total-results="members.total"
                 >
-                    <div
+                    <user-card
                         v-for="member in members.data"
                         :key="member.id"
-                        class="bg-black-300 flex mb-2 rounded-md p-2 text-white"
-                    >
-                        <img
-                            class="rounded-full w-12 h-12"
-                            :src="member.profile_photo_url"
-                        />
-                        <div
-                            class="flex items-center justify-between ml-3 w-full"
-                        >
-                            <div>
-                                <a
-                                    class="text-white hover:text-indigo-400"
-                                    :href="route('user', member.username)"
-                                >
-                                    {{ member.username }}
-                                </a>
-                                <div class="text-black-100 text-sm">
-                                    {{ member.followers_count }} followers
-                                </div>
-                            </div>
-                            <div>
-                                <user-follow-button
-                                    :user="member"
-                                ></user-follow-button>
-                            </div>
-                        </div>
-                    </div>
+                        :user="member"
+                    ></user-card>
                 </search-showcase>
 
                 <base-pagination :page="page"></base-pagination>
@@ -51,7 +26,7 @@ import MoviesSearchShowcase from "@/Components/Movies/MoviesSearchShowcase";
 import BasePagination from "@/Components/BasePagination";
 import SearchShowcase from "@/Components/SearchShowcase";
 import MoviesListCard from "@/Components/MoviesList/MoviesListCard";
-import UserFollowButton from "@/Components/UserFollowButton";
+import UserCard from "@/Components/Users/UserCard";
 
 export default {
     components: {
@@ -60,7 +35,7 @@ export default {
         BasePagination,
         SearchShowcase,
         MoviesListCard,
-        UserFollowButton,
+        UserCard,
     },
 
     props: {

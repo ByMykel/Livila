@@ -1,33 +1,46 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Users Following
-            </h2>
-        </template>
+        <div class="py-6 px-1">
+            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 relative">
+                <user-details-card :user="user"></user-details-card>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    {{ following }}
+                <user-card
+                    v-for="member in following"
+                    :key="member.id"
+                    :user="member"
+                ></user-card>
+
+                <div
+                    v-if="!following.length"
+                    class="text-black-100 font-bold text-center"
+                >
+                    No following yet
                 </div>
+
+                <base-pagination :page="page"></base-pagination>
             </div>
         </div>
     </app-layout>
 </template>
 
 <script>
-    import AppLayout from '@/Layouts/AppLayout'
-    import Welcome from '@/Jetstream/Welcome'
+import AppLayout from "@/Layouts/AppLayout";
+import UserDetailsCard from "../../Components/UserDetailsCard.vue";
+import UserCard from "../../Components/Users/UserCard.vue";
+import BasePagination from "../../Components/BasePagination.vue";
 
-    export default {
-        components: {
-            AppLayout,
-            Welcome,
-        },
-        props: {
-            user: Object,
-            following: Object
-        }
-    }
+export default {
+    components: {
+        AppLayout,
+        UserDetailsCard,
+        UserCard,
+        BasePagination
+    },
+
+    props: {
+        user: Object,
+        following: Object,
+        page: Object
+    },
+};
 </script>

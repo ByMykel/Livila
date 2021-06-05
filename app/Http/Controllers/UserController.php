@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -31,29 +31,27 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function following(User $user)
+    public function following(User $user, Request $request)
     {
-        $following = $user->following()
-            ->withcount(['followers as follow' => function ($q) {
-                return $q->where('follower_id', Auth::id());
-            }])->get();
+        $following = $this->user->getUserFollowing($user);
+        $user = $this->user->getUser($user);
 
         return Inertia::render('Users/Following', [
             'user' => $user,
-            'following' => $following
+            'following' => $following->items(),
+            'page' => ['actual' => $following->currentPage(), 'last' => $following->lastPage()]
         ]);
     }
 
-    public function followers(User $user)
+    public function followers(User $user, Request $request)
     {
-        $followers = $user->followers()
-            ->withcount(['followers as follow' => function ($q) {
-                return $q->where('follower_id', Auth::id());
-            }])->get();
+        $followers = $this->user->getUserFollowers($user);
+        $user = $this->user->getUser($user);
 
         return Inertia::render('Users/Followers', [
             'user' => $user,
-            'followers' => $followers
+            'followers' => $followers->items(),
+            'page' => ['actual' => $followers->currentPage(), 'last' => $followers->lastPage()]
         ]);
     }
 }

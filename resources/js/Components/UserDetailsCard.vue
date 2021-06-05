@@ -23,7 +23,7 @@
             </div>
 
             <div
-                class="flex text-sm sm:text-base text-black-100 space-x-3 justify-center sm:justify-end mt-4 sm:mt-0"
+                class="flex text-xs sm:text-sm md:text-base text-black-100 space-x-3 justify-center sm:justify-end mt-4 sm:mt-0"
             >
                 <a
                     class="flex flex-col justify-center items-center hover:text-indigo-300 cursor-pointer"
