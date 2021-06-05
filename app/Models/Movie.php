@@ -11,6 +11,15 @@ class Movie extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
+    protected $table = 'movies_watched';
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function isWatched($id)
     {
         return DB::table('movies_watched')->where('user_id', Auth::user()->id)->where('movie_id', $id)->count() === 1;

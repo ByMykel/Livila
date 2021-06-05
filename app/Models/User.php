@@ -80,9 +80,9 @@ class User extends Authenticatable
         return $this->hasMany(Review::class)->latest();
     }
 
-    public function comments()
+    public function watched()
     {
-        return $this->hasMany(Comment::class)->latest();
+        return $this->hasMany(Movie::class, 'user_id', 'id');
     }
 
     public function getUser(User $user)
@@ -91,6 +91,7 @@ class User extends Authenticatable
             ->withcount(['followers as follow' => function ($q) {
                 return $q->where('follower_id', Auth::id());
             }])
+            ->withcount(['followers', 'following', 'listsMovies', 'reviews', 'watched'])
             ->get()[0];
 
         return $result;
