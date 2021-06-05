@@ -30,6 +30,10 @@ class DatabaseSeeder extends Seeder
             }
         }
 
+        if (User::where('username', 'Livila')->first()) {
+            return;
+        }
+
         $user = User::factory()->create([
             'username' => 'Livila'
         ]);
