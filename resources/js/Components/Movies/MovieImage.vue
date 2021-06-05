@@ -7,8 +7,8 @@
         >
             <transition
                 enter-active-class="transition ease-out duration-150"
-                enter-from-class="transform opacity-0 scale-105"
-                enter-to-class="transform opacity-100 scale-100"
+                enter-from-class="transform opacity-0"
+                enter-to-class="transform opacity-100"
                 leave-active-class="transition ease-in duration-100"
                 leave-from-class="transform opacity-100"
                 leave-to-class="transform opacity-0"
@@ -17,6 +17,20 @@
                     v-show="show || (movie.watched && !isUser)"
                     :href="route('movies.show', movie.id)"
                     class="absolute w-full h-full cursor-pointer bg-black-400 bg-opacity-70 rounded"
+                ></a>
+            </transition>
+            <transition
+                enter-active-class="transition ease-out duration-150"
+                enter-from-class="transform opacity-0 scale-95"
+                enter-to-class="transform opacity-100 scale-100"
+                leave-active-class="transition ease-in duration-100"
+                leave-from-class="transform opacity-100"
+                leave-to-class="transform opacity-0"
+            >
+                <a
+                    v-show="show"
+                    :href="route('movies.show', movie.id)"
+                    class="absolute w-full h-full cursor-pointer rounded"
                     :class="[show ? 'border-2 border-indigo-500' : '']"
                 ></a>
             </transition>
