@@ -177,7 +177,7 @@ class ListMovieController extends Controller
         
         $listMovie->delete();
 
-        return redirect()->back();
+        return redirect()->route('lists');
     }
 
     public function lists(User $user)
