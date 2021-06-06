@@ -42,7 +42,7 @@
                     </span>
                 </div>
                 <div>
-                    <p class="text-md text-black-100 break-all">
+                    <p class="text-md text-black-100 break-all whitespace-pre-wrap">
                         {{ cast.biography }}
                     </p>
                 </div>
