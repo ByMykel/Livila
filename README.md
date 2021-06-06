@@ -8,15 +8,21 @@ Built with Laravel 8, Vue, TailwindCSS and Inertia.js.
 
 ### Images
 
-![Home](https://i.imgur.com/92GT6Nz.jpg)
-![Home Auth](https://i.imgur.com/SLgajIq.jpg)
-![Movies](https://i.imgur.com/FX7gEG8.jpg)
-![Godzilla vs. Kong](https://i.imgur.com/TlSETJw.jpg)
-![Search Movie](https://i.imgur.com/A0EF76J.jpg)
-![Recent Lists](https://i.imgur.com/7iKEFHG.jpg)
-![Marvel List](https://i.imgur.com/Xoi8ESM.jpg)
-![User Watched Movies](https://i.imgur.com/lpLGGCd.jpg)
-![User Reviews](https://i.imgur.com/rgkdgAV.jpg)
+![Home](https://i.imgur.com/eBhQDOs.jpg)
+![Home Auth](https://i.imgur.com/6FrUhzf.jpg)
+![Movies](https://i.imgur.com/AZf8pny.jpg)
+![Godzilla vs. Kong](https://i.imgur.com/lFINq3z.jpg)
+![Army of the Dead Recent Reviews](https://i.imgur.com/vwkNR4k.jpg)
+![Avengers Endgame Cast](https://i.imgur.com/g02IY5S.jpg)
+![Elizabeth Olsen Information](https://i.imgur.com/FWMeKTI.jpg)
+![Search Movie](https://i.imgur.com/sVY92pe.jpg)
+![Recent Lists](https://i.imgur.com/DhZUmPa.jpg)
+![Marvel List](https://i.imgur.com/HsY2kFD.jpg)
+![User Watched Movies](https://i.imgur.com/zzFRo1b.jpg)
+![User Lists](https://i.imgur.com/s1QeThM.jpg)
+![User Likes Movies](https://i.imgur.com/1mp6ez2.jpg)
+![User Likes Lists](https://i.imgur.com/CiCUerq.jpg)
+![User Reviews](https://i.imgur.com/ppnjWwy.jpg)
 
 ### Install
 
