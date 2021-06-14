@@ -29,14 +29,17 @@ class SearchController extends Controller
 
     public function movies(Request $request, $query)
     {
-        $movies = $this->tmdbApi->getMoviesByName(urlencode($query), $request->page ?? 1);
-        $movies['results'] = $this->movie->markWatchedMovies($movies['results']);
-        $movies['results'] = $this->movie->markLikedMovies($movies['results']);
+        $movies = $this->tmdbApi->getMoviesByName(urlencode($query), max(1, $request->page ?? 1));
+
+        if ($movies) {
+            $movies['results'] = $this->movie->markWatchedMovies($movies['results']);
+            $movies['results'] = $this->movie->markLikedMovies($movies['results']);
+        }
 
         return Inertia::render('Search/Movies', [
             'query' => $query,
             'movies' => $movies,
-            'page' => ['actual' => $movies['page'], 'last' => $movies['total_pages']]
+            'page' => ['actual' => $movies['page'] ?? 1, 'last' => $movies['total_pages'] ?? 1]
         ]);
     }
 

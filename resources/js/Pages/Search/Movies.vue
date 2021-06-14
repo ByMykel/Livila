@@ -5,7 +5,7 @@
                 <search-showcase
                     type="Movies"
                     :query="query"
-                    :total-results="movies.total_results"
+                    :total-results="movies.total_results || 0"
                 >
                     <movies-search-showcase
                         :movies="movies.results"
