@@ -44,6 +44,10 @@ class MovieController extends Controller
     {
         $movie = $this->tmdbApi->getMovieById($id);
 
+        if (!$movie) {
+            return abort(404);
+        }
+
         $similarMovies = array_slice($this->tmdbApi->getSimilarById($id)['results'], 0, 8);
         $similarMovies = $this->movie->markWatchedMovies($similarMovies);
         $similarMovies = $this->movie->markLikedMovies($similarMovies);

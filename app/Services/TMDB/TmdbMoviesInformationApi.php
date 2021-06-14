@@ -87,7 +87,11 @@ class TmdbMoviesInformationApi
         $movies = [];
 
         foreach ($moviesIds as $id) {
-            $movies[] = $this->getMovieById($id);
+            $movie = $this->getMovieById($id);
+            
+            if ($movie) {
+                $movies[] = $movie;
+            }
         }
 
         return $movies;

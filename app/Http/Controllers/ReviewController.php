@@ -26,6 +26,10 @@ class ReviewController extends Controller
         $reviews = $this->review->getRecentReviews($id);
         $movie = $this->tmdbApi->getMovieById($id);
 
+        if (!$movie) {
+            return abort(404);
+        }
+
         foreach ($reviews->items() as $index => $_review) {
             $reviews[$index]['movie'] = $movie;
         }
@@ -42,6 +46,10 @@ class ReviewController extends Controller
         $reviews = $this->review->getPopularReviews($id);
         $movie = $this->tmdbApi->getMovieById($id);
 
+        if (!$movie) {
+            return abort(404);
+        }
+
         foreach ($reviews->items() as $index => $_review) {
             $reviews[$index]['movie'] = $movie;
         }
@@ -57,6 +65,10 @@ class ReviewController extends Controller
     {
         $reviews = $this->review->getFriendsReviews($id);
         $movie = $this->tmdbApi->getMovieById($id);
+
+        if (!$movie) {
+            return abort(404);
+        }
 
         if (count($reviews) === 0) {
             return Inertia::render('Reviews/Friends', [
