@@ -90,7 +90,13 @@ class LikeController extends Controller
         $reviews = $this->review->getReviewsByIds($ids);
 
         foreach ($reviews as $index => $review) {
-            $reviews[$index]['movie'] = $this->tmdbApi->getMovieById($review->movie_id);
+            $movie = $this->tmdbApi->getMovieById($review->movie_id);
+
+            if ($movie) {
+                $reviews[$index]['movie'] = $movie;
+            } else {
+                unset($reviews[$index]);
+            }
         }
 
         $user = $this->user->getUser($user);
