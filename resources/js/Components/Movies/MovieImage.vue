@@ -16,7 +16,14 @@
                 <a
                     v-show="show || (movie.watched && !isUser)"
                     :href="route('movies.show', movie.id)"
-                    class="absolute w-full h-full cursor-pointer bg-black-400 bg-opacity-70 rounded"
+                    class="
+                        absolute
+                        w-full
+                        h-full
+                        cursor-pointer
+                        bg-black-400 bg-opacity-70
+                        rounded
+                    "
                 ></a>
             </transition>
             <transition
@@ -40,12 +47,15 @@
                 @click="like()"
             >
                 <svg
-                    class="hidden sm:block w-5 h-5 hover:text-blue-500 text-gray-100"
-                    :class="[
-                        movie.liked
-                            ? 'text-red-500'
-                            : 'opacity-40 hover:opacity-100',
-                    ]"
+                    class="
+                        hidden
+                        sm:block
+                        w-5
+                        h-5
+                        hover:text-blue-500
+                        text-gray-400
+                    "
+                    :class="{ 'text-red-500': movie.liked }"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -65,12 +75,15 @@
                 @click="watch()"
             >
                 <svg
-                    class="hidden sm:block w-5 h-5 hover:text-blue-500 text-gray-100"
-                    :class="[
-                        movie.watched
-                            ? 'text-green-500'
-                            : 'opacity-40 hover:opacity-100',
-                    ]"
+                    class="
+                        hidden
+                        sm:block
+                        w-5
+                        h-5
+                        hover:text-blue-500
+                        text-gray-400
+                    "
+                    :class="{ 'text-green-500': movie.watched }"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
