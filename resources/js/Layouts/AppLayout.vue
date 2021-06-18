@@ -433,8 +433,6 @@ export default {
                 return;
             }
 
-            this.saveSearchSuggestionHistory(this.searchText.trim());
-
             this.$inertia.visit(route("search", this.searchText.trim()));
         },
     },
