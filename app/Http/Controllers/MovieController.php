@@ -29,7 +29,7 @@ class MovieController extends Controller
 
     public function index(Request $request)
     {
-        $popular = $this->tmdbApi->getPopular($request->page ?? 1);
+        $popular = $this->tmdbApi->getMovies($request->page ?? 1);
 
         $popular['results'] = $this->movie->markWatchedMovies($popular['results']);
         $popular['results'] = $this->movie->markLikedMovies($popular['results']);

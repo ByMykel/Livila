@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $users = User::factory(10)->create();
-        $movies = (new TmdbMoviesInformationApi)->getPopular()['results'];
+        $movies = (new TmdbMoviesInformationApi)->getMovies()['results'];
 
         foreach ($users as $user) {
             foreach ($movies as $movie) {

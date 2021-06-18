@@ -7,12 +7,13 @@ use Illuminate\Support\Facades\Http;
 
 class TmdbMoviesInformationApi
 {
-    public function getPopular($page = 1)
+    public function getMovies($page = 1)
     {
         $movies = [];
 
-        $response = Http::get('https://api.themoviedb.org/3/movie/popular', [
+        $response = Http::get('https://api.themoviedb.org/3/discover/movie', [
             'api_key' => Config::get('services.tmdb.key'),
+            'include_adult' => false,
             'page' => $page * 2 - 1
         ]);
 
@@ -22,8 +23,9 @@ class TmdbMoviesInformationApi
             return abort(404);
         }
 
-        $response = Http::get('https://api.themoviedb.org/3/movie/popular', [
+        $response = Http::get('https://api.themoviedb.org/3/discover/movie', [
             'api_key' => Config::get('services.tmdb.key'),
+            'include_adult' => false,
             'page' => $page * 2
         ]);
 
