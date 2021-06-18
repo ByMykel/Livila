@@ -376,8 +376,8 @@
                             <a
                                 :href="route('login')"
                                 class="
-                                    px-3
-                                    py-2
+                                    px-2
+                                    py-1
                                     rounded-md
                                     text-sm
                                     font-medium
@@ -390,8 +390,8 @@
                             <a
                                 :href="route('register')"
                                 class="
-                                    px-3
-                                    py-2
+                                    px-2
+                                    py-1
                                     rounded-md
                                     text-sm
                                     font-medium
