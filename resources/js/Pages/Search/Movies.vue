@@ -43,5 +43,9 @@ export default {
             showOptions: false,
         };
     },
+
+    mounted() {
+        document.title = `Search movies - Livila`;
+    },
 };
 </script>

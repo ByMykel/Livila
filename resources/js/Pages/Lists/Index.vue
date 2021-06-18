@@ -49,5 +49,9 @@ export default {
         recentLists: Object,
         page: Object,
     },
+
+    mounted() {
+        document.title = 'Recent lists - Livila';
+    },
 };
 </script>

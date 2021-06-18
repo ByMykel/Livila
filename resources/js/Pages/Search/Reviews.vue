@@ -48,5 +48,9 @@ export default {
             showOptions: false,
         };
     },
+
+    mounted() {
+        document.title = `Search reviews - Livila`;
+    },
 };
 </script>

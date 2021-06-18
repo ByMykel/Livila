@@ -39,5 +39,9 @@ export default {
         lists: Object,
         page: Object,
     },
+
+    mounted() {
+        document.title = `${this.user.username} liked lists - Livila`;
+    },
 };
 </script>

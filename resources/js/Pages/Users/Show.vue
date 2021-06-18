@@ -23,5 +23,9 @@ export default {
     props: {
         user: Object,
     },
+
+    mounted() {
+        document.title = `${this.user.username} user - Livila`;
+    },
 };
 </script>

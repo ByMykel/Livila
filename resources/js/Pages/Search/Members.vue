@@ -49,5 +49,9 @@ export default {
             showOptions: false,
         };
     },
+
+    mounted() {
+        document.title = `Search members - Livila`;
+    },
 };
 </script>

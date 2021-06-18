@@ -195,6 +195,10 @@ export default {
         },
     },
 
+    mounted() {
+        document.title = `${this.list.name} list - Livila`;
+    },
+
     methods: {
         like() {
             this.$inertia.post(

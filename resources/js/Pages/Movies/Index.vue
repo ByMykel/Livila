@@ -26,5 +26,9 @@ export default {
         popular: Object,
         page: Object,
     },
+
+    mounted() {
+        document.title = 'Movies - Livila';
+    },
 };
 </script>

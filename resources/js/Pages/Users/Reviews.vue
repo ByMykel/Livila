@@ -37,5 +37,9 @@ export default {
         reviews: Object,
         page: Object,
     },
+
+    mounted() {
+        document.title = `${this.user.username} reviews - Livila`;
+    },
 };
 </script>

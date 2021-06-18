@@ -42,5 +42,9 @@ export default {
         followers: Object,
         page: Object,
     },
+
+    mounted() {
+        document.title = `${this.user.username} followers - Livila`;
+    },
 };
 </script>

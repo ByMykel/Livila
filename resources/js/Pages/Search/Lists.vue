@@ -47,5 +47,9 @@ export default {
             showOptions: false,
         };
     },
+
+    mounted() {
+        document.title = `Search lists - Livila`;
+    },
 };
 </script>

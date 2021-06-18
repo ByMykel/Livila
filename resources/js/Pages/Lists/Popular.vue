@@ -49,5 +49,9 @@ export default {
         popularLists: Object,
         page: Object,
     },
+
+    mounted() {
+        document.title = 'Popular lists - Livila';
+    },
 };
 </script>

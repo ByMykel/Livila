@@ -35,5 +35,9 @@ export default {
         movies: Object,
         page: Object,
     },
+
+    mounted() {
+        document.title = `${this.user.username} liked movies - Livila`;
+    },
 };
 </script>

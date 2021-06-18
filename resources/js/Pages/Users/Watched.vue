@@ -42,5 +42,9 @@ export default {
             return this.$page.props.auth.id === this.user.id;
         },
     },
+
+    mounted() {
+        document.title = `${this.user.username} watched - Livila`;
+    },
 };
 </script>

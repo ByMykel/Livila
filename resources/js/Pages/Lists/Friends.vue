@@ -49,5 +49,9 @@ export default {
         friendsLists: Object,
         page: Object,
     },
+
+    mounted() {
+        document.title = 'Friends lists - Livila';
+    },
 };
 </script>

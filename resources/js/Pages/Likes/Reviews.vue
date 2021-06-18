@@ -41,5 +41,9 @@ export default {
         reviews: Object,
         page: Object,
     },
+
+    mounted() {
+        document.title = `${this.user.username} liked reviews - Livila`;
+    },
 };
 </script>

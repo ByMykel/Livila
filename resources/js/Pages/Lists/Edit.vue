@@ -26,5 +26,9 @@ export default {
         list: Object,
         movies: Object,
     },
+
+    mounted() {
+        document.title = `Edit ${this.list.name} - Livila`;
+    },
 };
 </script>
