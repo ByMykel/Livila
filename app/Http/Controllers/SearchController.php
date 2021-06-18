@@ -27,6 +27,12 @@ class SearchController extends Controller
         $this->user = $user;
     }
 
+    public function getSuggestedMovies($query)
+    {
+        $movies = $this->tmdbApi->getMoviesByName(urlencode($query), 1);
+        return array_slice($movies['results'], 0, 6);
+    }
+
     public function movies(Request $request, $query)
     {
         $movies = $this->tmdbApi->getMoviesByName(urlencode($query), max(1, $request->page ?? 1));

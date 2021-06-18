@@ -129,7 +129,7 @@
                                 />
                             </a>
                         </div>
-                        <div class="hidden sm:block sm:ml-6 mr-2">
+                        <div class="hidden sm:flex sm:ml-6 mr-2 items-center">
                             <div class="flex space-x-4">
                                 <a
                                     :href="route('movies')"
@@ -166,109 +166,8 @@
                                 >
                             </div>
                         </div>
-                        <div class="mx-auto hidden sm:block sm:w-2/4 relative">
-                            <input
-                                type="text"
-                                class="
-                                    w-full
-                                    text-white
-                                    bg-black-300
-                                    border-0
-                                    rounded-md
-                                    h-9
-                                    focus:ring-indigo-500
-                                    pr-10
-                                "
-                                placeholder="Search"
-                                v-model="searchText"
-                                @keypress.enter="searchQuery()"
-                                @focus="showSearchSuggestion = true"
-                                @blur="closeSearchSuggestion()"
-                            />
-                            <div @click="searchQuery()">
-                                <svg
-                                    class="
-                                        w-8
-                                        h-8
-                                        absolute
-                                        text-black-100
-                                        top-0.5
-                                        right-0.5
-                                        hover:bg-black-200
-                                        rounded-md
-                                        p-1
-                                        cursor-pointer
-                                    "
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                    ></path>
-                                </svg>
-                            </div>
 
-                            <div
-                                v-show="
-                                    showSearchSuggestion && !searchText.length
-                                "
-                                class="
-                                    bg-black-500
-                                    shadow
-                                    mx-auto
-                                    hidden
-                                    sm:block
-                                    sm:w-full
-                                    absolute
-                                    rounded-b-md
-                                    space-y-1
-                                    mt-0.5
-                                "
-                            >
-                                <div
-                                    v-for="(
-                                        suggestion, index
-                                    ) in searchSuggestion"
-                                    :key="index"
-                                    class="
-                                        text-white
-                                        py-2
-                                        px-3
-                                        hover:bg-black-300
-                                        rounded-md
-                                        cursor-pointer
-                                        flex
-                                        items-center
-                                    "
-                                    @click="searchQuerySuggested(suggestion)"
-                                >
-                                    <span>
-                                        <svg
-                                            class="w-4 h-4 text-indigo-500 mr-2"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                            ></path>
-                                        </svg>
-                                    </span>
-                                    <span class="truncate">
-                                        {{ suggestion }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                        <search-bar></search-bar>
                     </div>
                     <div
                         class="
@@ -492,10 +391,12 @@
 
 <script>
 import Dropdown from "@/Components/Dropdown";
+import SearchBar from "@/Components/SearchBar";
 
 export default {
     components: {
         Dropdown,
+        SearchBar,
     },
 
     data() {
@@ -504,27 +405,10 @@ export default {
             showingMenuDropdown: false,
             searchText: "",
             showSkeletonLogo: true,
-            showSearchSuggestion: false,
         };
     },
 
-    computed: {
-        searchSuggestion() {
-            let suggestions = this.getSearchSuggestionHistory();
-
-            if (suggestions) {
-                return suggestions.suggestions;
-            }
-
-            return [];
-        },
-    },
-
     methods: {
-        closeSearchSuggestion() {
-            setTimeout(() => (this.showSearchSuggestion = false), 500);
-        },
-
         searchQuery() {
             if (!this.searchText.trim().length) return;
 
@@ -552,37 +436,6 @@ export default {
             this.saveSearchSuggestionHistory(this.searchText.trim());
 
             this.$inertia.visit(route("search", this.searchText.trim()));
-        },
-
-        searchQuerySuggested(query) {
-            this.$inertia.visit(route("search", query.trim()));
-        },
-
-        getSearchSuggestionHistory() {
-            return JSON.parse(localStorage.getItem("SearchSuggestionHistory"));
-        },
-
-        saveSearchSuggestionHistory(text) {
-            let data = this.getSearchSuggestionHistory();
-            let suggestions = { suggestions: [] };
-
-            if (data === null) {
-                suggestions = { suggestions: [text] };
-            } else {
-                data.suggestions = data.suggestions.filter(
-                    (item) => item.toLowerCase() !== text.toLowerCase()
-                );
-
-                data.suggestions.unshift(text);
-                data.suggestions = data.suggestions.slice(0, 5);
-
-                suggestions = data;
-            }
-
-            localStorage.setItem(
-                "SearchSuggestionHistory",
-                JSON.stringify(suggestions)
-            );
         },
     },
 };
