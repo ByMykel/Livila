@@ -17,7 +17,7 @@
 
                 <div
                     v-if="movie.credits.cast.length"
-                    class="border-b border-black-300 mt-10 mb-5 text-black-100 px-1 flex justify-between"
+                    class="mt-10 mb-2 text-black-100 px-1 flex justify-between font-semibold text-base"
                 >
                     <span>Cast</span>
 
@@ -48,14 +48,14 @@
 
                 <div
                     v-if="showReviewsNavbar"
-                    class="border-b border-black-300 mt-10 mb-5 text-black-100 flex justify-between px-1"
+                    class="mt-10 mb-2 text-black-100 flex justify-between px-1 font-semibold text-base"
                 >
                     <div class="flex">
                         <a
                             v-if="recentReviews.length"
-                            class="hover:border-b hover:text-white px-3 border-black-100 cursor-pointer"
+                            class="hover:border-b-2 hover:text-white px-3 border-black-100 cursor-pointer"
                             :class="{
-                                'text-white border-indigo-600 border-b':
+                                'text-white border-indigo-600 border-b-2':
                                     selected === 1,
                             }"
                             @click="selected = 1"
@@ -63,9 +63,9 @@
                         >
                         <a
                             v-if="popularReviews.length"
-                            class="hover:border-b hover:text-white px-3 border-black-100 cursor-pointer"
+                            class="hover:border-b-2 hover:text-white px-3 border-black-100 cursor-pointer"
                             :class="{
-                                'text-white border-indigo-600 border-b':
+                                'text-white border-indigo-600 border-b-2':
                                     selected === 2,
                             }"
                             @click="selected = 2"
@@ -73,9 +73,9 @@
                         >
                         <a
                             v-if="friendsReviews.length"
-                            class="hover:border-b hover:text-white px-3 border-black-100 cursor-pointer"
+                            class="hover:border-b-2 hover:text-white px-3 border-black-100 cursor-pointer"
                             :class="{
-                                'text-white border-indigo-600 border-b':
+                                'text-white border-indigo-600 border-b-2':
                                     selected === 3,
                             }"
                             @click="selected = 3"
@@ -83,7 +83,7 @@
                         >
                     </div>
                     <div class="flex items-center">
-                        <a :href="route('movies.reviews.index', movie.id)">
+                        <a :href="route(routeToReviews, movie.id)">
                             <svg
                                 class="w-4 h-4 mx-3 text-white hover:text-indigo-400"
                                 fill="none"
@@ -134,7 +134,7 @@
 
                 <div
                     v-if="similarMovies.length"
-                    class="border-b border-black-300 mt-10 mb-5 text-black-100 px-1"
+                    class="mt-10 mb-2 text-black-100 px-1 font-semibold text-base"
                 >
                     Similar movies
                 </div>
@@ -169,6 +169,7 @@ export default {
     },
 
     props: {
+        title: String,
         movie: Object,
         myReview: Object,
         friendsReviews: Object,
@@ -192,6 +193,18 @@ export default {
                 this.recentReviews.length
             );
         },
+
+        routeToReviews() {
+            return {
+                1 : 'movies.reviews.index',
+                2 : 'movies.reviews.popular',
+                3 : 'movies.reviews.friends'
+            }[this.selected]
+        }
+    },
+
+    mounted() {
+        document.title = `${this.movie.title} - Livila`;
     },
 };
 </script>

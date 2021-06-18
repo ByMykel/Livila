@@ -1,10 +1,10 @@
 <template>
-    <div class="border-b border-black-300 mt-5 mb-5 text-gray-400 flex px-1">
+    <div class="mt-5 mb-2 text-gray-400 flex px-1 font-semibold text-base">
         <a
             :href="route('user.likes.movies', user.username)"
-            class="hover:border-b hover:text-white px-3 border-gray-500"
+            class="hover:border-b-2 hover:text-white px-3 border-gray-500"
             :class="{
-                'text-white border-indigo-600 border-b': route().current(
+                'text-white border-indigo-600 border-b-2': route().current(
                     'user.likes.movies',
                     user.username
                 ),
@@ -13,9 +13,9 @@
         >
         <a
             :href="route('user.likes.reviews', user.username)"
-            class="hover:border-b hover:text-white px-3 border-gray-500"
+            class="hover:border-b-2 hover:text-white px-3 border-gray-500"
             :class="{
-                'text-white border-indigo-600 border-b': route().current(
+                'text-white border-indigo-600 border-b-2': route().current(
                     'user.likes.reviews',
                     user.username
                 ),
@@ -24,9 +24,9 @@
         >
         <a
             :href="route('user.likes.lists', user.username)"
-            class="hover:border-b hover:text-white px-3 border-gray-500"
+            class="hover:border-b-2 hover:text-white px-3 border-gray-500"
             :class="{
-                'text-white border-indigo-600 border-b': route().current(
+                'text-white border-indigo-600 border-b-2': route().current(
                     'user.likes.lists',
                     user.username
                 ),

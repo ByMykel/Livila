@@ -4,13 +4,6 @@
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <welcome-card v-if="!$page.props.auth"></welcome-card>
                 <div v-else>
-                    <div
-                        v-if="recommendedMovies.length"
-                        class="border-b border-black-300 mt-10 mb-5 text-black-100 px-1"
-                    >
-                        Recommended movies for you
-                    </div>
-
                     <movies-showcase
                         v-if="recommendedMovies.length"
                         :movies="recommendedMovies"
@@ -18,7 +11,7 @@
 
                     <div
                         v-if="justReviewed.length"
-                        class="border-b border-black-300 mt-10 mb-5 text-black-100 px-1"
+                        class="mt-10 mb-2 text-black-100 px-1 font-semibold text-base"
                     >
                         Just Reviewed
                     </div>
@@ -30,7 +23,7 @@
 
                     <div
                         v-if="trendingMovies.length"
-                        class="border-b border-black-300 mt-10 mb-5 text-black-100 px-1"
+                        class="mt-10 mb-2 text-black-100 px-1 font-semibold text-base"
                     >
                         Trending movies today
                     </div>
@@ -42,7 +35,7 @@
 
                     <div
                         v-if="upcomingMovies.length"
-                        class="border-b border-black-300 mt-10 mb-5 text-black-100 px-1"
+                        class="mt-10 mb-2 text-black-100 px-1 font-semibold text-base"
                     >
                         Upcoming movies in theatres
                     </div>
