@@ -34,7 +34,7 @@
         <div>
             <p
                 :title="cast.name"
-                class="truncate text-white text-sm font-semibold"
+                class="truncate text-white text-xs sm:text-sm"
             >
                 {{ cast.name }}
             </p>

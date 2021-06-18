@@ -43,7 +43,7 @@
 
                 <cast-showcase
                     v-if="movie.credits.cast.length"
-                    :castMembers="movie.credits.cast.slice(0, 8)"
+                    :castMembers="movie.credits.cast.slice(0, 12)"
                 ></cast-showcase>
 
                 <div
