@@ -90,7 +90,7 @@ class TmdbMoviesInformationApi
 
         foreach ($moviesIds as $id) {
             $movie = $this->getMovieById($id);
-            
+
             if ($movie) {
                 $movies[] = $movie;
             }
@@ -132,18 +132,27 @@ class TmdbMoviesInformationApi
         return $movies;
     }
 
-    public function getRecommendedById($id, $page = 1)
+    public function getRecommendedById($ids, $page = 1)
     {
         $movies = [];
 
-        $response = Http::get('https://api.themoviedb.org/3/movie/' . $id . '/recommendations', [
-            'api_key' => Config::get('services.tmdb.key'),
-            'page' => $page
-        ]);
+        foreach ($ids as $id) {
+            $response = Http::get('https://api.themoviedb.org/3/movie/' . $id . '/recommendations', [
+                'api_key' => Config::get('services.tmdb.key'),
+                'page' => $page
+            ]);
 
-        if ($response->ok()) {
-            $movies = $response->json();
+            if ($response->ok()) {
+                $movies = array_merge($movies, $response->json()['results']);
+            }
         }
+
+        // Remove duplicated movies.
+        $uniqueMovies = array_column($movies, 'id');
+        $uniqueMovies = array_unique($uniqueMovies);
+        $movies = array_filter($movies, function ($key, $value) use ($uniqueMovies) {
+            return in_array($value, array_keys($uniqueMovies));
+        }, ARRAY_FILTER_USE_BOTH);
 
         return $movies;
     }
