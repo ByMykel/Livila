@@ -271,10 +271,10 @@ export default {
             this.showSearchSuggestion = false;
         },
 
-        async getSuggestedMovies() {
+        getSuggestedMovies() {
             if (!this.searchText) return;
 
-            return await axios
+            return axios
                 .get(route("search.suggested.movies", this.searchText))
                 .then((res) => (this.suggestedMovies = res.data));
         },

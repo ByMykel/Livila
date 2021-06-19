@@ -144,28 +144,6 @@ class Review extends Model
         return $reviews;
     }
 
-    public function getReviewsByName($query)
-    {
-        $terms = explode(" ", $query);
-
-        $reviews = Review::query()
-            ->where(function ($query) use ($terms) {
-                foreach ($terms as $term) {
-                    $query->orWhere('review', 'like', '%' . $term . '%');
-                }
-            })
-            ->orWhere('review', 'like', '%' . $query . '%')
-            ->withcount(['likes as like' => function ($q) {
-                return $q->where('user_id', Auth::id());
-            }])
-            ->with('user')
-            ->withCount('likes')
-            ->distinct()
-            ->paginate();
-
-        return $reviews;
-    }
-
     public function isLiked(Review $review)
     {
         return  DB::table('likes_reviews')->where('user_id', Auth::user()->id)->where('review_id', $review->id)->count() === 1;

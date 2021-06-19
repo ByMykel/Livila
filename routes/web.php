@@ -15,8 +15,6 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('search/{query?}')->group(function () {
     Route::get('/', [SearchController::class, 'movies'])->name('search');
-    Route::get('/reviews', [SearchController::class, 'reviews'])->name('search.reviews');
-    Route::get('/lists', [SearchController::class, 'lists'])->name('search.lists');
     Route::get('/members', [SearchController::class, 'members'])->name('search.members');
     Route::get('/suggested/movies', [SearchController::class, 'getSuggestedMovies'])->name('search.suggested.movies');
 });

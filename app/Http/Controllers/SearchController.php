@@ -49,44 +49,6 @@ class SearchController extends Controller
         ]);
     }
 
-    public function reviews(Request $request, $query)
-    {
-        $reviews = $this->review->getReviewsByName($query);
-
-        foreach ($reviews as $index => $review) {
-            $reviews[$index]['movie'] = $this->tmdbApi->getMovieById($review->movie_id);
-        }
-
-        return Inertia::render('Search/Reviews', [
-            'query' => $query,
-            'reviews' => $reviews,
-            'page' => ['actual' => $reviews->currentPage(), 'last' => $reviews->lastPage()]
-        ]);
-    }
-
-    public function lists(Request $request, $query)
-    {
-        $lists = $this->listMovie->getListsByName($query);
-
-        foreach ($lists as $index => $list) {
-            $lists[$index]['movies_count'] = $this->listMovie->getNumberOfMoviesInAList($list);
-            $listMoviesId = $this->listMovie->getMoviesFromAList($list, 5);
-
-            $ids = array_map(function ($movie) {
-                return $movie->movie_id;
-            }, $listMoviesId->items());
-
-            $listsMovies = $this->tmdbApi->getMoviesById($ids);
-            $lists[$index]['movies'] = $listsMovies;
-        }
-
-        return Inertia::render('Search/Lists', [
-            'query' => $query,
-            'lists' => $lists,
-            'page' => ['actual' => $lists->currentPage(), 'last' => $lists->lastPage()]
-        ]);
-    }
-
     public function members(Request $request, $query)
     {
         $members = $this->user->getUserByName($query);

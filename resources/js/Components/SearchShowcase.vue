@@ -58,26 +58,6 @@
                     >Movies</a
                 >
                 <a
-                    :href="route('search.reviews', query)"
-                    class="px-3 py-2 rounded-md text-sm font-medium"
-                    :class="
-                        route().current('search.reviews', encodeURI(query))
-                            ? 'bg-black-400 text-white'
-                            : 'text-gray-300 hover:bg-black-200 hover:text-white'
-                    "
-                    >Reviews</a
-                >
-                <a
-                    :href="route('search.lists', query)"
-                    class="px-3 py-2 rounded-md text-sm font-medium"
-                    :class="
-                        route().current('search.lists', encodeURI(query))
-                            ? 'bg-black-400 text-white'
-                            : 'text-gray-300 hover:bg-black-200 hover:text-white'
-                    "
-                    >Lists</a
-                >
-                <a
                     :href="route('search.members', query)"
                     class="px-3 py-2 rounded-md text-sm font-medium"
                     :class="
@@ -109,26 +89,6 @@
                         : 'text-gray-300 hover:bg-black-200 hover:text-white'
                 "
                 >Movies</a
-            >
-            <a
-                :href="route('search.reviews', query)"
-                class="px-3 py-2 rounded-md text-sm font-medium"
-                :class="
-                    route().current('search.reviews', encodeURI(query))
-                        ? 'bg-black-400 text-white'
-                        : 'text-gray-300 hover:bg-black-200 hover:text-white'
-                "
-                >Reviews</a
-            >
-            <a
-                :href="route('search.lists', query)"
-                class="px-3 py-2 rounded-md text-sm font-medium"
-                :class="
-                    route().current('search.lists', encodeURI(query))
-                        ? 'bg-black-400 text-white'
-                        : 'text-gray-300 hover:bg-black-200 hover:text-white'
-                "
-                >Lists</a
             >
             <a
                 :href="route('search.members', query)"
