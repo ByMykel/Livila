@@ -23,12 +23,21 @@ class HomeController extends Controller
     public function index()
     {
         $lastWatchedMovie = $this->movie->getLastWatchedMovies() ?? [];
+
         $lastWatchedMovie = array_map(function ($movie) {
             return $movie->movie_id;
         }, $this->movie->getLastWatchedMovies() ?? []);
-        $recommendedMovies = array_slice($this->tmdbApi->getRecommendedById($lastWatchedMovie) ?? [], 0, 24);
+
+        $recommendedMovies = $this->tmdbApi->getRecommendedById($lastWatchedMovie);
         $recommendedMovies = $this->movie->markWatchedMovies($recommendedMovies);
         $recommendedMovies = $this->movie->markLikedMovies($recommendedMovies);
+        $recommendedMovies = array_filter(
+            $recommendedMovies,
+            function ($movie) {
+                return !$movie['watched'];
+            }
+        );
+        $recommendedMovies = array_slice($recommendedMovies, 0, 32);
 
         $trendingMovies = array_slice($this->tmdbApi->getTrendingMoviesToday()['results'], 0, 16);
         $trendingMovies = $this->movie->markWatchedMovies($trendingMovies);

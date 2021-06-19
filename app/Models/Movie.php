@@ -126,6 +126,6 @@ class Movie extends Model
             return [];
         }
 
-        return DB::table('movies_watched')->where('user_id', Auth::id())->latest()->select('movie_id')->take(5)->get()->toArray(); 
+        return DB::table('movies_watched')->where('user_id', Auth::id())->latest()->select('movie_id')->take(10)->get()->toArray(); 
     }
 }
