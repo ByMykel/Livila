@@ -6,7 +6,7 @@ A social network that allows you to keep track of every movie you’ve watched, 
 
 Built with Laravel 8, Vue, TailwindCSS and Inertia.js.
 
-<https://bymykel.github.io/videos/livila.mp4>
+https://user-images.githubusercontent.com/38622893/122673272-ef68f280-d1cf-11eb-961d-58763fa26393.mp4
 
 ### Images
 
