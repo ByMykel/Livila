@@ -2,7 +2,7 @@
     <app-layout>
         <div class="py-6 px-1">
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <div class="text-center mb-10">
+                <!-- <div class="text-center mb-10">
                     <div
                         class="mt-4 mb-2 max-w-3xl text-2xl text-white mx-auto"
                     >
@@ -15,7 +15,7 @@
                     >
                         Start your own list
                     </a>
-                </div>
+                </div> -->
 
                 <lists-navbar :selected="3"></lists-navbar>
 
