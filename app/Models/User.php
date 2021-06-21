@@ -85,6 +85,16 @@ class User extends Authenticatable
         return $this->hasMany(Movie::class, 'user_id', 'id');
     }
 
+    /**
+     * Get the default profile photo URL if no profile photo has been uploaded.
+     *
+     * @return string
+     */
+    protected function defaultProfilePhotoUrl()
+    {
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->username).'&color=EEF2FF&background=6366F1';
+    }
+
     public function getUser(User $user)
     {
         $result = User::where('id', $user->id)
