@@ -4,6 +4,12 @@
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <cast-details-card :cast="actor"></cast-details-card>
 
+                <div
+                    class="mt-10 mb-2 text-black-100 px-1 font-semibold text-base"
+                >
+                    Movies
+                </div>
+
                 <movies-showcase :movies="movies"></movies-showcase>
             </div>
         </div>

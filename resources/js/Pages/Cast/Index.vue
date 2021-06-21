@@ -8,7 +8,7 @@
                 ></movie-details-card>
 
                 <div
-                    class="border-b border-black-300 mt-10 mb-5 text-black-100 px-1"
+                    class="mt-10 mb-2 text-black-100 px-1 font-semibold text-base"
                 >
                     Cast
                 </div>
