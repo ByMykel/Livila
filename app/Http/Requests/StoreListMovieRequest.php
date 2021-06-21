@@ -24,8 +24,8 @@ class StoreListMovieRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string'],
-            'description' => ['required', 'string'],
+            'name' => ['required', 'string', 'min:1', 'max:50'],
+            'description' => ['nullable', 'string', 'max:300'],
             'visibility' => ['required', 'boolean']
         ];
     }

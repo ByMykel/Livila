@@ -13,7 +13,9 @@
                             type="text"
                             name="list_name"
                             id="list_name"
-                            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            :class="[ (form.name.length === 0 || form.name.length > 50) ? 'border-2 border-red-500 focus:ring-red-500 focus:border-red-500' : 'focus:ring-indigo-500 focus:border-indigo-500' ]"
+                            placeholder="Add a name..."
                             v-model="form.name"
                             autocomplete="off"
                         />
@@ -30,7 +32,8 @@
                                 id="description"
                                 name="description"
                                 rows="5"
-                                class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
+                                class="disabled:opacity-50 shadow-sm mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
+                                :class="[ form.description.length > 300 ? 'border-2 border-red-500 focus:ring-red-500 focus:border-red-500' : 'focus:ring-indigo-500 focus:border-indigo-500' ]"
                                 placeholder="Add a decription..."
                                 v-model="form.description"
                             ></textarea>
@@ -115,7 +118,8 @@
                         <button
                             @click="submitHandler()"
                             type="button"
-                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                            :disabled="form.name.length === 0 || form.name.length > 50 || form.description.length > 300"
                         >
                             <svg
                                 class="sm:-ml-1 sm:mr-2 h-5 w-5"

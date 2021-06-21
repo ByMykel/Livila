@@ -15,7 +15,8 @@
                                 id="about"
                                 name="about"
                                 rows="5"
-                                class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
+                                class="disabled:opacity-50 shadow-sm mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
+                                :class="[ (form.review.length === 0 || form.review.length > 400) ? 'border-2 border-red-500 focus:ring-red-500 focus:border-red-500' : 'focus:ring-indigo-500 focus:border-indigo-500' ]"
                                 placeholder="Add a review..."
                                 v-model="form.review"
                                 :disabled="!editingReview && !notReviewed"
@@ -144,7 +145,8 @@
                         <button
                             v-show="notReviewed || editingReview"
                             type="submit"
-                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                            :disabled="form.review.length === 0 || form.review.length > 400"
                         >
                             <svg
                                 class="sm:-ml-1 sm:mr-2 h-5 w-5"
