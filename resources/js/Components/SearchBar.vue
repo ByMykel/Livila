@@ -20,7 +20,6 @@
             placeholder="Search"
             v-model="searchText"
             @keypress.enter="searchQuery()"
-            @keyup="getSuggestedMovies()"
             @focus="showSearchSuggestion = true"
         />
         <div @click="searchQuery()">
@@ -106,41 +105,76 @@
                 </div>
             </div>
             <div v-else>
-                <a
-                    v-for="(movie, index) in suggestedMovies"
-                    :key="index"
-                    class="
-                        text-white
-                        py-2
-                        px-3
-                        hover:bg-black-200
-                        rounded-md
-                        cursor-pointer
-                        flex
-                        items-center
-                    "
-                    :href="route('movies.show', movie.id)"
-                >
-                    <span>
-                        <svg
-                            class="w-4 h-4 text-indigo-500 mr-2"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
-                            ></path>
-                        </svg>
-                    </span>
-                    <span class="truncate">
-                        {{ movie.title }}
-                    </span>
-                </a>
+                <div v-if="!loadingSuggestedMovies">
+                    <a
+                        v-for="(movie, index) in suggestedMovies"
+                        :key="index"
+                        class="
+                            text-white
+                            py-2
+                            px-3
+                            hover:bg-black-200
+                            rounded-md
+                            cursor-pointer
+                            flex
+                            items-center
+                        "
+                        :href="route('movies.show', movie.id)"
+                    >
+                        <span>
+                            <svg
+                                class="w-4 h-4 text-indigo-500 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
+                                ></path>
+                            </svg>
+                        </span>
+                        <span class="truncate">
+                            {{ movie.title }}
+                        </span>
+                    </a>
+                </div>
+                <div v-else>
+                    <div
+                        class="
+                            text-white
+                            py-2
+                            px-3
+                            bg-black-200
+                            rounded-md
+                            cursor-pointer
+                            flex
+                            items-center
+                            animate-pulse
+                        "
+                    >
+                        <span>
+                            <svg
+                                class="w-4 h-4 text-indigo-500 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
+                                ></path>
+                            </svg>
+                        </span>
+                        <span class="truncate"> loading... </span>
+                    </div>
+                </div>
                 <div
                     class="
                         text-white
@@ -183,7 +217,8 @@ export default {
         return {
             searchText: "",
             showSearchSuggestion: false,
-            suggestedMovies: {},
+            suggestedMovies: [],
+            loadingSuggestedMovies: false,
         };
     },
 
@@ -201,6 +236,24 @@ export default {
 
     mounted() {
         document.addEventListener("click", this.onClickOutside);
+    },
+
+    watch: {
+        searchText(value) {
+            if (!value) {
+                this.suggestedMovies = [];
+                return;
+            }
+
+            if (!this.loadingSuggestedMovies) {
+                setTimeout(() => {
+                    this.getSuggestedMovies();
+                    this.loadingSuggestedMovies = false;
+                }, 1000);
+            }
+
+            this.loadingSuggestedMovies = true;
+        },
     },
 
     methods: {
@@ -276,7 +329,9 @@ export default {
 
             return axios
                 .get(route("search.suggested.movies", this.searchText))
-                .then((res) => (this.suggestedMovies = res.data));
+                .then((res) => {
+                    this.suggestedMovies = res.data;
+                });
         },
     },
 };
