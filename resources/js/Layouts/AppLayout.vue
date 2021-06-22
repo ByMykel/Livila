@@ -386,6 +386,43 @@
         <main class="pt-10">
             <slot></slot>
         </main>
+
+        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 h-24 mt-10 px-1">
+            <div class="flex justify-between">
+                <!-- <h1>Livila made by ByMykel</h1> -->
+                <img class="h-8" src="/images/logo-text.svg" />
+                <span class="h-8 flex items-center justify-center">
+                    <a href="https://github.com/ByMykel/Livila" target="_blank">
+                        <img
+                            class="h-6 hover:opacity-60"
+                            src="/images/GitHub-Mark-Light-64px.png"
+                        />
+                    </a>
+                </span>
+            </div>
+            <div class="pt-4 text-sm sm:text-base text-black-100">
+                This product uses the
+                <a
+                    class="underline hover:text-indigo-400"
+                    href="https://developers.themoviedb.org/3/getting-started/introduction"
+                    target="_blank"
+                    >TMDb API</a
+                >
+                but is not endorsed or certified by
+                <a
+                    class="underline hover:text-indigo-400"
+                    href="https://www.themoviedb.org/"
+                    target="_blank"
+                    >TMDb</a
+                >.
+                <a
+                    class="underline hover:text-indigo-400"
+                    :href="route('about.movies-data')"
+                    target="_blank"
+                    >Read more</a
+                >.
+            </div>
+        </div>
     </div>
 </template>
 

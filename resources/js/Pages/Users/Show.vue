@@ -1,7 +1,7 @@
 <template>
     <app-layout>
         <div class="py-6 px-1">
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 pb-72">
                 <user-details-card :user="user"></user-details-card>
             </div>
         </div>

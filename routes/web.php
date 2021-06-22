@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::inertia('/about/movies-data', 'MoviesData')->name('about.movies-data');
 
 Route::prefix('search/{query?}')->group(function () {
     Route::get('/', [SearchController::class, 'movies'])->name('search');
