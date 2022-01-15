@@ -57,4 +57,16 @@
     .movie-information-tag {
         @apply bg-black-300 text-black-100 px-2 py-0.5 rounded-md mr-2;
     }
+
+    @variants responsive {
+        .movies-grid {
+            grid-template-columns: repeat(auto-fill, minmax(129px, 1fr));
+            grid-template-rows: repeat(auto-fill, minmax(95px, 1fr));
+        }
+
+        .movies-grid-small {
+            grid-template-columns: repeat(auto-fill, minmax(167px, 1fr));
+            grid-template-rows: repeat(auto-fill, minmax(95px, 1fr));
+        }
+    }
 }
