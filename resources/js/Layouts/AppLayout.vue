@@ -44,8 +44,8 @@
                                         class="px-3 py-2 text-sm font-medium rounded-md "
                                         :class="
                                             route().current('movies')
-                                                ? 'bg-black-300 text-white'
-                                                : 'text-gray-300 hover:bg-black-200 hover:text-white'
+                                                ? 'bg-black-400 text-white'
+                                                : 'text-gray-300 hover:bg-black-400 hover:text-white'
                                         "
                                         >Movies</a
                                     >
@@ -55,8 +55,8 @@
                                         class="px-3 py-2 text-sm font-medium rounded-md "
                                         :class="
                                             route().current('lists')
-                                                ? 'bg-black-300 text-white'
-                                                : 'text-gray-300 hover:bg-black-200 hover:text-white'
+                                                ? 'bg-black-400 text-white'
+                                                : 'text-gray-300 hover:bg-black-400 hover:text-white'
                                         "
                                         >Lists</a
                                     >
@@ -67,7 +67,7 @@
                         </div>
                         <div class="flex items-center h-full">
                             <div
-                                class="flex items-center pr-2.5 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+                                class="flex items-center h-full py-1 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
                             >
                                 <!-- Profile dropdown -->
                                 <div class="relative ml-3">
@@ -84,13 +84,13 @@
                                 >
                                     <a
                                         :href="route('login')"
-                                        class="px-2 py-1 text-sm font-medium text-white rounded-md bg-black-300 hover:bg-black-200"
-                                        >Log in</a
+                                        class="flex items-center px-2 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-black-400 hover:text-white"
+                                        >Sign In</a
                                     >
                                     <a
                                         :href="route('register')"
-                                        class="px-2 py-1 text-sm font-medium text-white rounded-md bg-black-300 hover:bg-black-200"
-                                        >Sign up</a
+                                        class="flex items-center px-2 py-2 text-sm font-medium text-gray-300 rounded-md bg-black-400 hover:bg-black-400 hover:text-white"
+                                        >Sign Up</a
                                     >
                                 </div>
                             </div>
@@ -202,8 +202,8 @@
                             class="block px-3 py-2 text-base font-medium rounded-md "
                             :class="
                                 route().current('movies')
-                                    ? 'bg-black-300 text-white'
-                                    : 'text-gray-300 hover:bg-black-200 hover:text-white'
+                                    ? 'bg-black-400 text-white'
+                                    : 'text-gray-300 hover:bg-black-400 hover:text-white'
                             "
                             >Movies</a
                         >
@@ -213,8 +213,8 @@
                             class="block px-3 py-2 text-base font-medium rounded-md "
                             :class="
                                 route().current('lists')
-                                    ? 'bg-black-300 text-white'
-                                    : 'text-gray-300 hover:bg-black-200 hover:text-white'
+                                    ? 'bg-black-400 text-white'
+                                    : 'text-gray-300 hover:bg-black-400 hover:text-white'
                             "
                             >Lists</a
                         >
