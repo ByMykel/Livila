@@ -1,10 +1,10 @@
 <template>
     <div
-        class="bg-black-300 rounded-md shadow p-3 text-white mb-2 overflow-hidden relative"
+        class="relative p-3 mb-2 overflow-hidden text-white rounded-md shadow bg-black-300"
     >
         <div
             v-show="!isAuthUserReview && review.spoiler && !showSpoiler"
-            class="absolute h-full w-full bg-black-300 top-0 left-0 flex flex-col items-center justify-center"
+            class="absolute top-0 left-0 flex flex-col items-center justify-center w-full h-full bg-black-300"
         >
             <a
                 v-show="showMovieTitleInSpoilerAlert"
@@ -23,7 +23,7 @@
 
         <div
             v-show="isAuthUserReview || !review.spoiler || showSpoiler"
-            class="py-1 px-2 rounded-bl-md absolute top-0 right-0 text-xs font-medium"
+            class="absolute top-0 right-0 px-2 py-1 text-xs font-medium rounded-bl-md"
             :class="review.recommended ? 'bg-green-500' : 'bg-red-500'"
         >
             <span class="hidden sm:block">{{ isRecommended }}</span>
@@ -60,14 +60,14 @@
         <div class="flex items-center">
             <img
                 v-if="showTitle"
-                class="w-8 sm:w-10 rounded-md"
+                class="w-8 rounded-md sm:w-10"
                 :src="poster"
                 alt=""
             />
 
             <img
                 v-else
-                class="w-8 sm:w-10 rounded-full"
+                class="w-8 rounded-full sm:w-10"
                 :src="review.user.profile_photo_url"
                 alt=""
             />
@@ -76,7 +76,7 @@
                 <p>
                     Reviewed by
                     <a
-                        class="hover:text-indigo-400 font-medium"
+                        class="font-medium hover:text-indigo-400"
                         :href="route('user', review.user.username)"
                     >
                         {{ review.user.username }}
@@ -99,14 +99,14 @@
                 </a>
             </h3>
 
-            <p class="text-black-100 break-words">{{ review.review }}</p>
+            <p class="break-words text-black-100">{{ review.review }}</p>
         </div>
 
         <div class="flex text-base">
             <div class="inline-flex items-center">
                 <svg
                     @click="like()"
-                    class="w-5 h-5 text-black-100 hover:text-red-400 cursor-pointer inline-block"
+                    class="inline-block w-5 h-5 cursor-pointer text-black-100 hover:text-red-400"
                     :class="{ 'text-red-500 hover:text-red-400': review.like }"
                     fill="none"
                     stroke="currentColor"
@@ -167,7 +167,7 @@ export default {
                 );
             }
 
-            return "/images/default_poster_path.png";
+            return "/images/placeholder.jpeg";
         },
 
         year() {

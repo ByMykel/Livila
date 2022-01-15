@@ -8,11 +8,11 @@
     >
         <div
             v-show="show || deleted"
-            class="absolute w-full h-full flex justify-center items-center"
+            class="absolute flex items-center justify-center w-full h-full"
         >
             <svg
                 v-if="!deleted"
-                class="w-10 h-10 text-white bg-red-600 rounded-full p-2 duration-100 z-10"
+                class="z-10 w-10 h-10 p-2 text-white duration-100 bg-red-600 rounded-full"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +27,7 @@
             <svg
                 v-else
                 :class="{ 'bg-green-600': show }"
-                class="w-10 h-10 text-white bg-red-600 rounded-full p-2 duration-100 z-10"
+                class="z-10 w-10 h-10 p-2 text-white duration-100 bg-red-600 rounded-full"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@
 
         <img
             :style="[deleted ? { filter: 'grayscale(100%)' } : {}]"
-            class="max-h-48 object-cover shadow rounded-md"
+            class="object-cover rounded-md shadow max-h-48"
             :src="poster"
         />
     </div>
@@ -72,7 +72,7 @@ export default {
                 );
             }
 
-            return "/images/default_poster_path.png";
+            return "/images/placeholder.jpeg";
         },
     },
 };

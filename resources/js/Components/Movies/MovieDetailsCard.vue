@@ -3,37 +3,37 @@
         <!-- TODO: Add link to a full size backdrop image. -->
         <div
             v-show="showSkeletonBackdrop && backdrop && !hideBackdrop"
-            class="bg-black-300 md:mb-10 rounded-md h-72 sm:h-80 md:h-96 w-full animate-pulse"
+            class="w-full rounded-md bg-black-300 md:mb-10 h-72 sm:h-80 md:h-96 animate-pulse"
         ></div>
         <img
             v-show="!showSkeletonBackdrop && backdrop && !hideBackdrop"
-            class="block md:mb-10 rounded-md h-72 sm:h-80 md:h-96 w-full object-cover shadow-inner"
+            class="block object-cover w-full rounded-md shadow-inner md:mb-10 h-72 sm:h-80 md:h-96"
             :src="backdrop"
             @load="showSkeletonBackdrop = false"
         />
 
-        <div class="md:flex flex-1">
-            <div class="hidden md:block md:mr-6 flex-initial">
+        <div class="flex-1 md:flex">
+            <div class="flex-initial hidden md:block md:mr-6">
                 <div
                     v-show="showSkeletonPoster"
-                    class="bg-black-300 h-96 rounded-md mx-auto w-72 animate-pulse"
+                    class="mx-auto rounded-md bg-black-300 h-96 w-72 animate-pulse"
                 ></div>
                 <img
                     v-show="!showSkeletonPoster"
-                    class="shadow rounded-md mx-auto w-72"
+                    class="mx-auto rounded-md shadow w-72"
                     :src="poster"
                     @load="showSkeletonPoster = false"
                 />
             </div>
-            <div class="flex flex-col lg:flex-row flex-1 relative">
+            <div class="relative flex flex-col flex-1 lg:flex-row">
                 <div class="w-full p-1">
                     <p
-                        class="text-center md:text-left mt-1 text-3xl font-extrabold text-white"
+                        class="mt-1 text-3xl font-extrabold text-center text-white md:text-left"
                     >
                         {{ movie.title }}
                     </p>
                     <div
-                        class="text-center md:text-left mt-2 mb-3 text-sm text-indigo-300 flex flex-wrap gap-y-1"
+                        class="flex flex-wrap mt-2 mb-3 text-sm text-center text-indigo-300 md:text-left gap-y-1"
                     >
                         <span
                             v-if="movie.release_date"
@@ -97,7 +97,7 @@ export default {
                 );
             }
 
-            return "/images/default_poster_path.png";
+            return "/images/placeholder.jpeg";
         },
 
         backdrop() {

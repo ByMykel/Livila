@@ -1,8 +1,8 @@
 <template>
     <div
-        class="bg-black-300 rounded-md shadow p-4 text-white mb-2 overflow-hidden flex"
+        class="flex p-4 mb-2 overflow-hidden text-white rounded-md shadow bg-black-300"
     >
-        <div class="hidden sm:flex flex-shrink-0 p-4 w-40">
+        <div class="flex-shrink-0 hidden w-40 p-4 sm:flex">
             <a class="flex" :href="route('lists.show', list.id)">
                 <span
                     v-for="movie in moviesList.movies"
@@ -11,30 +11,30 @@
                 >
                     <div
                         v-show="showSkeletonImage"
-                        class="bg-black-200 h-36 rounded-md shadow-md border border-indigo-400 animate-pulse"
+                        class="border border-indigo-400 rounded-md shadow-md bg-black-200 h-36 animate-pulse"
                     ></div>
                     <img
                         v-show="!showSkeletonImage"
-                        class="rounded-md shadow-md border border-indigo-400"
+                        class="border border-indigo-400 rounded-md shadow-md"
                         :src="poster(movie)"
                         @load="showSkeletonImage = false"
                     />
                 </span>
             </a>
         </div>
-        <div class="block sm:ml-24 w-full">
+        <div class="block w-full sm:ml-24">
             <a
                 class="hover:text-indigo-400"
                 :href="route('lists.show', list.id)"
             >
-                <h2 class="block line-clamp-1 break-all">
+                <h2 class="block break-all line-clamp-1">
                     {{ moviesList.name }}
                 </h2>
             </a>
             <div class="my-0.5 flex items-center">
                 <div>
                     <img
-                        class="w-4 rounded-full mr-1"
+                        class="w-4 mr-1 rounded-full"
                         :src="list.user.profile_photo_url"
                     />
                 </div>
@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div>
-                <p class="block text-sm text-black-100 break-all line-clamp-2">
+                <p class="block text-sm break-all text-black-100 line-clamp-2">
                     {{ moviesList.description }}
                 </p>
             </div>
@@ -70,15 +70,15 @@ export default {
 
     methods: {
         poster(movie) {
-            if (movie.poster_path === "empty_poster_path.png") {
-                return "/images/empty_poster_path.png";
+            if (movie.poster_path === "empty_poster_path.jpeg") {
+                return "/images/empty_poster_path.jpeg";
             }
 
             if (movie.poster_path) {
                 return "https://image.tmdb.org/t/p/w780" + movie.poster_path;
             }
 
-            return "/images/default_poster_path.png";
+            return "/images/placeholder.jpeg";
         },
     },
 
@@ -87,7 +87,7 @@ export default {
             for (let i = 0; i < 5 - this.list.movies_count; i++) {
                 this.list.movies.push({
                     id: this.list.id + "-" + i,
-                    poster_path: "empty_poster_path.png",
+                    poster_path: "empty_poster_path.jpeg",
                 });
             }
 

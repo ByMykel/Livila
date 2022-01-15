@@ -1,12 +1,12 @@
 <template>
-    <div class="h-full flex flex-col justify-between mb-1 pb-2">
+    <div class="flex flex-col justify-between h-full pb-2 mb-1">
         <a
             :href="route('movies.show', review.movie.id)"
             @mouseenter="show = true"
             @mouseleave="show = false"
         >
             <img
-                class="shadow rounded hover:border hover:border-indigo-400"
+                class="rounded shadow hover:border hover:border-indigo-400"
                 :src="poster"
                 :title="review.movie.title"
             />
@@ -15,14 +15,14 @@
         <div>
             <p
                 :title="review.movie.title"
-                class="truncate text-white text-sm font-semibold"
+                class="text-sm font-semibold text-white truncate"
             >
                 {{ review.movie.title }}
             </p>
 
             <p
                 :title="review.movie.title"
-                class="truncate text-gray-400 text-xs"
+                class="text-xs text-gray-400 truncate"
             >
                 {{ year }}
             </p>
@@ -53,7 +53,7 @@ export default {
                 );
             }
 
-            return "/images/default_poster_path.png";
+            return "/images/placeholder.jpeg";
         },
 
         year() {
