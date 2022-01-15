@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 gap-2">
+    <div class="grid w-full gap-2 mx-auto movies-grid-small md:movies-grid">
         <div v-for="movie in movies" :key="movie.id">
             <movie-image :movie="movie" :border="false" />
         </div>
