@@ -1,7 +1,7 @@
 <template>
     <app-layout>
-        <div class="py-6 px-1">
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 relative">
+        <div class="px-1 py-6">
+            <div class="relative max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <movie-details-card :movie="movie" />
 
                 <movie-menu
@@ -17,7 +17,7 @@
 
                 <div
                     v-if="movie.credits.cast.length"
-                    class="mt-10 mb-2 text-black-100 px-1 flex justify-between font-semibold text-base"
+                    class="flex justify-between px-1 mt-10 mb-2 text-base font-semibold text-black-100"
                 >
                     <span>Cast</span>
 
@@ -43,17 +43,17 @@
 
                 <cast-showcase
                     v-if="movie.credits.cast.length"
-                    :castMembers="movie.credits.cast.slice(0, 12)"
+                    :castMembers="movie.credits.cast.slice(0, 8)"
                 ></cast-showcase>
 
                 <div
                     v-if="showReviewsNavbar"
-                    class="mt-10 mb-2 text-black-100 flex justify-between px-1 font-semibold text-base"
+                    class="flex justify-between px-1 mt-10 mb-2 text-base font-semibold text-black-100"
                 >
                     <div class="flex">
                         <a
                             v-if="recentReviews.length"
-                            class="hover:border-b-2 hover:text-white px-3 border-black-100 cursor-pointer"
+                            class="px-3 cursor-pointer hover:border-b-2 hover:text-white border-black-100"
                             :class="{
                                 'text-white border-indigo-600 border-b-2':
                                     selected === 1,
@@ -63,7 +63,7 @@
                         >
                         <a
                             v-if="popularReviews.length"
-                            class="hover:border-b-2 hover:text-white px-3 border-black-100 cursor-pointer"
+                            class="px-3 cursor-pointer hover:border-b-2 hover:text-white border-black-100"
                             :class="{
                                 'text-white border-indigo-600 border-b-2':
                                     selected === 2,
@@ -73,7 +73,7 @@
                         >
                         <a
                             v-if="friendsReviews.length"
-                            class="hover:border-b-2 hover:text-white px-3 border-black-100 cursor-pointer"
+                            class="px-3 cursor-pointer hover:border-b-2 hover:text-white border-black-100"
                             :class="{
                                 'text-white border-indigo-600 border-b-2':
                                     selected === 3,
@@ -134,7 +134,7 @@
 
                 <div
                     v-if="similarMovies.length"
-                    class="mt-10 mb-2 text-black-100 px-1 font-semibold text-base"
+                    class="px-1 mt-10 mb-2 text-base font-semibold text-black-100"
                 >
                     Similar movies
                 </div>

@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-6 md:grid-cols-12 gap-2">
+    <div class="grid w-full gap-2 mx-auto cast-grid-small md:cast-grid">
         <div v-for="cast in castMembers" :key="cast.id">
             <cast-image :cast="cast"></cast-image>
         </div>

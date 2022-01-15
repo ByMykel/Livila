@@ -15,7 +15,7 @@
                     ></div>
                     <img
                         v-show="!showSkeletonImage"
-                        class="border border-indigo-400 rounded-md shadow-md"
+                        class="object-cover h-full border border-indigo-400 rounded-md shadow-sm"
                         :src="poster(movie)"
                         @load="showSkeletonImage = false"
                     />
@@ -75,7 +75,7 @@ export default {
             }
 
             if (movie.poster_path) {
-                return "https://image.tmdb.org/t/p/w780" + movie.poster_path;
+                return "https://image.tmdb.org/t/p/original" + movie.poster_path;
             }
 
             return "/images/placeholder.jpeg";

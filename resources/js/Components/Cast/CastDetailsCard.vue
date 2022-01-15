@@ -1,26 +1,26 @@
 <template>
-    <div class="md:flex flex-1 mb-10">
-        <div class="block md:mr-6 flex-initial">
+    <div class="flex-1 mb-10 md:flex">
+        <div class="flex-initial block md:mr-6">
             <div
                 v-show="showSkeletonProfileImage"
-                class="bg-black-300 h-96 rounded-md mx-auto w-72 animate-pulse"
+                class="mx-auto rounded-md bg-black-300 h-96 w-72 animate-pulse"
             ></div>
             <img
                 v-show="!showSkeletonProfileImage"
-                class="shadow rounded-md mx-auto w-72"
+                class="mx-auto rounded-md shadow w-72"
                 :src="profileImage"
                 @load="showSkeletonProfileImage = false"
             />
         </div>
-        <div class="flex flex-col lg:flex-row flex-1 relative">
+        <div class="relative flex flex-col flex-1 lg:flex-row">
             <div class="w-full p-1">
                 <p
-                    class="text-center md:text-left mt-1 text-3xl font-extrabold text-white"
+                    class="mt-1 text-3xl font-extrabold text-center text-white md:text-left"
                 >
                     {{ cast.name }}
                 </p>
                 <div
-                    class="text-center md:text-left mt-2 mb-3 text-sm text-indigo-300 flex flex-wrap gap-y-1"
+                    class="flex flex-wrap mt-2 mb-3 text-sm text-center text-indigo-300 md:text-left gap-y-1"
                 >
                     <span
                         v-if="cast.known_for_department"
@@ -42,7 +42,7 @@
                     </span>
                 </div>
                 <div>
-                    <p class="text-md text-black-100 break-all whitespace-pre-wrap">
+                    <p class="break-all whitespace-pre-wrap text-md text-black-100">
                         {{ cast.biography }}
                     </p>
                 </div>
@@ -71,7 +71,7 @@ export default {
                 );
             }
 
-            return "/images/default_profile_path.png";
+            return "/images/placeholder.jpeg";
         },
     },
 
