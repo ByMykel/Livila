@@ -223,12 +223,12 @@
             </nav>
 
             <!-- Page Content -->
-            <main class="pt-10">
+            <main class="px-4 pt-10 sm:px-0">
                 <slot></slot>
             </main>
         </div>
 
-        <div class="w-full h-24 max-w-6xl px-1 mx-auto mt-10 sm:px-6 lg:px-8">
+        <div class="w-full h-24 max-w-6xl px-4 mx-auto mt-10 sm:px-6 lg:px-8">
             <div class="flex justify-between">
                 <!-- <h1>Livila made by ByMykel</h1> -->
                 <img class="h-8" src="/images/logo-text.svg" />
