@@ -1,43 +1,36 @@
 <template>
-    <div class="mb-1 pb-4 flex flex-col justify-between h-full">
+    <div class="flex flex-col justify-between h-full pb-4 mb-1">
         <div
             class="relative"
             @mouseenter="show = true"
             @mouseleave="show = false"
         >
             <transition
-                enter-active-class="transition ease-out duration-150"
+                enter-active-class="transition duration-150 ease-out"
                 enter-from-class="transform opacity-0"
                 enter-to-class="transform opacity-100"
-                leave-active-class="transition ease-in duration-100"
+                leave-active-class="transition duration-100 ease-in"
                 leave-from-class="transform opacity-100"
                 leave-to-class="transform opacity-0"
             >
                 <a
                     v-show="show || (movie.watched && !isUser)"
                     :href="route('movies.show', movie.id)"
-                    class="
-                        absolute
-                        w-full
-                        h-full
-                        cursor-pointer
-                        bg-black-400 bg-opacity-70
-                        rounded
-                    "
+                    class="absolute w-full h-full rounded cursor-pointer bg-black-400 bg-opacity-70"
                 ></a>
             </transition>
             <transition
-                enter-active-class="transition ease-out duration-150"
-                enter-from-class="transform opacity-0 scale-95"
-                enter-to-class="transform opacity-100 scale-100"
-                leave-active-class="transition ease-in duration-100"
+                enter-active-class="transition duration-150 ease-out"
+                enter-from-class="transform scale-95 opacity-0"
+                enter-to-class="transform scale-100 opacity-100"
+                leave-active-class="transition duration-100 ease-in"
                 leave-from-class="transform opacity-100"
                 leave-to-class="transform opacity-0"
             >
                 <a
                     v-show="show"
                     :href="route('movies.show', movie.id)"
-                    class="absolute w-full h-full cursor-pointer rounded"
+                    class="absolute w-full h-full rounded cursor-pointer"
                     :class="[show ? 'border-2 border-indigo-500' : '']"
                 ></a>
             </transition>
@@ -47,14 +40,7 @@
                 @click="like()"
             >
                 <svg
-                    class="
-                        hidden
-                        sm:block
-                        w-5
-                        h-5
-                        hover:text-blue-500
-                        text-gray-400
-                    "
+                    class="hidden w-5 h-5 text-gray-400 sm:block hover:text-blue-500"
                     :class="{ 'text-red-500': movie.liked }"
                     fill="none"
                     stroke="currentColor"
@@ -75,14 +61,7 @@
                 @click="watch()"
             >
                 <svg
-                    class="
-                        hidden
-                        sm:block
-                        w-5
-                        h-5
-                        hover:text-blue-500
-                        text-gray-400
-                    "
+                    class="hidden w-5 h-5 text-gray-400 sm:block hover:text-blue-500"
                     :class="{ 'text-green-500': movie.watched }"
                     fill="none"
                     stroke="currentColor"
@@ -103,13 +82,15 @@
                     ></path>
                 </svg>
             </button>
-            <div
+            <img
                 v-show="showSkeletonImage"
-                class="bg-black-300 h-44 w-full shadow rounded animate-pulse"
-            ></div>
+                class="w-full rounded shadow animate-pulse"
+                src="/images/placeholder.jpeg"
+            />
             <img
                 v-show="!showSkeletonImage"
-                class="max-h-48 w-full shadow rounded"
+                class="w-full rounded shadow"
+                :class="{ hidden: showSkeletonImage }"
                 :src="poster"
                 @load="showSkeletonImage = false"
             />
@@ -118,14 +99,14 @@
             <p
                 :title="movie.title"
                 :class="{ 'opacity-40': movie.watched && !isUser }"
-                class="truncate text-white text-sm font-semibold"
+                class="text-sm font-semibold text-white truncate"
             >
                 {{ movie.title }}
             </p>
             <p
                 :title="movie.release_date"
                 :class="{ 'opacity-40': movie.watched && !isUser }"
-                class="truncate text-gray-400 text-xs"
+                class="text-xs text-gray-400 truncate"
             >
                 {{ year }}
             </p>
@@ -158,7 +139,7 @@ export default {
                 );
             }
 
-            return "/images/default_poster_path.png";
+            return "/images/placeholder.jpeg";
         },
 
         year() {
