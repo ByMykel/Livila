@@ -2,71 +2,14 @@
     <div class="flex flex-col justify-between min-h-screen">
         <div>
             <nav class="fixed z-10 w-full shadow bg-black-500">
-                <div class="max-w-6xl px-2 mx-auto sm:px-6 lg:px-8">
+                <div class="max-w-6xl px-0 mx-auto sm:px-6 lg:px-8">
                     <div
-                        class="relative flex items-center justify-between h-13"
+                        class="relative flex items-center justify-between h-12"
                     >
                         <div
-                            class="absolute inset-y-0 left-0 flex items-center sm:hidden"
+                            class="flex items-center flex-1 sm:items-stretch sm:justify-start"
                         >
-                            <!-- Mobile menu button-->
-                            <button
-                                @click="
-                                    showingNavigationDropdown =
-                                        !showingNavigationDropdown
-                                "
-                                type="button"
-                                class="inline-flex items-center justify-center p-2 text-gray-400 rounded-md hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                                aria-controls="mobile-menu"
-                                aria-expanded="false"
-                            >
-                                <span class="sr-only">Open main menu</span>
-                                <svg
-                                    class="w-6 h-6"
-                                    :class="
-                                        showingNavigationDropdown
-                                            ? 'hidden'
-                                            : 'block'
-                                    "
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                </svg>
-                                <svg
-                                    class="w-6 h-6"
-                                    :class="
-                                        showingNavigationDropdown
-                                            ? 'block'
-                                            : 'hidden'
-                                    "
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                        <div
-                            class="flex items-center justify-center flex-1 sm:items-stretch sm:justify-start"
-                        >
-                            <div class="flex items-center flex-shrink-0">
+                            <div class="flex items-center flex-shrink-0 ml-5">
                                 <a :href="route('home')">
                                     <div
                                         v-show="showSkeletonLogo"
@@ -122,100 +65,90 @@
 
                             <search-bar></search-bar>
                         </div>
-                        <div
-                            class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
-                        >
-                            <a
-                                v-if="$page.props.auth"
-                                :href="
-                                    route(
-                                        'user.watched',
-                                        $page.props.auth.username
-                                    )
-                                "
-                                class="
-                                    bg-black-300
-                                    p-1
-                                    rounded-full
-                                    text-gray-400
-                                    hover:text-white
-                                    focus:outline-none
-                                    focus:ring-2
-                                    focus:ring-offset-2
-                                    focus:ring-offset-gray-800
-                                    focus:ring-white
-                                    mr-1.5
-                                "
+                        <div class="flex items-center h-full">
+                            <div
+                                class="flex items-center pr-2.5 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
                             >
-                                <svg
-                                    class="w-6 h-6"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                    ></path>
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                    ></path>
-                                </svg>
-                            </a>
+                                <!-- Profile dropdown -->
+                                <div class="relative ml-3">
+                                    <dropdown
+                                        :showingMenuDropdown="
+                                            showingMenuDropdown
+                                        "
+                                    />
+                                </div>
 
-                            <a
-                                v-if="$page.props.auth"
-                                :href="
-                                    route(
-                                        'user.likes.movies',
-                                        $page.props.auth.username
-                                    )
-                                "
-                                class="p-1 text-gray-400 rounded-full bg-black-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                            >
-                                <svg
-                                    class="w-6 h-6"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                                <div
+                                    v-if="!$page.props.auth"
+                                    class="flex space-x-2 text-white"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                                    ></path>
-                                </svg>
-                            </a>
-
-                            <!-- Profile dropdown -->
-                            <div class="relative ml-3">
-                                <dropdown
-                                    :showingMenuDropdown="showingMenuDropdown"
-                                />
+                                    <a
+                                        :href="route('login')"
+                                        class="px-2 py-1 text-sm font-medium text-white rounded-md bg-black-300 hover:bg-black-200"
+                                        >Log in</a
+                                    >
+                                    <a
+                                        :href="route('register')"
+                                        class="px-2 py-1 text-sm font-medium text-white rounded-md bg-black-300 hover:bg-black-200"
+                                        >Sign up</a
+                                    >
+                                </div>
                             </div>
 
                             <div
-                                v-if="!$page.props.auth"
-                                class="flex space-x-2 text-white"
+                                class="flex items-center sm:hidden h-full px-0.5 border-l border-black-400"
+                                :class="{ 'border-black-500' : showingNavigationDropdown }"
                             >
-                                <a
-                                    :href="route('login')"
-                                    class="px-2 py-1 text-sm font-medium text-white rounded-md bg-black-300 hover:bg-black-200"
-                                    >Log in</a
+                                <!-- Mobile menu button-->
+                                <button
+                                    @click="
+                                        showingNavigationDropdown =
+                                            !showingNavigationDropdown
+                                    "
+                                    type="button"
+                                    class="inline-flex items-center justify-center p-2 text-gray-300 rounded-md hover:text-white focus:outline-none"
                                 >
-                                <a
-                                    :href="route('register')"
-                                    class="px-2 py-1 text-sm font-medium text-white rounded-md bg-black-300 hover:bg-black-200"
-                                    >Sign up</a
-                                >
+                                    <svg
+                                        class="w-6 h-6"
+                                        :class="
+                                            showingNavigationDropdown
+                                                ? 'hidden'
+                                                : 'block'
+                                        "
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        aria-hidden="true"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M4 6h16M4 12h16M4 18h16"
+                                        />
+                                    </svg>
+                                    <svg
+                                        class="w-6 h-6"
+                                        :class="
+                                            showingNavigationDropdown
+                                                ? 'block'
+                                                : 'hidden'
+                                        "
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        aria-hidden="true"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     </div>
