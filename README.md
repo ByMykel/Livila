@@ -6,7 +6,7 @@ A social network that allows you to keep track of every movie you’ve watched, 
 
 Built with Laravel 8, Vue, TailwindCSS and Inertia.js.
 
-https://user-images.githubusercontent.com/38622893/123447582-50326980-d5da-11eb-8436-adf8de7098b7.mp4
+https://user-images.githubusercontent.com/38622893/150202630-793aaaeb-320e-44fd-8509-67731a7568fb.mp4
 
 ### Images
 
