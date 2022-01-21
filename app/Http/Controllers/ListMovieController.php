@@ -117,7 +117,7 @@ class ListMovieController extends Controller
 
     public function show(ListMovie $listMovie)
     {
-        if (Auth::id() !== $listMovie->user_id && !$listMovie->visibility) {
+        if (Auth::id() != $listMovie->user_id && !$listMovie->visibility) {
             return abort(403);
         }
 

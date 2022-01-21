@@ -4,7 +4,7 @@
             <button
                 @click="show = !show"
                 type="button"
-                class="flex text-sm bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                class="flex text-sm rounded-full bg-black-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black-400 focus:ring-white"
                 id="user-menu"
                 aria-expanded="false"
                 aria-haspopup="true"
@@ -28,7 +28,7 @@
         >
             <div
                 v-if="show"
-                class="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                class="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg z-60 ring-1 ring-black ring-opacity-5 focus:outline-none"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="user-menu"
