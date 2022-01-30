@@ -1,21 +1,12 @@
 <template>
     <div
         ref="showSuggestions"
-        class="mx-auto hidden sm:block sm:w-2/4 relative p-1"
+        class="relative hidden p-1 mx-auto sm:block sm:w-2/4"
         :class="{ 'bg-black-300 rounded-t-md': showSearchSuggestion }"
     >
         <input
             type="text"
-            class="
-                w-full
-                text-white
-                bg-black-300
-                border-0
-                rounded-md
-                h-9
-                focus:ring-indigo-500
-                pr-10
-            "
+            class="w-full pr-10 text-white border-0 rounded-md bg-black-300 h-9 focus:ring-indigo-500"
             :class="{ 'bg-black-500': showSearchSuggestion }"
             placeholder="Search"
             v-model="searchText"
@@ -71,21 +62,12 @@
                 <div
                     v-for="(suggestion, index) in searchSuggestion"
                     :key="index"
-                    class="
-                        text-white
-                        py-2
-                        px-3
-                        hover:bg-black-200
-                        rounded-md
-                        cursor-pointer
-                        flex
-                        items-center
-                    "
+                    class="flex items-center px-3 py-2 text-white rounded-md cursor-pointer hover:bg-black-200"
                     @click="searchQuerySuggested(suggestion)"
                 >
                     <span>
                         <svg
-                            class="w-4 h-4 text-indigo-500 mr-2"
+                            class="w-4 h-4 mr-2 text-indigo-500"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -109,21 +91,12 @@
                     <a
                         v-for="(movie, index) in suggestedMovies"
                         :key="index"
-                        class="
-                            text-white
-                            py-2
-                            px-3
-                            hover:bg-black-200
-                            rounded-md
-                            cursor-pointer
-                            flex
-                            items-center
-                        "
+                        class="flex items-center px-3 py-2 text-white rounded-md cursor-pointer hover:bg-black-200"
                         :href="route('movies.show', movie.id)"
                     >
                         <span>
                             <svg
-                                class="w-4 h-4 text-indigo-500 mr-2"
+                                class="w-4 h-4 mr-2 text-indigo-500"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -144,21 +117,11 @@
                 </div>
                 <div v-else>
                     <div
-                        class="
-                            text-white
-                            py-2
-                            px-3
-                            bg-black-200
-                            rounded-md
-                            cursor-pointer
-                            flex
-                            items-center
-                            animate-pulse
-                        "
+                        class="flex items-center px-3 py-2 text-white rounded-md cursor-pointer bg-black-200 animate-pulse"
                     >
                         <span>
                             <svg
-                                class="w-4 h-4 text-indigo-500 mr-2"
+                                class="w-4 h-4 mr-2 text-indigo-500"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -176,21 +139,12 @@
                     </div>
                 </div>
                 <div
-                    class="
-                        text-white
-                        py-2
-                        px-3
-                        hover:bg-black-200
-                        rounded-md
-                        cursor-pointer
-                        flex
-                        items-center
-                    "
+                    class="flex items-center px-3 py-2 text-white rounded-md cursor-pointer hover:bg-black-200"
                     @click="searchQuery()"
                 >
                     <span>
                         <svg
-                            class="w-4 h-4 text-black-100 mr-2"
+                            class="w-4 h-4 mr-2 text-black-100"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -246,13 +200,13 @@ export default {
             }
 
             if (!this.loadingSuggestedMovies) {
+                this.loadingSuggestedMovies = true;
+                
                 setTimeout(() => {
                     this.getSuggestedMovies();
                     this.loadingSuggestedMovies = false;
-                }, 1000);
+                }, 200);
             }
-
-            this.loadingSuggestedMovies = true;
         },
     },
 
